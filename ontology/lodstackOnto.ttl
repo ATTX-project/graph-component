@@ -10,7 +10,31 @@
 
 <http://helsinki.fi/library/onto#> a owl:Ontology ;
 	owl:versionIRI <http://helsinki.fi/library/onto#> ;
-	owl:versionInfo "0.1"^^xsd:decimal .
+	rdfs:comment "This ontology is published by the ATTX project, part of the University of Helsinki Library."@en ;
+	owl:versionInfo "Draft ATTX Workflow ontology 0.1"@en ;
+	rdfs:seeAlso "http://helsinki.fi/library"@en ;
+	rdfs:label "ATTX Workflow Ontology"@en .
+# 
+# 
+# #################################################################
+# #
+# #    Annotation properties
+# #
+# #################################################################
+# 
+# 
+# http://www.w3.org/2004/02/skos/core#altLabel
+
+<http://www.w3.org/2004/02/skos/core#altLabel> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#definition
+
+<http://www.w3.org/2004/02/skos/core#definition> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#prefLabel
+
+<http://www.w3.org/2004/02/skos/core#prefLabel> a owl:AnnotationProperty .
+# 
 # 
 # 
 # #################################################################
@@ -23,28 +47,48 @@
 # http://helsinki.fi/library/onto#hasWorkflowSteps
 
 :hasWorkflowSteps a owl:ObjectProperty ;
-	rdfs:range :Step .
+	rdfs:domain :Workflow ;
+	rdfs:range :Step ;
+	rdfs:label "hasWorkflowSteps" .
 # 
 # http://helsinki.fi/library/onto#isDependentOn
 
-:isDependentOn a owl:ObjectProperty , owl:ReflexiveProperty ;
-	rdfs:domain :Artifact .
+:isDependentOn a owl:ObjectProperty ;
+	rdfs:domain :Artifact ;
+	rdfs:range :Artifact ;
+	rdfs:label "isDependentOn" .
 # 
 # http://helsinki.fi/library/onto#usesArtifact
 
 :usesArtifact a owl:ObjectProperty ;
-	rdfs:range :Artifact .
+	rdfs:range :Artifact ;
+	rdfs:label "usesArtifact" .
 # 
 # http://helsinki.fi/library/onto#usesWorkflowExecution
 
 :usesWorkflowExecution a owl:ObjectProperty ;
-	rdfs:domain :Workflow .
+	rdfs:domain :Workflow ;
+	rdfs:label "usesWorkflowExecution" .
+# 
+# http://www.w3.org/ns/prov#hadDerivation
+
+prov:hadDerivation a owl:ObjectProperty ;
+	owl:inverseOf prov:wasDerivedFrom ;
+	rdfs:comment "Inverse of wasDerivedFrom property" ;
+	rdfs:label "hadDerivation"@en .
 # 
 # http://www.w3.org/ns/prov#wasAssociatedWith
 
 prov:wasAssociatedWith a owl:ObjectProperty ;
 	rdfs:domain prov:Activity ;
-	rdfs:range prov:Agent .
+	rdfs:range prov:Agent ;
+	rdfs:label "wasAssociatedWith" .
+# 
+# http://www.w3.org/ns/prov#wasDerivedFrom
+
+prov:wasDerivedFrom a owl:ObjectProperty ;
+	rdfs:label "wasDerivedFrom"@en ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en .
 # 
 # 
 # 
@@ -57,21 +101,25 @@ prov:wasAssociatedWith a owl:ObjectProperty ;
 # 
 # http://helsinki.fi/library/onto#hasStepConfig
 
-:hasStepConfig a owl:DatatypeProperty .
+:hasStepConfig a owl:DatatypeProperty ;
+	rdfs:label "hasStepConfig" .
 # 
 # http://helsinki.fi/library/onto#hasStepType
 
-:hasStepType a owl:DatatypeProperty .
+:hasStepType a owl:DatatypeProperty ;
+	rdfs:label "hasStepType" .
 # 
 # http://www.w3.org/ns/prov#endedAtTime
 
 prov:endedAtTime a owl:DatatypeProperty ;
-	rdfs:range xsd:dateTime .
+	rdfs:range xsd:dateTime ;
+	rdfs:label "endedAtTime" .
 # 
 # http://www.w3.org/ns/prov#startedAtTime
 
 prov:startedAtTime a owl:DatatypeProperty ;
-	rdfs:range xsd:dateTime .
+	rdfs:range xsd:dateTime ;
+	rdfs:label "startedAtTime" .
 # 
 # 
 # 
@@ -84,41 +132,60 @@ prov:startedAtTime a owl:DatatypeProperty ;
 # 
 # http://helsinki.fi/library/onto#Artifact
 
-:Artifact a owl:Class .
+:Artifact a owl:Class ;
+	rdfs:label "Artifact" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An artifact is a type of mutable or imutable resource used in a specific workflow. Examples: Web Service, source code or any other type of software component and not only."@en .
 # 
 # http://helsinki.fi/library/onto#Dataset
 
-:Dataset a owl:Class .
+:Dataset a owl:Class ;
+	rdfs:label "Dataset" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A specific resource which represents a Dataset used in an workflow."@en .
 # 
 # http://helsinki.fi/library/onto#Process
 
-:Process a owl:Class .
+:Process a owl:Class ;
+	rdfs:label "Process" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Process refers to an activity or series of actions (steps) caused by Agents, performed via a Worfklow and resulting in new Datasets."@en .
 # 
 # http://helsinki.fi/library/onto#Step
 
 :Step a owl:Class ;
-	rdfs:subClassOf prov:Activity .
+	rdfs:subClassOf prov:Activity ;
+	rdfs:label "Step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that may have associated a start time and an end time, and may be associated with one or more Artifacts."@en .
 # 
 # http://helsinki.fi/library/onto#Workflow
 
 :Workflow a owl:Class ;
-	rdfs:subClassOf prov:Plan .
+	rdfs:subClassOf prov:Plan ;
+	rdfs:label "Workflow" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make us of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity."@en .
 # 
 # http://helsinki.fi/library/onto#WorkflowExecution
 
 :WorkflowExecution a owl:Class ;
-	rdfs:subClassOf prov:Activity .
+	rdfs:subClassOf prov:Activity ;
+	rdfs:label "Workflow Execution" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A workflow execution represents the execution of a Workflow and is itself an Activity. The execution process can also describe the specific artifacts used to acomplish the Workflow, the Dataset and Agent described in the proces template."@en .
 # 
 # http://www.w3.org/ns/prov#Activity
 
-prov:Activity a owl:Class .
+prov:Activity a owl:Class ;
+	rdfs:label "Activity" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities."@en .
 # 
 # http://www.w3.org/ns/prov#Agent
 
-prov:Agent a owl:Class .
+prov:Agent a owl:Class ;
+	rdfs:label "Agent" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity."@en .
 # 
 # http://www.w3.org/ns/prov#Plan
 
-prov:Plan a owl:Class .
+prov:Plan a owl:Class ;
+	rdfs:comment "There exist no prescriptive requirement on the nature of plans, their representation, the actions or steps they consist of, or their intended goals. Since plans may evolve over time, it may become necessary to track their provenance, so plans themselves are entities. Representing the plan explicitly in the provenance can be useful for various tasks: for example, to validate the execution as represented in the provenance record, to manage expectation failures, or to provide explanations."@en ;
+	rdfs:label "Plan" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en .
 # 
 # Generated by the OWL API (version 4.2.6.20160910-2108) https://github.com/owlcs/owlapi
