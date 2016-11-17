@@ -1,9 +1,9 @@
 @prefix : <http://helsinki.fi/library/onto#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pwo: <http://purl.org/spar/pwo/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix opmw: <http://www.opmw.org/ontology/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -11,9 +11,9 @@
 <http://helsinki.fi/library/onto#> a owl:Ontology ;
 	owl:versionIRI <http://helsinki.fi/library/onto#> ;
 	rdfs:comment "This ontology is published by the ATTX project, part of the University of Helsinki Library."@en ;
-	owl:versionInfo "Draft ATTX Workflow ontology 0.1"@en ;
 	rdfs:seeAlso "http://helsinki.fi/library"@en ;
-	rdfs:label "ATTX Workflow Ontology"@en .
+	rdfs:label "ATTX Workflow Ontology"@en ;
+	owl:versionInfo "Draft ATTX Workflow ontology 0.0.3"@en .
 # 
 # 
 # #################################################################
@@ -44,12 +44,9 @@
 # #################################################################
 # 
 # 
-# http://helsinki.fi/library/onto#hasWorkflowSteps
+# http://helsinki.fi/library/onto#hasAssociatedGraph
 
-:hasWorkflowSteps a owl:ObjectProperty ;
-	rdfs:domain :Workflow ;
-	rdfs:range :Step ;
-	rdfs:label "hasWorkflowSteps" .
+:hasAssociatedGraph a owl:ObjectProperty .
 # 
 # http://helsinki.fi/library/onto#isDependentOn
 
@@ -70,12 +67,46 @@
 	rdfs:domain :Workflow ;
 	rdfs:label "usesWorkflowExecution" .
 # 
+# http://purl.org/spar/pwo/hasFirstStep
+
+pwo:hasFirstStep a owl:ObjectProperty .
+# 
+# http://purl.org/spar/pwo/hasNextStep
+
+pwo:hasNextStep a owl:ObjectProperty .
+# 
+# http://purl.org/spar/pwo/hasStep
+
+pwo:hasStep a owl:ObjectProperty .
+# 
+# http://www.w3.org/ns/prov#agent
+
+prov:agent a owl:ObjectProperty .
+# 
+# http://www.w3.org/ns/prov#generated
+
+prov:generated a owl:ObjectProperty .
+# 
 # http://www.w3.org/ns/prov#hadDerivation
 
 prov:hadDerivation a owl:ObjectProperty ;
 	owl:inverseOf prov:wasDerivedFrom ;
 	rdfs:comment "Inverse of wasDerivedFrom property" ;
 	rdfs:label "hadDerivation"@en .
+# 
+# http://www.w3.org/ns/prov#hadPlan
+
+prov:hadPlan a owl:ObjectProperty .
+# 
+# http://www.w3.org/ns/prov#qualifiedAssociation
+
+prov:qualifiedAssociation a owl:ObjectProperty ;
+	rdfs:label "qualifiedAssociation" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
+# 
+# http://www.w3.org/ns/prov#used
+
+prov:used a owl:ObjectProperty .
 # 
 # http://www.w3.org/ns/prov#wasAssociatedWith
 
@@ -130,6 +161,12 @@ prov:startedAtTime a owl:DatatypeProperty ;
 # #################################################################
 # 
 # 
+# http://helsinki.fi/library/onto#AcquisitionWorkflow
+
+:AcquisitionWorkflow a owl:Class ;
+	rdfs:subClassOf :Workflow ;
+	rdfs:label "Acquisition Workflow" .
+# 
 # http://helsinki.fi/library/onto#Artifact
 
 :Artifact a owl:Class ;
@@ -141,6 +178,38 @@ prov:startedAtTime a owl:DatatypeProperty ;
 :Dataset a owl:Class ;
 	rdfs:label "Dataset" ;
 	<http://www.w3.org/2004/02/skos/core#definition> "A specific resource which represents a Dataset used in an workflow."@en .
+# 
+# http://helsinki.fi/library/onto#DisseminationWorkflow
+
+:DisseminationWorkflow a owl:Class ;
+	rdfs:subClassOf :Workflow ;
+	rdfs:label "Dissemination Workflow" .
+# 
+# http://helsinki.fi/library/onto#EnrichmentWorkflow
+
+:EnrichmentWorkflow a owl:Class ;
+	rdfs:subClassOf :Workflow ;
+	rdfs:label "Enrichment Workflow" .
+# 
+# http://helsinki.fi/library/onto#InputStep
+
+:InputStep a owl:Class ;
+	rdfs:subClassOf :Step ;
+	rdfs:label "Input Step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that has associated an input (always a Data Graph) at the beginning of the Workflow."@en .
+# 
+# http://helsinki.fi/library/onto#MetadataStep
+
+:MetadataStep a owl:Class ;
+	rdfs:subClassOf :Step ;
+	rdfs:label "Metadata Step" .
+# 
+# http://helsinki.fi/library/onto#OutputStep
+
+:OutputStep a owl:Class ;
+	rdfs:subClassOf :Step ;
+	rdfs:label "Output Step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that has associated an output (always a Working Data Graph) at the end of the Workflow."@en .
 # 
 # http://helsinki.fi/library/onto#Process
 
@@ -160,7 +229,7 @@ prov:startedAtTime a owl:DatatypeProperty ;
 :Workflow a owl:Class ;
 	rdfs:subClassOf prov:Plan ;
 	rdfs:label "Workflow" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make us of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity."@en .
+	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make use of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity."@en .
 # 
 # http://helsinki.fi/library/onto#WorkflowExecution
 
@@ -180,6 +249,12 @@ prov:Activity a owl:Class ;
 prov:Agent a owl:Class ;
 	rdfs:label "Agent" ;
 	<http://www.w3.org/2004/02/skos/core#definition> "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity."@en .
+# 
+# http://www.w3.org/ns/prov#Association
+
+prov:Association a owl:Class ;
+	rdfs:label "Association" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
 # 
 # http://www.w3.org/ns/prov#Plan
 
