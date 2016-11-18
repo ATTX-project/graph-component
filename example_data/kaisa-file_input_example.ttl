@@ -88,7 +88,7 @@ kaisa:activity2
     prov:hadPlan kaisa:wf2 ;
   ] ;
   prov:used kaisa:wf2_dataset1 ;
-  prov:used kaisa:wf2_dataset2 .
+  prov:used kaisa:wf2_dataset2 ;
   prov:generated kaisa:wf2_dataset3 .
 
 # Specific Agent and Artifact information

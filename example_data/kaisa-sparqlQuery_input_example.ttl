@@ -10,6 +10,7 @@
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 @prefix pwo: <http://purl.org/spar/pwo/> .
 @prefix schema: <http://schema.org/> .
+@prefix void: <http://rdfs.org/ns/void#> .
 
 # Workflow and associated steps
 
@@ -54,7 +55,7 @@ kaisa:wf3_dataset1
   dcterms:title "CRIS Publication Dataset" ;
   dcterms:description "National list of publication that are part of the official CRIS collection."@en;
   dcterms:publisher "Ministry of Culture and Education" ;
-  void:sparqlEndpoint <http://cris.org/sparql> .
+  void:sparqlEndpoint <http://cris.org/sparql> ;
   schema:query "CONSTRUCT {?subject ?predicate ?object.} WHERE {?subject ?predicate ?object.}" ; #example Construct query
   dcterms:license <http://creativecommons.org/licenses/by/4.0/> .
 
