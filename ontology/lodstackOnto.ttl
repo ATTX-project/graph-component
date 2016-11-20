@@ -10,10 +10,10 @@
 
 <http://helsinki.fi/library/onto#> a owl:Ontology ;
 	owl:versionIRI <http://helsinki.fi/library/onto#> ;
+	owl:versionInfo "Draft ATTX Workflow ontology 0.0.5"@en ;
 	rdfs:comment "This ontology is published by the ATTX project, part of the University of Helsinki Library."@en ;
 	rdfs:seeAlso "http://helsinki.fi/library"@en ;
-	rdfs:label "ATTX Workflow Ontology"@en ;
-	owl:versionInfo "Draft ATTX Workflow ontology 0.0.3"@en .
+	rdfs:label "ATTX Workflow Ontology"@en .
 # 
 # 
 # #################################################################
@@ -46,46 +46,74 @@
 # 
 # http://helsinki.fi/library/onto#hasAssociatedGraph
 
-:hasAssociatedGraph a owl:ObjectProperty .
+:hasAssociatedGraph a owl:ObjectProperty ;
+	rdfs:domain :Step ;
+	rdfs:range :Dataset ;
+	rdfs:label "hasAssociatedGraph" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A Step can make use of a certain graph/dataset besides the input graph."@en .
 # 
 # http://helsinki.fi/library/onto#isDependentOn
 
 :isDependentOn a owl:ObjectProperty ;
 	rdfs:domain :Artifact ;
 	rdfs:range :Artifact ;
-	rdfs:label "isDependentOn" .
+	rdfs:label "isDependentOn" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An artifact can be depenednt on other artifacts in order to perform an activity."@en .
 # 
 # http://helsinki.fi/library/onto#usesArtifact
 
 :usesArtifact a owl:ObjectProperty ;
+	rdfs:subPropertyOf prov:used ;
 	rdfs:range :Artifact ;
-	rdfs:label "usesArtifact" .
+	rdfs:label "usesArtifact" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An artifact can be used by any type of entity or resource in order to perform certain steps/activities."@en .
 # 
 # http://helsinki.fi/library/onto#usesWorkflowExecution
 
 :usesWorkflowExecution a owl:ObjectProperty ;
+	rdfs:subPropertyOf owl:topObjectProperty ;
 	rdfs:domain :Workflow ;
-	rdfs:label "usesWorkflowExecution" .
+	rdfs:range :WorkflowExecution ;
+	rdfs:label "usesWorkflowExecution" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Specify the Workflow Execution associated with a current Workflow."@en .
 # 
 # http://purl.org/spar/pwo/hasFirstStep
 
-pwo:hasFirstStep a owl:ObjectProperty .
+pwo:hasFirstStep a owl:ObjectProperty ;
+	rdfs:domain :Workflow ;
+	rdfs:range :Step ;
+	rdfs:label "has first step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A workflow that starts with a particular step."@en .
 # 
 # http://purl.org/spar/pwo/hasNextStep
 
-pwo:hasNextStep a owl:ObjectProperty .
+pwo:hasNextStep a owl:ObjectProperty ;
+	rdfs:domain :Step ;
+	rdfs:range :Step ;
+	rdfs:label "has next step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A property linking a step in a workflow with the step that directly follows it."@en .
 # 
 # http://purl.org/spar/pwo/hasStep
 
-pwo:hasStep a owl:ObjectProperty .
+pwo:hasStep a owl:ObjectProperty ;
+	rdfs:domain :Workflow ;
+	rdfs:range :Step ;
+	rdfs:label "has step" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "The property linking a workflow to a component step."@en .
 # 
 # http://www.w3.org/ns/prov#agent
 
-prov:agent a owl:ObjectProperty .
+prov:agent a owl:ObjectProperty ;
+	rdfs:range prov:Agent ;
+	rdfs:label "agent" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "The prov:agent property references an prov:Agent which influenced a resource. This property applies to an prov:AgentInfluence, which is given by a subproperty of prov:qualifiedInfluence from the influenced prov:Entity, prov:Activity or prov:Agent."@en .
 # 
 # http://www.w3.org/ns/prov#generated
 
-prov:generated a owl:ObjectProperty .
+prov:generated a owl:ObjectProperty ;
+	rdfs:domain prov:Activity ;
+	rdfs:label "generated" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation."@en .
 # 
 # http://www.w3.org/ns/prov#hadDerivation
 
@@ -96,7 +124,11 @@ prov:hadDerivation a owl:ObjectProperty ;
 # 
 # http://www.w3.org/ns/prov#hadPlan
 
-prov:hadPlan a owl:ObjectProperty .
+prov:hadPlan a owl:ObjectProperty ;
+	rdfs:domain prov:Association ;
+	rdfs:range prov:Plan ;
+	rdfs:label "hadPlan" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en .
 # 
 # http://www.w3.org/ns/prov#qualifiedAssociation
 
@@ -106,14 +138,18 @@ prov:qualifiedAssociation a owl:ObjectProperty ;
 # 
 # http://www.w3.org/ns/prov#used
 
-prov:used a owl:ObjectProperty .
+prov:used a owl:ObjectProperty ;
+	rdfs:domain prov:Activity ;
+	rdfs:label "used" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Usage is the beginning of utilizing an entity by an activity. Before usage, the activity had not begun to utilize this entity and could not have been affected by the entity."@en .
 # 
 # http://www.w3.org/ns/prov#wasAssociatedWith
 
 prov:wasAssociatedWith a owl:ObjectProperty ;
 	rdfs:domain prov:Activity ;
 	rdfs:range prov:Agent ;
-	rdfs:label "wasAssociatedWith" .
+	rdfs:label "wasAssociatedWith" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
 # 
 # http://www.w3.org/ns/prov#wasDerivedFrom
 
@@ -133,24 +169,24 @@ prov:wasDerivedFrom a owl:ObjectProperty ;
 # http://helsinki.fi/library/onto#hasStepConfig
 
 :hasStepConfig a owl:DatatypeProperty ;
-	rdfs:label "hasStepConfig" .
-# 
-# http://helsinki.fi/library/onto#hasStepType
-
-:hasStepType a owl:DatatypeProperty ;
-	rdfs:label "hasStepType" .
+	rdfs:label "hasStepConfig" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A Step can have different configurations associated to with which specifies the Workflow how to perform the given step."@en .
 # 
 # http://www.w3.org/ns/prov#endedAtTime
 
 prov:endedAtTime a owl:DatatypeProperty ;
+	rdfs:domain prov:Activity ;
 	rdfs:range xsd:dateTime ;
-	rdfs:label "endedAtTime" .
+	rdfs:label "endedAtTime" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "End is when an activity is deemed to have been ended by an entity, known as trigger. The activity no longer exists after its end. Any usage, generation, or invalidation involving an activity precedes the activity's end. An end may refer to a trigger entity that terminated the activity, or to an activity, known as ender that generated the trigger."@en .
 # 
 # http://www.w3.org/ns/prov#startedAtTime
 
 prov:startedAtTime a owl:DatatypeProperty ;
+	rdfs:domain prov:Activity ;
 	rdfs:range xsd:dateTime ;
-	rdfs:label "startedAtTime" .
+	rdfs:label "startedAtTime" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger."@en .
 # 
 # 
 # 
@@ -165,7 +201,8 @@ prov:startedAtTime a owl:DatatypeProperty ;
 
 :AcquisitionWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Acquisition Workflow" .
+	rdfs:label "Acquisition Workflow" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, with the main goal of acquiring/importing/accessing information from a specific source."@en .
 # 
 # http://helsinki.fi/library/onto#Artifact
 
@@ -183,13 +220,15 @@ prov:startedAtTime a owl:DatatypeProperty ;
 
 :DisseminationWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Dissemination Workflow" .
+	rdfs:label "Dissemination Workflow" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make it possible to publish and distribute information (e.g. via an API)."@en .
 # 
 # http://helsinki.fi/library/onto#EnrichmentWorkflow
 
 :EnrichmentWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Enrichment Workflow" .
+	rdfs:label "Enrichment Workflow" ;
+	<http://www.w3.org/2004/02/skos/core#definition> "A sequence steps that have the main purpose of enriching information from a specific Dataset. The act of enriching can be performed by a specific artifact and can vary from simple linkage and/or adding new properties to complex inferecing."@en .
 # 
 # http://helsinki.fi/library/onto#InputStep
 
