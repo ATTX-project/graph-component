@@ -23,13 +23,13 @@
 # #################################################################
 # 
 # 
+# http://www.w3.org/2000/01/rdf-schema#comment
+
+rdfs:comment a owl:AnnotationProperty .
+# 
 # http://www.w3.org/2004/02/skos/core#altLabel
 
 <http://www.w3.org/2004/02/skos/core#altLabel> a owl:AnnotationProperty .
-# 
-# http://www.w3.org/2004/02/skos/core#definition
-
-<http://www.w3.org/2004/02/skos/core#definition> a owl:AnnotationProperty .
 # 
 # http://www.w3.org/2004/02/skos/core#prefLabel
 
@@ -49,24 +49,24 @@
 :hasAssociatedGraph a owl:ObjectProperty ;
 	rdfs:domain :Step ;
 	rdfs:range :Dataset ;
-	rdfs:label "hasAssociatedGraph" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A Step can make use of a certain graph/dataset besides the input graph."@en .
+	rdfs:comment "A Step can make use of a certain graph/dataset besides the input graph."@en ;
+	rdfs:label "hasAssociatedGraph" .
 # 
 # http://helsinki.fi/library/onto#isDependentOn
 
 :isDependentOn a owl:ObjectProperty ;
 	rdfs:domain :Artifact ;
 	rdfs:range :Artifact ;
-	rdfs:label "isDependentOn" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An artifact can be depenednt on other artifacts in order to perform an activity."@en .
+	rdfs:comment "An artifact can be depenednt on other artifacts in order to perform an activity."@en ;
+	rdfs:label "isDependentOn" .
 # 
 # http://helsinki.fi/library/onto#usesArtifact
 
 :usesArtifact a owl:ObjectProperty ;
 	rdfs:subPropertyOf prov:used ;
 	rdfs:range :Artifact ;
-	rdfs:label "usesArtifact" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An artifact can be used by any type of entity or resource in order to perform certain steps/activities."@en .
+	rdfs:comment "An artifact can be used by any type of entity or resource in order to perform certain steps/activities."@en ;
+	rdfs:label "usesArtifact" .
 # 
 # http://helsinki.fi/library/onto#usesWorkflowExecution
 
@@ -74,46 +74,46 @@
 	rdfs:subPropertyOf owl:topObjectProperty ;
 	rdfs:domain :Workflow ;
 	rdfs:range :WorkflowExecution ;
-	rdfs:label "usesWorkflowExecution" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "Specify the Workflow Execution associated with a current Workflow."@en .
+	rdfs:comment "Specify the Workflow Execution associated with a current Workflow."@en ;
+	rdfs:label "usesWorkflowExecution" .
 # 
 # http://purl.org/spar/pwo/hasFirstStep
 
 pwo:hasFirstStep a owl:ObjectProperty ;
 	rdfs:domain :Workflow ;
 	rdfs:range :Step ;
-	rdfs:label "has first step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A workflow that starts with a particular step."@en .
+	rdfs:comment "A workflow that starts with a particular step."@en ;
+	rdfs:label "has first step" .
 # 
 # http://purl.org/spar/pwo/hasNextStep
 
 pwo:hasNextStep a owl:ObjectProperty ;
 	rdfs:domain :Step ;
 	rdfs:range :Step ;
-	rdfs:label "has next step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A property linking a step in a workflow with the step that directly follows it."@en .
+	rdfs:comment "A property linking a step in a workflow with the step that directly follows it."@en ;
+	rdfs:label "has next step" .
 # 
 # http://purl.org/spar/pwo/hasStep
 
 pwo:hasStep a owl:ObjectProperty ;
 	rdfs:domain :Workflow ;
 	rdfs:range :Step ;
-	rdfs:label "has step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "The property linking a workflow to a component step."@en .
+	rdfs:comment "The property linking a workflow to a component step."@en ;
+	rdfs:label "has step" .
 # 
 # http://www.w3.org/ns/prov#agent
 
 prov:agent a owl:ObjectProperty ;
 	rdfs:range prov:Agent ;
-	rdfs:label "agent" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "The prov:agent property references an prov:Agent which influenced a resource. This property applies to an prov:AgentInfluence, which is given by a subproperty of prov:qualifiedInfluence from the influenced prov:Entity, prov:Activity or prov:Agent."@en .
+	rdfs:comment "The prov:agent property references an prov:Agent which influenced a resource. This property applies to an prov:AgentInfluence, which is given by a subproperty of prov:qualifiedInfluence from the influenced prov:Entity, prov:Activity or prov:Agent."@en ;
+	rdfs:label "agent" .
 # 
 # http://www.w3.org/ns/prov#generated
 
 prov:generated a owl:ObjectProperty ;
 	rdfs:domain prov:Activity ;
-	rdfs:label "generated" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation."@en .
+	rdfs:comment "Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation."@en ;
+	rdfs:label "generated" .
 # 
 # http://www.w3.org/ns/prov#hadDerivation
 
@@ -127,35 +127,35 @@ prov:hadDerivation a owl:ObjectProperty ;
 prov:hadPlan a owl:ObjectProperty ;
 	rdfs:domain prov:Association ;
 	rdfs:range prov:Plan ;
-	rdfs:label "hadPlan" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en .
+	rdfs:comment "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en ;
+	rdfs:label "hadPlan" .
 # 
 # http://www.w3.org/ns/prov#qualifiedAssociation
 
 prov:qualifiedAssociation a owl:ObjectProperty ;
-	rdfs:label "qualifiedAssociation" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
+	rdfs:comment "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en ;
+	rdfs:label "qualifiedAssociation" .
 # 
 # http://www.w3.org/ns/prov#used
 
 prov:used a owl:ObjectProperty ;
 	rdfs:domain prov:Activity ;
-	rdfs:label "used" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "Usage is the beginning of utilizing an entity by an activity. Before usage, the activity had not begun to utilize this entity and could not have been affected by the entity."@en .
+	rdfs:comment "Usage is the beginning of utilizing an entity by an activity. Before usage, the activity had not begun to utilize this entity and could not have been affected by the entity."@en ;
+	rdfs:label "used" .
 # 
 # http://www.w3.org/ns/prov#wasAssociatedWith
 
 prov:wasAssociatedWith a owl:ObjectProperty ;
 	rdfs:domain prov:Activity ;
 	rdfs:range prov:Agent ;
-	rdfs:label "wasAssociatedWith" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
+	rdfs:comment "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en ;
+	rdfs:label "wasAssociatedWith" .
 # 
 # http://www.w3.org/ns/prov#wasDerivedFrom
 
 prov:wasDerivedFrom a owl:ObjectProperty ;
-	rdfs:label "wasDerivedFrom"@en ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en .
+	rdfs:comment "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en ;
+	rdfs:label "wasDerivedFrom"@en .
 # 
 # 
 # 
@@ -169,24 +169,24 @@ prov:wasDerivedFrom a owl:ObjectProperty ;
 # http://helsinki.fi/library/onto#hasStepConfig
 
 :hasStepConfig a owl:DatatypeProperty ;
-	rdfs:label "hasStepConfig" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A Step can have different configurations associated to with which specifies the Workflow how to perform the given step."@en .
+	rdfs:comment "A Step can have different configurations associated to with which specifies the Workflow how to perform the given step."@en ;
+	rdfs:label "hasStepConfig" .
 # 
 # http://www.w3.org/ns/prov#endedAtTime
 
 prov:endedAtTime a owl:DatatypeProperty ;
 	rdfs:domain prov:Activity ;
 	rdfs:range xsd:dateTime ;
-	rdfs:label "endedAtTime" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "End is when an activity is deemed to have been ended by an entity, known as trigger. The activity no longer exists after its end. Any usage, generation, or invalidation involving an activity precedes the activity's end. An end may refer to a trigger entity that terminated the activity, or to an activity, known as ender that generated the trigger."@en .
+	rdfs:comment "End is when an activity is deemed to have been ended by an entity, known as trigger. The activity no longer exists after its end. Any usage, generation, or invalidation involving an activity precedes the activity's end. An end may refer to a trigger entity that terminated the activity, or to an activity, known as ender that generated the trigger."@en ;
+	rdfs:label "endedAtTime" .
 # 
 # http://www.w3.org/ns/prov#startedAtTime
 
 prov:startedAtTime a owl:DatatypeProperty ;
 	rdfs:domain prov:Activity ;
 	rdfs:range xsd:dateTime ;
-	rdfs:label "startedAtTime" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger."@en .
+	rdfs:comment "Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger."@en ;
+	rdfs:label "startedAtTime" .
 # 
 # 
 # 
@@ -201,105 +201,105 @@ prov:startedAtTime a owl:DatatypeProperty ;
 
 :AcquisitionWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Acquisition Workflow" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, with the main goal of acquiring/importing/accessing information from a specific source."@en .
+	rdfs:comment "A sequence of dependent steps, with the main goal of acquiring/importing/accessing information from a specific source."@en ;
+	rdfs:label "Acquisition Workflow" .
 # 
 # http://helsinki.fi/library/onto#Artifact
 
 :Artifact a owl:Class ;
-	rdfs:label "Artifact" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An artifact is a type of mutable or imutable resource used in a specific workflow. Examples: Web Service, source code or any other type of software component and not only."@en .
+	rdfs:comment "An artifact is a type of mutable or imutable resource used in a specific workflow. Examples: Web Service, source code or any other type of software component and not only."@en ;
+	rdfs:label "Artifact" .
 # 
 # http://helsinki.fi/library/onto#Dataset
 
 :Dataset a owl:Class ;
-	rdfs:label "Dataset" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A specific resource which represents a Dataset used in an workflow."@en .
+	rdfs:comment "A specific resource which represents a Dataset used in an workflow."@en ;
+	rdfs:label "Dataset" .
 # 
 # http://helsinki.fi/library/onto#DisseminationWorkflow
 
 :DisseminationWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Dissemination Workflow" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make it possible to publish and distribute information (e.g. via an API)."@en .
+	rdfs:comment "A sequence of dependent steps, representing a series of activities that make it possible to publish and distribute information (e.g. via an API)."@en ;
+	rdfs:label "Dissemination Workflow" .
 # 
 # http://helsinki.fi/library/onto#EnrichmentWorkflow
 
 :EnrichmentWorkflow a owl:Class ;
 	rdfs:subClassOf :Workflow ;
-	rdfs:label "Enrichment Workflow" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A sequence steps that have the main purpose of enriching information from a specific Dataset. The act of enriching can be performed by a specific artifact and can vary from simple linkage and/or adding new properties to complex inferecing."@en .
+	rdfs:comment "A sequence steps that have the main purpose of enriching information from a specific Dataset. The act of enriching can be performed by a specific artifact and can vary from simple linkage and/or adding new properties to complex inferecing."@en ;
+	rdfs:label "Enrichment Workflow" .
 # 
 # http://helsinki.fi/library/onto#InputStep
 
 :InputStep a owl:Class ;
 	rdfs:subClassOf :Step ;
-	rdfs:label "Input Step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that has associated an input (always a Data Graph) at the beginning of the Workflow."@en .
+	rdfs:comment "A specif action/type of activity performed in an Workflow, that has associated an input (always a Data Graph) at the beginning of the Workflow."@en ;
+	rdfs:label "Input Step" .
 # 
 # http://helsinki.fi/library/onto#MetadataStep
 
 :MetadataStep a owl:Class ;
 	rdfs:subClassOf :Step ;
+	rdfs:comment "A specif action/type of activity performed in an Workflow, that registeres Metadata specific information about the current Workflow. This Step can be performed imediately after the InputStep or at any other point in the Workflow but not after the OutputStep."@en ;
 	rdfs:label "Metadata Step" .
 # 
 # http://helsinki.fi/library/onto#OutputStep
 
 :OutputStep a owl:Class ;
 	rdfs:subClassOf :Step ;
-	rdfs:label "Output Step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that has associated an output (always a Working Data Graph) at the end of the Workflow."@en .
+	rdfs:comment "A specif action/type of activity performed in an Workflow, that has associated an output (always a Working Data Graph) at the end of the Workflow."@en ;
+	rdfs:label "Output Step" .
 # 
 # http://helsinki.fi/library/onto#Process
 
 :Process a owl:Class ;
-	rdfs:label "Process" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "Process refers to an activity or series of actions (steps) caused by Agents, performed via a Worfklow and resulting in new Datasets."@en .
+	rdfs:comment "Process refers to an activity or series of actions (steps) caused by Agents, performed via a Worfklow and resulting in new Datasets."@en ;
+	rdfs:label "Process" .
 # 
 # http://helsinki.fi/library/onto#Step
 
 :Step a owl:Class ;
 	rdfs:subClassOf prov:Activity ;
-	rdfs:label "Step" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A specif action/type of activity performed in an Workflow, that may have associated a start time and an end time, and may be associated with one or more Artifacts."@en .
+	rdfs:comment "A specif action/type of activity performed in an Workflow, that may have associated a start time and an end time, and may be associated with one or more Artifacts."@en ;
+	rdfs:label "Step" .
 # 
 # http://helsinki.fi/library/onto#Workflow
 
 :Workflow a owl:Class ;
 	rdfs:subClassOf prov:Plan ;
-	rdfs:label "Workflow" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A sequence of dependent steps, representing a series of activities that make use of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity."@en .
+	rdfs:comment "A sequence of dependent steps, representing a series of activities that make use of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity."@en ;
+	rdfs:label "Workflow" .
 # 
 # http://helsinki.fi/library/onto#WorkflowExecution
 
 :WorkflowExecution a owl:Class ;
 	rdfs:subClassOf prov:Activity ;
-	rdfs:label "Workflow Execution" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A workflow execution represents the execution of a Workflow and is itself an Activity. The execution process can also describe the specific artifacts used to acomplish the Workflow, the Dataset and Agent described in the proces template."@en .
+	rdfs:comment "A workflow execution represents the execution of a Workflow and is itself an Activity. The execution process can also describe the specific artifacts used to acomplish the Workflow, the Dataset and Agent described in the proces template."@en ;
+	rdfs:label "Workflow Execution" .
 # 
 # http://www.w3.org/ns/prov#Activity
 
 prov:Activity a owl:Class ;
-	rdfs:label "Activity" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities."@en .
+	rdfs:comment "An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities."@en ;
+	rdfs:label "Activity" .
 # 
 # http://www.w3.org/ns/prov#Agent
 
 prov:Agent a owl:Class ;
-	rdfs:label "Agent" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity."@en .
+	rdfs:comment "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity."@en ;
+	rdfs:label "Agent" .
 # 
 # http://www.w3.org/ns/prov#Association
 
 prov:Association a owl:Class ;
-	rdfs:label "Association" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en .
+	rdfs:comment "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity."@en ;
+	rdfs:label "Association" .
 # 
 # http://www.w3.org/ns/prov#Plan
 
 prov:Plan a owl:Class ;
-	rdfs:comment "There exist no prescriptive requirement on the nature of plans, their representation, the actions or steps they consist of, or their intended goals. Since plans may evolve over time, it may become necessary to track their provenance, so plans themselves are entities. Representing the plan explicitly in the provenance can be useful for various tasks: for example, to validate the execution as represented in the provenance record, to manage expectation failures, or to provide explanations."@en ;
-	rdfs:label "Plan" ;
-	<http://www.w3.org/2004/02/skos/core#definition> "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en .
+	rdfs:comment "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals."@en , "There exist no prescriptive requirement on the nature of plans, their representation, the actions or steps they consist of, or their intended goals. Since plans may evolve over time, it may become necessary to track their provenance, so plans themselves are entities. Representing the plan explicitly in the provenance can be useful for various tasks: for example, to validate the execution as represented in the provenance record, to manage expectation failures, or to provide explanations."@en ;
+	rdfs:label "Plan" .
 # 
 # Generated by the OWL API (version 4.2.6.20160910-2108) https://github.com/owlcs/owlapi

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>ATTX Workflow Ontology</title>
+    <link href="css/owl.css" rel="stylesheet" type="text/css">
+    <link href="css/Primer.css" rel="stylesheet" type="text/css">
+    <link href="css/rec.css" rel="stylesheet" type="text/css">
+    <link href="css/extra.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="http://eelst.cs.unibo.it/apps/LODE/favicon.ico">
+</head>
+
+<body>
+    <div class="head">
+        <h1>ATTX Workflow Ontology</h1>
+        <dl><dt>IRI:</dt>
+            <dd>http://helsinki.fi/library/onto#</dd><dt>Version IRI:</dt>
+            <dd>http://helsinki.fi/library/onto#</dd>
+        </dl>
+        <dl><dt>Current version:</dt>
+            <dd>Draft ATTX Workflow ontology 0.0.5</dd>
+        </dl>
+        <dl><dt>Other visualisation:</dt>
+            <dd><a href="http://eelst.cs.unibo.it/apps/LODE/source?url=http://www.essepuntato.it/tmp/1479711693-ontology">Ontology source</a></dd>
+        </dl>
+    </div>
+    <hr>
+    <h2>Abstract</h2>
+    <p>This ontology is published by the ATTX project, part of the University of Helsinki Library.</p>
+    <div id="toc">
+        <h2>Table of Content</h2>
+        <ol>
+            <li><a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Classes</a></li>
+            <li><a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Properties</a></li>
+            <li><a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#dataproperties">Data Properties</a></li>
+            <li><a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#annotationproperties">Annotation Properties</a></li>
+            <li><a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#namespacedeclarations">Namespace Declarations</a></li>
+        </ol>
+    </div>
+    <div id="classes">
+        <h2>Classes</h2>
+        <ul class="hlist">
+            <li><a href="%=http://helsinki.fi/library/onto#AcquisitionWorkflow" title="http://helsinki.fi/library/onto#AcquisitionWorkflow">Acquisition Workflow</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#Activity" title="http://www.w3.org/ns/prov#Activity">Activity</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#Agent" title="http://www.w3.org/ns/prov#Agent">Agent</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#Artifact" title="http://helsinki.fi/library/onto#Artifact">Artifact</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#Association" title="http://www.w3.org/ns/prov#Association">Association</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#Dataset" title="http://helsinki.fi/library/onto#Dataset">Dataset</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#DisseminationWorkflow" title="http://helsinki.fi/library/onto#DisseminationWorkflow">Dissemination Workflow</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#EnrichmentWorkflow" title="http://helsinki.fi/library/onto#EnrichmentWorkflow">Enrichment Workflow</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#InputStep" title="http://helsinki.fi/library/onto#InputStep">Input Step</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#MetadataStep" title="http://helsinki.fi/library/onto#MetadataStep">Metadata Step</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#OutputStep" title="http://helsinki.fi/library/onto#OutputStep">Output Step</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#Plan" title="http://www.w3.org/ns/prov#Plan">Plan</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#Process" title="http://helsinki.fi/library/onto#Process">Process</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#Step" title="http://helsinki.fi/library/onto#Step">Step</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#Workflow" title="http://helsinki.fi/library/onto#Workflow">Workflow</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#WorkflowExecution" title="http://helsinki.fi/library/onto#WorkflowExecution">Workflow Execution</a></li>
+        </ul>
+        <div id="d4e301" class="entity">
+            <a name="http://helsinki.fi/library/onto#AcquisitionWorkflow"></a>
+            <h3>Acquisition Workflow<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#AcquisitionWorkflow</p>
+            <div class="comment">
+                <p>A sequence of dependent steps, with the main goal of acquiring/importing/accessing information from a specific source.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e455" class="entity">
+            <a name="http://www.w3.org/ns/prov#Activity"></a>
+            <h3>Activity<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#Activity</p>
+            <div class="comment">
+                <p>An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.</p>
+            </div>
+            <dl class="description"><dt>has sub-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e442"
+                        title="http://helsinki.fi/library/onto#WorkflowExecution">Workflow Execution</a><sup title="class" class="type-c">c</sup></dd><dt>is in domain of</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#endedAtTime">endedAtTime</a><sup title="data property" class="type-dp" title="http://www.w3.org/ns/prov#endedAtTime">endedAtTime</a><sup title="data property" class="type-dp">dp</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e162"
+                        title="http://www.w3.org/ns/prov#generated">generated</a><sup title="object property" class="type-op">op</sup>, <a href="%=http://www.w3.org/ns/prov#startedAtTime" title="http://www.w3.org/ns/prov#startedAtTime">startedAtTime</a>
+                    <sup
+                        title="data property" class="type-dp">dp</sup>, <a href="%=http://www.w3.org/ns/prov#used">used</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#used">used</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e229"
+                            title="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e467" class="entity">
+            <a name="http://www.w3.org/ns/prov#Agent"></a>
+            <h3>Agent<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#Agent</p>
+            <div class="comment">
+                <p>An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity.</p>
+            </div>
+            <dl class="description"><dt>is in range of</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#agent">agent</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#agent">agent</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e229"
+                        title="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e315" class="entity">
+            <a name="http://helsinki.fi/library/onto#Artifact"></a>
+            <h3>Artifact<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#Artifact</p>
+            <div class="comment">
+                <p>An artifact is a type of mutable or imutable resource used in a specific workflow. Examples: Web Service, source code or any other type of software component and not only.</p>
+            </div>
+            <dl class="description"><dt>is in domain of</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#isDependentOn">isDependentOn</a><sup title="object property" class="type-op" title="http://helsinki.fi/library/onto#isDependentOn">isDependentOn</a><sup title="object property" class="type-op">op</sup></dd><dt>is in range of</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#isDependentOn">isDependentOn</a><sup title="object property" class="type-op" title="http://helsinki.fi/library/onto#isDependentOn">isDependentOn</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e70"
+                        title="http://helsinki.fi/library/onto#usesArtifact">usesArtifact</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e478" class="entity">
+            <a name="http://www.w3.org/ns/prov#Association"></a>
+            <h3>Association<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#Association</p>
+            <div class="comment">
+                <p>An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve
+                    some goals in the context of this activity.</p>
+            </div>
+            <dl class="description"><dt>is in domain of</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#hadPlan">hadPlan</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#hadPlan">hadPlan</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e326" class="entity">
+            <a name="http://helsinki.fi/library/onto#Dataset"></a>
+            <h3>Dataset<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#Dataset</p>
+            <div class="comment">
+                <p>A specific resource which represents a Dataset used in an workflow.</p>
+            </div>
+            <dl class="description"><dt>is in range of</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#hasAssociatedGraph">hasAssociatedGraph</a><sup title="object property" class="type-op" title="http://helsinki.fi/library/onto#hasAssociatedGraph">hasAssociatedGraph</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e337" class="entity">
+            <a name="http://helsinki.fi/library/onto#DisseminationWorkflow"></a>
+            <h3>Dissemination Workflow<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#DisseminationWorkflow</p>
+            <div class="comment">
+                <p>A sequence of dependent steps, representing a series of activities that make it possible to publish and distribute information (e.g. via an API).</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e351" class="entity">
+            <a name="http://helsinki.fi/library/onto#EnrichmentWorkflow"></a>
+            <h3>Enrichment Workflow<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#EnrichmentWorkflow</p>
+            <div class="comment">
+                <p>A sequence steps that have the main purpose of enriching information from a specific Dataset. The act of enriching can be performed by a specific artifact and can vary from simple linkage and/or adding new properties to complex inferecing.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e364" class="entity">
+            <a name="http://helsinki.fi/library/onto#InputStep"></a>
+            <h3>Input Step<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#InputStep</p>
+            <div class="comment">
+                <p>A specif action/type of activity performed in an Workflow, that has associated an input (always a Data Graph) at the beginning of the Workflow.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e377" class="entity">
+            <a name="http://helsinki.fi/library/onto#MetadataStep"></a>
+            <h3>Metadata Step<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#MetadataStep</p>
+            <div class="comment">
+                <p>A specif action/type of activity performed in an Workflow, that registeres Metadata specific information about the current Workflow. This Step can be performed imediately after the InputStep or at any other point in the Workflow but not
+                    after the OutputStep.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e391" class="entity">
+            <a name="http://helsinki.fi/library/onto#OutputStep"></a>
+            <h3>Output Step<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#OutputStep</p>
+            <div class="comment">
+                <p>A specif action/type of activity performed in an Workflow, that has associated an output (always a Working Data Graph) at the end of the Workflow.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e489" class="entity">
+            <a name="http://www.w3.org/ns/prov#Plan"></a>
+            <h3>Plan<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#Plan</p>
+            <div class="comment">
+                <p>A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals.</p>
+            </div>
+            <dl class="description"><dt>has sub-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd><dt>is in range of</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#hadPlan">hadPlan</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#hadPlan">hadPlan</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+        <div id="d4e404" class="entity">
+            <a name="http://helsinki.fi/library/onto#Process"></a>
+            <h3>Process<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#Process</p>
+            <div class="comment">
+                <p>Process refers to an activity or series of actions (steps) caused by Agents, performed via a Worfklow and resulting in new Datasets.</p>
+            </div>
+        </div>
+        <div id="d4e415" class="entity">
+            <a name="http://helsinki.fi/library/onto#Step"></a>
+            <h3>Step<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#Step</p>
+            <div class="comment">
+                <p>A specif action/type of activity performed in an Workflow, that may have associated a start time and an end time, and may be associated with one or more Artifacts.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd><dt>has sub-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#InputStep">Input Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#InputStep">Input Step</a><sup title="class" class="type-c">c</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e377"
+                        title="http://helsinki.fi/library/onto#MetadataStep">Metadata Step</a><sup title="class" class="type-c">c</sup>, <a href="%=http://helsinki.fi/library/onto#OutputStep" title="http://helsinki.fi/library/onto#OutputStep">Output Step</a>
+                    <sup
+                        title="class" class="type-c">c</sup>
+                </dd><dt>is in domain of</dt>
+                <dd><a href="%=http://purl.org/spar/pwo/hasNextStep">has next step</a><sup title="object property" class="type-op" title="http://purl.org/spar/pwo/hasNextStep">has next step</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e39"
+                        title="http://helsinki.fi/library/onto#hasAssociatedGraph">hasAssociatedGraph</a><sup title="object property" class="type-op">op</sup></dd><dt>is in range of</dt>
+                <dd><a href="%=http://purl.org/spar/pwo/hasFirstStep">has first step</a><sup title="object property" class="type-op" title="http://purl.org/spar/pwo/hasFirstStep">has first step</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e118"
+                        title="http://purl.org/spar/pwo/hasNextStep">has next step</a><sup title="object property" class="type-op">op</sup>, <a href="%=http://purl.org/spar/pwo/hasStep" title="http://purl.org/spar/pwo/hasStep">has step</a>
+                    <sup
+                        title="object property" class="type-op">op</sup>
+                </dd>
+            </dl>
+        </div>
+        <div id="d4e429" class="entity">
+            <a name="http://helsinki.fi/library/onto#Workflow"></a>
+            <h3>Workflow<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#Workflow</p>
+            <div class="comment">
+                <p>A sequence of dependent steps, representing a series of activities that make use of certain Artifacts and Datasets. A workflow is performed as part of a specific Plan and has associated a WorkflowExecution activity.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#Plan">Plan</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Plan">Plan</a><sup title="class" class="type-c">c</sup></dd><dt>has sub-classes</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#AcquisitionWorkflow">Acquisition Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#AcquisitionWorkflow">Acquisition Workflow</a><sup title="class" class="type-c">c</sup>,
+                    <a
+                        href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e337" title="http://helsinki.fi/library/onto#DisseminationWorkflow">Dissemination Workflow</a><sup title="class" class="type-c">c</sup>, <a href="%=http://helsinki.fi/library/onto#EnrichmentWorkflow" title="http://helsinki.fi/library/onto#EnrichmentWorkflow">Enrichment Workflow</a>
+                        <sup
+                            title="class" class="type-c">c</sup>
+                </dd><dt>is in domain of</dt>
+                <dd><a href="%=http://purl.org/spar/pwo/hasFirstStep">has first step</a><sup title="object property" class="type-op" title="http://purl.org/spar/pwo/hasFirstStep">has first step</a><sup title="object property" class="type-op">op</sup>, <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#d4e133"
+                        title="http://purl.org/spar/pwo/hasStep">has step</a><sup title="object property" class="type-op">op</sup>, <a href="%=http://helsinki.fi/library/onto#usesWorkflowExecution" title="http://helsinki.fi/library/onto#usesWorkflowExecution">usesWorkflowExecution</a>
+                    <sup
+                        title="object property" class="type-op">op</sup>
+                </dd>
+            </dl>
+        </div>
+        <div id="d4e442" class="entity">
+            <a name="http://helsinki.fi/library/onto#WorkflowExecution"></a>
+            <h3>Workflow Execution<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#classes">Class ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#WorkflowExecution</p>
+            <div class="comment">
+                <p>A workflow execution represents the execution of a Workflow and is itself an Activity. The execution process can also describe the specific artifacts used to acomplish the Workflow, the Dataset and Agent described in the proces template.</p>
+            </div>
+            <dl class="description"><dt>has super-classes</dt>
+                <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd><dt>is in range of</dt>
+                <dd><a href="%=http://helsinki.fi/library/onto#usesWorkflowExecution">usesWorkflowExecution</a><sup title="object property" class="type-op" title="http://helsinki.fi/library/onto#usesWorkflowExecution">usesWorkflowExecution</a><sup title="object property" class="type-op">op</sup></dd>
+            </dl>
+        </div>
+    </div>
+    <div id="objectproperties">
+        <h2>Object Properties</h2>
+        <ul class="hlist">
+            <li><a href="%=http://www.w3.org/ns/prov#agent" title="http://www.w3.org/ns/prov#agent">agent</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#generated" title="http://www.w3.org/ns/prov#generated">generated</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#hadDerivation" title="http://www.w3.org/ns/prov#hadDerivation">hadDerivation</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#hadPlan" title="http://www.w3.org/ns/prov#hadPlan">hadPlan</a></li>
+            <li><a href="%=http://purl.org/spar/pwo/hasFirstStep" title="http://purl.org/spar/pwo/hasFirstStep">has first step</a></li>
+            <li><a href="%=http://purl.org/spar/pwo/hasNextStep" title="http://purl.org/spar/pwo/hasNextStep">has next step</a></li>
+            <li><a href="%=http://purl.org/spar/pwo/hasStep" title="http://purl.org/spar/pwo/hasStep">has step</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#hasAssociatedGraph" title="http://helsinki.fi/library/onto#hasAssociatedGraph">hasAssociatedGraph</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#isDependentOn" title="http://helsinki.fi/library/onto#isDependentOn">isDependentOn</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#qualifiedAssociation" title="http://www.w3.org/ns/prov#qualifiedAssociation">qualifiedAssociation</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#used" title="http://www.w3.org/ns/prov#used">used</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#usesArtifact" title="http://helsinki.fi/library/onto#usesArtifact">usesArtifact</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#usesWorkflowExecution" title="http://helsinki.fi/library/onto#usesWorkflowExecution">usesWorkflowExecution</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#wasAssociatedWith" title="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#wasDerivedFrom" title="http://www.w3.org/ns/prov#wasDerivedFrom">wasDerivedFrom</a></li>
+        </ul>
+        <div id="d4e149" class="entity">
+            <a name="http://www.w3.org/ns/prov#agent"></a>
+            <h3>agent<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#agent</p>
+            <div class="comment">
+                <p>The prov:agent property references an prov:Agent which influenced a resource. This property applies to an prov:AgentInfluence, which is given by a subproperty of prov:qualifiedInfluence from the influenced prov:Entity, prov:Activity or
+                    prov:Agent.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has range</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Agent">Agent</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Agent">Agent</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e162" class="entity">
+            <a name="http://www.w3.org/ns/prov#generated"></a>
+            <h3>generated<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#generated</p>
+            <div class="comment">
+                <p>Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e175" class="entity">
+            <a name="http://www.w3.org/ns/prov#hadDerivation"></a>
+            <h3>hadDerivation<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#hadDerivation</p>
+            <div class="comment">
+                <p>Inverse of wasDerivedFrom property</p>
+            </div>
+            <div class="description">
+                <dl><dt>is inverse of</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#wasDerivedFrom">wasDerivedFrom</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#wasDerivedFrom">wasDerivedFrom</a><sup title="object property" class="type-op">op</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e189" class="entity">
+            <a name="http://www.w3.org/ns/prov#hadPlan"></a>
+            <h3>hadPlan<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#hadPlan</p>
+            <div class="comment">
+                <p>A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Association">Association</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Association">Association</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Plan">Plan</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Plan">Plan</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e103" class="entity">
+            <a name="http://purl.org/spar/pwo/hasFirstStep"></a>
+            <h3>has first step<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://purl.org/spar/pwo/hasFirstStep</p>
+            <div class="comment">
+                <p>A workflow that starts with a particular step.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e118" class="entity">
+            <a name="http://purl.org/spar/pwo/hasNextStep"></a>
+            <h3>has next step<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://purl.org/spar/pwo/hasNextStep</p>
+            <div class="comment">
+                <p>A property linking a step in a workflow with the step that directly follows it.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e133" class="entity">
+            <a name="http://purl.org/spar/pwo/hasStep"></a>
+            <h3>has step<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://purl.org/spar/pwo/hasStep</p>
+            <div class="comment">
+                <p>The property linking a workflow to a component step.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e39" class="entity">
+            <a name="http://helsinki.fi/library/onto#hasAssociatedGraph"></a>
+            <h3>hasAssociatedGraph<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#hasAssociatedGraph</p>
+            <div class="comment">
+                <p>A Step can make use of a certain graph/dataset besides the input graph.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Step">Step</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Dataset">Dataset</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Dataset">Dataset</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e55" class="entity">
+            <a name="http://helsinki.fi/library/onto#isDependentOn"></a>
+            <h3>isDependentOn<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#isDependentOn</p>
+            <div class="comment">
+                <p>An artifact can be depenednt on other artifacts in order to perform an activity.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e204" class="entity">
+            <a name="http://www.w3.org/ns/prov#qualifiedAssociation"></a>
+            <h3>qualifiedAssociation<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#qualifiedAssociation</p>
+            <div class="comment">
+                <p>An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve
+                    some goals in the context of this activity.</p>
+            </div>
+        </div>
+        <div id="d4e215" class="entity">
+            <a name="http://www.w3.org/ns/prov#used"></a>
+            <h3>used<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#used</p>
+            <div class="comment">
+                <p>Usage is the beginning of utilizing an entity by an activity. Before usage, the activity had not begun to utilize this entity and could not have been affected by the entity.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has sub-properties</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#usesArtifact">usesArtifact</a><sup title="object property" class="type-op" title="http://helsinki.fi/library/onto#usesArtifact">usesArtifact</a><sup title="object property" class="type-op">op</sup></dd><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e70" class="entity">
+            <a name="http://helsinki.fi/library/onto#usesArtifact"></a>
+            <h3>usesArtifact<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#usesArtifact</p>
+            <div class="comment">
+                <p>An artifact can be used by any type of entity or resource in order to perform certain steps/activities.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has super-properties</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#used">used</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#used">used</a><sup title="object property" class="type-op">op</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Artifact">Artifact</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e85" class="entity">
+            <a name="http://helsinki.fi/library/onto#usesWorkflowExecution"></a>
+            <h3>usesWorkflowExecution<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#usesWorkflowExecution</p>
+            <div class="comment">
+                <p>Specify the Workflow Execution associated with a current Workflow.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has super-properties</dt>
+                    <dd><span class="dotted" title="http://www.w3.org/2002/07/owl#topObjectProperty">top object property</span></dd><dt>has domain</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#Workflow">Workflow</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://helsinki.fi/library/onto#WorkflowExecution">Workflow Execution</a><sup title="class" class="type-c" title="http://helsinki.fi/library/onto#WorkflowExecution">Workflow Execution</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e229" class="entity">
+            <a name="http://www.w3.org/ns/prov#wasAssociatedWith"></a>
+            <h3>wasAssociatedWith<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#wasAssociatedWith</p>
+            <div class="comment">
+                <p>An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve
+                    some goals in the context of this activity.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Agent">Agent</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Agent">Agent</a><sup title="class" class="type-c">c</sup></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e244" class="entity">
+            <a name="http://www.w3.org/ns/prov#wasDerivedFrom"></a>
+            <h3>wasDerivedFrom<sup title="object property" class="type-op">op</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#objectproperties">Object Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#wasDerivedFrom</p>
+            <div class="comment">
+                <p>A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.</p>
+            </div>
+            <div class="description">
+                <dl><dt>is inverse of</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#hadDerivation">hadDerivation</a><sup title="object property" class="type-op" title="http://www.w3.org/ns/prov#hadDerivation">hadDerivation</a><sup title="object property" class="type-op">op</sup></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div id="dataproperties">
+        <h2>Data Properties</h2>
+        <ul class="hlist">
+            <li><a href="%=http://www.w3.org/ns/prov#endedAtTime" title="http://www.w3.org/ns/prov#endedAtTime">endedAtTime</a></li>
+            <li><a href="%=http://helsinki.fi/library/onto#hasStepConfig" title="http://helsinki.fi/library/onto#hasStepConfig">hasStepConfig</a></li>
+            <li><a href="%=http://www.w3.org/ns/prov#startedAtTime" title="http://www.w3.org/ns/prov#startedAtTime">startedAtTime</a></li>
+        </ul>
+        <div id="d4e269" class="entity">
+            <a name="http://www.w3.org/ns/prov#endedAtTime"></a>
+            <h3>endedAtTime<sup title="data property" class="type-dp">dp</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#dataproperties">Data Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#endedAtTime</p>
+            <div class="comment">
+                <p>End is when an activity is deemed to have been ended by an entity, known as trigger. The activity no longer exists after its end. Any usage, generation, or invalidation involving an activity precedes the activity's end. An end may refer
+                    to a trigger entity that terminated the activity, or to an activity, known as ender that generated the trigger.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><span class="dotted" title="http://www.w3.org/2001/XMLSchema#dateTime">date time</span></dd>
+                </dl>
+            </div>
+        </div>
+        <div id="d4e257" class="entity">
+            <a name="http://helsinki.fi/library/onto#hasStepConfig"></a>
+            <h3>hasStepConfig<sup title="data property" class="type-dp">dp</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#dataproperties">Data Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://helsinki.fi/library/onto#hasStepConfig</p>
+            <div class="comment">
+                <p>A Step can have different configurations associated to with which specifies the Workflow how to perform the given step.</p>
+            </div>
+        </div>
+        <div id="d4e284" class="entity">
+            <a name="http://www.w3.org/ns/prov#startedAtTime"></a>
+            <h3>startedAtTime<sup title="data property" class="type-dp">dp</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#dataproperties">Data Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/ns/prov#startedAtTime</p>
+            <div class="comment">
+                <p>Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may
+                    refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger.</p>
+            </div>
+            <div class="description">
+                <dl><dt>has domain</dt>
+                    <dd><a href="%=http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c" title="http://www.w3.org/ns/prov#Activity">Activity</a><sup title="class" class="type-c">c</sup></dd><dt>has range</dt>
+                    <dd><span class="dotted" title="http://www.w3.org/2001/XMLSchema#dateTime">date time</span></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div id="annotationproperties">
+        <h2>Annotation Properties</h2>
+        <ul class="hlist">
+            <li><a href="%=http://www.w3.org/2004/02/skos/core#altLabel" title="http://www.w3.org/2004/02/skos/core#altLabel"><span>alt label</span></a></li>
+            <li><a href="%=http://www.w3.org/2000/01/rdf-schema#comment" title="http://www.w3.org/2000/01/rdf-schema#comment"><span>comment</span></a></li>
+            <li><a href="%=http://www.w3.org/2004/02/skos/core#prefLabel" title="http://www.w3.org/2004/02/skos/core#prefLabel"><span>pref label</span></a></li>
+        </ul>
+        <div id="d4e29" class="entity">
+            <a name="http://www.w3.org/2004/02/skos/core#altLabel"></a>
+            <h3>alt label<sup title="annotation property" class="type-ap">ap</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#annotationproperties">Annotation Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/2004/02/skos/core#altLabel</p>
+        </div>
+        <div id="d4e24" class="entity">
+            <a name="http://www.w3.org/2000/01/rdf-schema#comment"></a>
+            <h3>comment<sup title="annotation property" class="type-ap">ap</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#annotationproperties">Annotation Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/2000/01/rdf-schema#comment</p>
+        </div>
+        <div id="d4e33" class="entity">
+            <a name="http://www.w3.org/2004/02/skos/core#prefLabel"></a>
+            <h3>pref label<sup title="annotation property" class="type-ap">ap</sup><span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a> or <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#annotationproperties">Annotation Property ToC</a></span></h3>
+            <p><strong>IRI:</strong> http://www.w3.org/2004/02/skos/core#prefLabel</p>
+        </div>
+    </div>
+    <div id="namespacedeclarations">
+        <h2>Namespace Declarations <span class="backlink"> back to <a href="http://www.essepuntato.it/lode/owlapi/http://www.essepuntato.it/tmp/1479711693-ontology#toc">ToC</a></span></h2>
+        <dl><dt><em>default namespace</em></dt>
+            <dd>http://helsinki.fi/library/onto#</dd><dt>owl</dt>
+            <dd>http://www.w3.org/2002/07/owl#</dd><dt>prov</dt>
+            <dd>http://www.w3.org/ns/prov#</dd><dt>pwo</dt>
+            <dd>http://purl.org/spar/pwo/</dd><dt>rdf</dt>
+            <dd>http://www.w3.org/1999/02/22-rdf-syntax-ns#</dd><dt>rdfs</dt>
+            <dd>http://www.w3.org/2000/01/rdf-schema#</dd><dt>skos</dt>
+            <dd>http://www.w3.org/2004/02/skos/core#</dd><dt>xsd</dt>
+            <dd>http://www.w3.org/2001/XMLSchema#</dd>
+        </dl>
+    </div>
+    <p class="endnote">This HTML document was obtained by processing the OWL ontology source code through <a href="http://www.essepuntato.it/lode">LODE</a>, <em>Live OWL Documentation Environment</em>, developed by <a href="http://www.essepuntato.it/">Silvio Peroni</a>.</p>
+
+
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.scrollTo.js"></script>
+<script src="js/marked.min.js"></script>
+<script>
+    $(document).ready(
+        function() {
+            jQuery(".markdown").each(function(el) {
+                jQuery(this).after(marked(jQuery(this).text())).remove()
+            });
+            var list = $('a[name="http://www.essepuntato.it/tmp/1479711693-ontology"]');
+            if (list.size() != 0) {
+                var element = list.first();
+                $.scrollTo(element);
+            }
+        });
+</script>
+</html>
