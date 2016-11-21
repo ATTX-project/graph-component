@@ -1,0 +1,40 @@
+@base <http://helsinki.fi/library/> .
+@prefix kaisa: <http://helsinki.fi/library/onto#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix lv: <http://purl.org/lobid/lv#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<#publication2>
+  a schema:CreativeWork ;
+  dcterms:title "An example title" ;
+  schema:author "Author Name";
+  bibo:doi "http://dx.doi.org/10.1037/hsl0000003".
+
+<#publication1>
+  a schema:CreativeWork ;
+  dcterms:title "An example title" ;
+  schema:author "Name Author" ;
+  lv:urn "urn:isbn:0379500618".
+
+# As a result of wf2 in kaisa-file_input_example we can state
+
+<#publication1>
+  skos:exactMatch <#publication2>.
+
+# We can publish the following information in the Dissemination Data Graph
+
+<#publication3>
+  a schema:CreativeWork ;
+  dcterms:title "An example title" ;
+  schema:author "Author, Name" ;
+  bibo:doi "http://dx.doi.org/10.1037/hsl0000003" ;
+  lv:urn "urn:isbn:0379500618" ;
+  prov:wasDerivedFrom kaisa:wf2_dataset3 .
