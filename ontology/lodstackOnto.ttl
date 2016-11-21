@@ -13,7 +13,10 @@
 	owl:versionInfo "Draft ATTX Workflow ontology 0.0.5"@en ;
 	rdfs:comment "This ontology is published by the ATTX project, part of the University of Helsinki Library."@en ;
 	rdfs:seeAlso "http://helsinki.fi/library"@en ;
-	rdfs:label "ATTX Workflow Ontology"@en .
+	<http://purl.org/dc/elements/1.1/date> "2016-11-21" ;
+	<http://purl.org/dc/elements/1.1/creator> "ATTX project team" ;
+	rdfs:label "ATTX Workflow Ontology"@en ;
+	<http://purl.org/dc/elements/1.1/rights> "This work is licensed under a Creative Commons Attribution 4.0 International License." , "This work is licensed under a Creative Commons Attribution 4.0 International License http://creativecommons.org/licenses/by/4.0/" .
 # 
 # 
 # #################################################################
@@ -22,6 +25,18 @@
 # #
 # #################################################################
 # 
+# 
+# http://purl.org/dc/elements/1.1/creator
+
+<http://purl.org/dc/elements/1.1/creator> a owl:AnnotationProperty .
+# 
+# http://purl.org/dc/elements/1.1/date
+
+<http://purl.org/dc/elements/1.1/date> a owl:AnnotationProperty .
+# 
+# http://purl.org/dc/elements/1.1/rights
+
+<http://purl.org/dc/elements/1.1/rights> a owl:AnnotationProperty .
 # 
 # http://www.w3.org/2000/01/rdf-schema#comment
 
