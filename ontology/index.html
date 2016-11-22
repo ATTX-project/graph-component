@@ -57,6 +57,7 @@
             <li><a href="#dataproperties">Data Properties</a></li>
             <li><a href="#annotationproperties">Annotation Properties</a></li>
             <li><a href="#namespacedeclarations">Namespace Declarations</a></li>
+            <li><a href="#secno">A. References</a> </li>
         </ol>
     </div>
     <div id="introduction">
@@ -65,7 +66,10 @@
         <span class="backlink"> back to <a href="#toc">ToC</a></span>
       </h2>
         <p>
-            The ATTX ontology has the main goal of describing how and when the data flows within the ATTX platform, types of transformations (and associated workflows), the provenance information (agent and ETL processes performed) and other meta data.
+          The ATTX Workflow ontology has the purpose of describing how and when the data flows within the ATTX platform, types of activities or steps, associated workflows and workflow executions, the provenance information (agent and ETL processes performed) and other metadata.
+        </p>
+        <p>
+          Its main goal is to abstract the type of data utilised in the workflow and instead focus on the metadata that can be disseminated along with the workflow such as the steps (including the step types and configuration), the input and output datasets along with the activities performed to achieve the end result.
         </p>
 
         <div id="overview">
@@ -73,6 +77,21 @@
           Overview
           <span class="backlink"> back to <a href="#toc">ToC</a></span>
         </h3>
+        <p>
+          ATTX Workflow Ontology builds upon existing ontologies such as PROV-O and PWO, however due to its specific purpose it cannot make use of all the concepts and properties particular to these ontologies.
+        </p>
+        <p>The ontology aims to provide a baseline required to capture and analyze data acquisition, enrichment and dissemination workflows. Thus, it covers the main aspects that correspond to prospective provenance [<cite><a class="bibref" href="#bib-ZWF06">ZWF06</a></cite>] additionally, some essential elements of data services are also considered. A prospective provenance ontology "captures the procedure or "recipe" required to produce a data artifact." [<cite><a class="bibref" href="#bib-ProvONE">ProvONE</a></cite>]
+        </p>
+        <h5>Extended and Similar Ontologies</h5>
+
+        <p>The <a href="http://www.sparontologies.net/ontologies/pwo/source.html">Publishing Workflow Ontology (PWO)</a> has as a main goal describing the main stages in the workflow associated with the publication of a document.
+        </p>
+        <p>
+          Another related Workflow ontology is the <a href="http://www.opmw.org/model/OPMW/">OPMW-PROV Ontology</a> that builds also on top of <a href="http://www.w3.org/ns/prov-o">PROV-O</a>, and at the same time <a href="http://purl.org/net/p-plan">The P-plan Ontology</a> and <a href="http://openprovenance.org/model/opmo">The Open Provenance Model Ontology (OPMO). It focus is on workflow traces and their templates based, and similar to PWO, with a focus on scientific articles and their results.</a>
+        </p>
+        <p>
+          <a href="http://vcvcomputing.com/provone/provone.html">ProvONE</a> provides a more holistic overview on the Workflow and provenance infomation, yet still with a focus on Scientific Workflow Provenance.
+        </p>
         </div>
 
         <div id="usecase">
@@ -87,8 +106,18 @@
                 <li>Working Data Graph - contains both inferred and explicit relationships between domain data;</li>
                 <li>Dissemination Data Graph - Data Graph distributed via the APIs.</li>
             </ul>
+            <figure style="text-align:center;">
+
+              <img src="https://rawgit.com/ATTX-project/ATTX-project.github.io/master/images/ontology_usecase.svg" alt="ATTX Ontology Use case"/>
+              <p>Figure 1: ATTX Ontology Use case Diagram</p>
+
+            </figure>
             <h5>Information associated with the Provenance Data Graph</h5>
-            <pre>
+            <p>
+            <a href="#narrative-example-simple-1">Example 1</a>: The following ATTX Worflow example details the resources (datasets), activities/steps, agents and execution of the Workflow involved when creating a mapping of a given <em>.csv</em> data file to another <em>.csv</em> dataset. The example uses five steps to acquire, map,enrich and distribute the data in order to obtain a dataset for dissemination. In the example, <em>kaisa:wf2</em> performs the acquisition and mapping the VIRTA pubs data with CRIS data.
+            <em>kaisa:activity2</em> describes the workflow execution, meanwhile associated steps for <em>kaisa:wf2</em> are listed as follows (<em>kaisa:wf2_step1, kaisa:wf2_step2, kaisa:wf2_step3, kaisa:wf2_step4, kaisa:wf2_step5.</em>). The sequence of steps is specified by the <em>pwo:hasNextStep</em> property.
+           </p>
+            <pre class="anexample">
 @base &lt;http://helsinki.fi/library/&gt; .
 @prefix kaisa: &lt;http://helsinki.fi/library/onto#&gt; .
 @prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -192,8 +221,13 @@ kaisa:UnifiedViews
   a kaisa:Artifact ;
   dcterms:source &lt;http://unifiedviews.eu&gt; .
 </pre>
-            <h5>Information associated with the Working Data Graph</h5>
-            <pre>
+<h5>Information associated with the Working Data Graph</h5>
+
+<p>
+<a href="#narrative-example-simple-2">Example 2</a>: The following example illustrates a snapshot of the resulting data from the execution of workflow <em>kaisa:wf2</em> presented in <a href="#narrative-example-simple-1">Example 1</a>. It depicts two publications (<em>publication1</em> and <em>publication2</em>) which can be linked via the <em>skos:exactMatch</em> property. As a result the new publication (<em>publication3</em>) contains an aggregated set of properties characteristic to the linked publications.
+</p>
+
+            <pre class="anexample">
 @base &lt;http://helsinki.fi/library/&gt; .
 @prefix kaisa: &lt;http://helsinki.fi/library/onto#&gt; .
 @prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -793,6 +827,20 @@ kaisa:UnifiedViews
             <dd>http://www.w3.org/2004/02/skos/core#</dd><dt>xsd</dt>
             <dd>http://www.w3.org/2001/XMLSchema#</dd>
         </dl>
+    </div>
+    <div id="references">
+      <h2><span class="secno">A. </span>References <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+      <dt id="bib-ZWF06">[ZWF06]</dt>
+      <dd>
+      Yong Zhao, Michael Wilde, and Ian Foster.
+      <cite>Applying the Virtual Data Provenance Model</cite>.
+      In Proceedings of the 2006 international conference on Provenance and Annotation of Data, IPAW'06, pages 148-161, Berlin, Heidelberg, 2006. Springer-Verlag.
+      </dd>
+      <dt id="bib-ProvONE">[ProvONE]</dt>
+      <dd>
+      <cite><a href="http://vcvcomputing.com/provone/provone.html">ProvONE</a> Ontology</cite>.
+      </dd>
+
     </div>
     <p class="endnote">This HTML document was obtained by processing the OWL ontology source code through <a href="http://www.essepuntato.it/lode">LODE</a>, <em>Live OWL Documentation Environment</em>, developed by <a href="http://www.essepuntato.it/">Silvio Peroni</a>.</p>
 
