@@ -1,0 +1,58 @@
+#ATTX GM-API specification
+swagger: '2.0'
+
+info:
+  version: "0.1"
+  title: ATTX GM API
+  description: ATTX GM internal  API for mapping the source data against a RML mapping configuration and communication between Graph Manager the Workflow Component and the Graph Store.
+  contact:
+    name: "ATTX project"
+    url: http://helsinki.fi/library
+  license:
+    name: "MIT"
+
+tags:
+- name: "gmAPI"
+  description: "Internal GM-API for graph manager"
+  externalDocs:
+    description: "just use it"
+    url: http://helsinki.fi/library
+
+schemes:
+- "http"
+
+basePath: /api/0.1/
+
+paths:
+  /map:
+    post:
+      tags:
+        - "gmAPI"
+      parameters:
+        - name: pet
+          in: body
+          description: Pet to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Map'
+      responses:
+        200:
+          description: This operation cannot be Perfomed.
+
+definitions:
+  Map:
+    allOf:
+      - required:
+        - mapping
+        - targetEndpoint
+        - sourceGraphs
+        properties:
+          targetEndpoint:
+            type: string
+          mapping:
+            type: object
+          sourceGraphs:
+            type: array
+            items: 
+              type: string
+            
