@@ -29,9 +29,9 @@ paths:
       tags:
         - "gmAPI"
       parameters:
-        - name: pet
+        - name: mapping
           in: body
-          description: Pet to add to the store
+          description: Mapping object to pass to the Graph Manager API
           required: true
           schema:
             $ref: '#/definitions/Map'
