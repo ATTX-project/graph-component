@@ -87,7 +87,7 @@ def my_listener(event):
 
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler()
+    scheduler = BackgroundScheduler(timezone="UTC")
     scheduler.add_job(cronJob, 'interval', seconds=3)
     scheduler.add_listener(my_listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
     scheduler.start()
