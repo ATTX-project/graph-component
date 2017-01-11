@@ -71,6 +71,7 @@ public class CronJobSteps implements En {
 
         When("^I add a Workflow$", () -> {
             try {
+//                waiting for 2.3.1 UnifiedViews to test this
 //                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/master/api/1/pipelines")
 //                        .header("accept", "application/json")
 //                        .header("Content-Type", "application/json")
@@ -139,13 +140,6 @@ public class CronJobSteps implements En {
                 System.out.println(arg1);
                 assertTrue(result);
                 qexec.close() ;
-//                HttpResponse<String> response = Unirest.post("http://localhost:3030/ds/query")
-//                        .header("accept", "application/sparql-results+json")
-//                        .header("content-type", "application/x-www-form-urlencoded")
-//                        .header("cache-control", "no-cache")
-//                        .header("postman-token", "91c12404-6eae-9683-e53f-791461c90cae")
-//                        .body("query=%s", activity_query)
-//                        .asString();
             } catch (Exception ex) {
                 Logger.getLogger(CronJobSteps.class.getName()).log(Level.SEVERE, null, ex);
                 TestCase.fail(ex.getMessage());
