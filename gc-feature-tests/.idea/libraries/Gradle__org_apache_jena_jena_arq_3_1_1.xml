@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.jena:jena-arq:3.1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.jena/jena-arq/3.1.1/4771109e20895e297d09f4a609fc2e68a5d7645b/jena-arq-3.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.jena/jena-arq/3.1.1/4a2fdd646783afab64c5011f467d1ffbbf438c0b/jena-arq-3.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

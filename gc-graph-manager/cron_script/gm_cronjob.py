@@ -23,8 +23,8 @@ def cronJob():
     workflow = getResult(source, 'workflow')
     activity = getResult(source,  'activity')
     clean(target, ds, context)
-    postResult(target, workflow, ds, context)
     postResult(target, activity, ds, context)
+    postResult(target, workflow, ds, context)
 
 
 def getResult(source, endpoint, modifiedSince=None):
@@ -88,7 +88,7 @@ def my_listener(event):
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler(timezone="UTC")
-    scheduler.add_job(cronJob, 'interval', minutes=10)
+    scheduler.add_job(cronJob, 'interval', minutes=5)
     scheduler.add_listener(my_listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
     scheduler.start()
     q.join()

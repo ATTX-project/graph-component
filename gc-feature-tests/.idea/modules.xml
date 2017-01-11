@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gc-feature-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/gc-feature-tests.iml" group="gc-feature-tests" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gc-feature-tests_main.iml" filepath="$PROJECT_DIR$/.idea/modules/gc-feature-tests_main.iml" group="gc-feature-tests" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gc-feature-tests_test.iml" filepath="$PROJECT_DIR$/.idea/modules/gc-feature-tests_test.iml" group="gc-feature-tests" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager.iml" group="gc-graph-manager" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager_main.iml" group="gc-graph-manager" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1796046844/gc-graph-manager_test.iml" group="gc-graph-manager" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1569707480/graph-component.iml" filepath="$PROJECT_DIR$/.idea/modules/-1569707480/graph-component.iml" />
+    </modules>
+  </component>
+</project>

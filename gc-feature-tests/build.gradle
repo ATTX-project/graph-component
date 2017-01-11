@@ -30,14 +30,18 @@ if (!hasProperty('mainClass')) {
 
 
 dependencies {
-    testJython ":requests:2.12.4"
 
     testCompile \
-        'junit:junit:4.10',
-        'info.cukes:cucumber-java8:1.2.5',
-        'info.cukes:cucumber-junit:1.2.5',
-        'info.cukes:cucumber-jython:1.2.5',
-        'org.python:jython-standalone:2.7.1b3'
+            'junit:junit:4.10',
+            'info.cukes:cucumber-java8:1.2.5',
+            'info.cukes:cucumber-junit:1.2.5',
+            'info.cukes:cucumber-jython:1.2.5',
+            'org.python:jython-standalone:2.7.1b3',
+            'com.mashape.unirest:unirest-java:1.4.9',
+            'org.skyscreamer:jsonassert:1.4.0',
+            'net.javacrumbs.json-unit:json-unit:1.16.0',
+            'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
+            'org.apache.jena:apache-jena-libs:3.1.1'
 }
 
 test {

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.jena:jena-tdb:3.1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.jena/jena-tdb/3.1.1/3016a69d73b6a9b57968a732b70518e11c9f8b62/jena-tdb-3.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.jena/jena-tdb/3.1.1/216b77f51281edc34dee30ea9d49a6093ce5863/jena-tdb-3.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
