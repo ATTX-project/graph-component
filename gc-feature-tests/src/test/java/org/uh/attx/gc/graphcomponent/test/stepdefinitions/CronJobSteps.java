@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.etl.graphcomponent.test.stepdefinitions;
+package org.uh.attx.gc.graphcomponent.test.stepdefinitions;
 
 import cucumber.api.java8.En;
 
