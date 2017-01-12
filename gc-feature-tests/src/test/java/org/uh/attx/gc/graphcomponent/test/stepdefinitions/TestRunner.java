@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
  * @author stefanne
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = {"pretty"}, features = "classpath:features", tags = {"~@ignore"}, glue = {"classpath:org.uh.attx.etl.graphcomponent.test.stepdefinitions", "src/test/resources/python/steps"})
+@CucumberOptions(plugin = {"pretty"}, features = "classpath:features", tags = {"~@ignore"}, glue = {"classpath:org.uh.attx.gc.graphcomponent.test.stepdefinitions", "src/test/resources/python/steps"})
 public class TestRunner {
 
 }
