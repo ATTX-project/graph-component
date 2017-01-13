@@ -1,0 +1,63 @@
+// Note: "common.gradle" in the root project contains additional initialization
+//   for this project. This initialization is applied in the "build.gradle"
+//   of the root project.
+
+// NetBeans will automatically add "run" and "debug" tasks relying on the
+// "mainClass" property. You may however define the property prior executing
+// tasks by passing a "-PmainClass=<QUALIFIED_CLASS_NAME>" argument.
+//
+// Note however, that you may define your own "run" and "debug" task if you
+// prefer. In this case NetBeans will not add these tasks but you may rely on
+// your own implementation.
+
+plugins {
+  id "java"
+  id "com.github.hierynomus.jython" version "0.4.0"
+}
+
+apply plugin: "com.github.hierynomus.jython"
+
+
+repositories {
+  maven {
+    url "https://plugins.gradle.org/m2/"
+  }
+}
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+
+dependencies {
+
+    testCompile \
+            'junit:junit:4.10',
+            'info.cukes:cucumber-java8:1.2.5',
+            'info.cukes:cucumber-junit:1.2.5',
+            'info.cukes:cucumber-jython:1.2.5',
+            'org.python:jython-standalone:2.7.1b3',
+            'com.mashape.unirest:unirest-java:1.4.9',
+            'org.skyscreamer:jsonassert:1.4.0',
+            'net.javacrumbs.json-unit:json-unit:1.16.0',
+            'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
+            'org.apache.jena:apache-jena-libs:3.1.1'
+}
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+
+
+}
+
+// Example of how run python scripts as in Gradle tasks
+//task testJython(type:jython.JythonTask) {
+//    classpath configurations.testCompile
+//    script file("src/test/resources/python/run-jython.py")
+//}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.testCompile
+}

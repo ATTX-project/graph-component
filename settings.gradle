@@ -1,1 +1,1 @@
-include "gc-graph-manager"
+include "gc-feature-tests", "gc-graph-manager"

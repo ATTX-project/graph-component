@@ -1,0 +1,49 @@
+plugins {
+  id "com.linkedin.python-cli" version "0.3.36"
+}
+
+version=0.1
+
+python {
+  testDir = file('tests')
+}
+// define an explicit installation sequence for the dependencies.
+project.tasks.findByName('installPythonRequirements').sorted = false
+
+dependencies {
+}
+
+repositories {
+    // using a local repository
+    ivy{
+      name 'pypi-local'
+  		url "/home/user/pivy"
+  		layout 'pattern' , {
+  			artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
+  			ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
+  		}
+  	}
+    // using a web repository
+    ivy{
+      name 'pypi-attx'
+  		url "http://attx-dev.hulib.helsinki.fi:5039/pivy/"
+  		layout 'pattern' , {
+  			artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
+  			ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
+  		}
+    }
+    // setting the repository for jenkins use
+    ivy{
+      name 'pypi-jenkins'
+  		url "http://pivyrepo:5039/pivy/"
+  		layout 'pattern' , {
+  			artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
+  			ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
+  		}
+    }
+}
+
+// in case we want have a ./gradlw command.
+task wrapper(type: Wrapper) {
+   gradleVersion = '3.3'
+}
