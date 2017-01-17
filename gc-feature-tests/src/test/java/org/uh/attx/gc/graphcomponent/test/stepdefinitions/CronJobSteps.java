@@ -19,7 +19,6 @@ import com.mashape.unirest.request.GetRequest;
 import org.apache.jena.query.*;
 import org.json.JSONObject;
 
-import org.apache.jena.query.*;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QueryExecutionFactory;
 
@@ -76,7 +75,7 @@ public class CronJobSteps implements En {
 //                        .header("accept", "application/json")
 //                        .header("Content-Type", "application/json")
 //                        .basicAuth(API_USERNAME, API_PASSWORD)
-//                        .body(pipeline)
+//                        .body(PIPELINE)
 //                        .asJson();
 //
 //                JSONObject myObj = postResponse.getBody().getObject();
