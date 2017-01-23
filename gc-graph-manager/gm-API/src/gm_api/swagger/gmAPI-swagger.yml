@@ -42,9 +42,9 @@ paths:
           format: int64
       responses:
         200:
-          description: "Succesfull request."
+          description: "Successful response."
         410:
-          description: "Job Gone."
+          description: "Map Gone."
   /map:
     post:
       tags:
@@ -52,10 +52,33 @@ paths:
       parameters:
         - name: mapping
           in: body
-          description: Mapping object to pass to the Graph Manager API
+          description: Mapping object to pass to the Graph Manager API.
           required: true
           schema:
             $ref: '#/definitions/Map'
+      responses:
+        202:
+          description: "Accepted."
+        405:
+          description: "Invalid Input."
+  /links:
+    get:
+     tags:
+        - "gmAPI"
+     description: Get the links in the Graph Store
+     responses:
+        200:
+          description: "Successful response."
+    post:
+      tags:
+        - "gmAPI"
+      parameters:
+        - name: linking
+          in: body
+          description: Linking input and output graphs.
+          required: true
+          schema:
+            $ref: '#/definitions/Link'
       responses:
         202:
           description: "Accepted."
@@ -113,5 +136,13 @@ definitions:
             type: array
             items:
               type: string
-
-          
+  Link:
+    allOf:
+      - required:
+        - inputGraph
+        - outputGraph
+        properties:
+          inputGraph:
+            type: string
+          outputGraph:
+            type: string
