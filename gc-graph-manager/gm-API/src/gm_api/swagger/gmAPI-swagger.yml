@@ -1,8 +1,9 @@
+
 #ATTX GM-API specification
 swagger: '2.0'
 
 info:
-  version: "0.1"
+  version: "0.2"
   title: ATTX GM API
   description: ATTX GM internal  API for mapping the source data against a RML mapping configuration and communication between Graph Manager the Workflow Component and the Graph Store.
   contact:
@@ -21,9 +22,29 @@ tags:
 schemes:
 - "http"
 
-basePath: /api/0.1/
+basePath: /api/0.2/
 
 paths:
+  /map/{mapID}:
+    get:
+      tags:
+        - "gmAPI"
+      description: Get status of the mapping job.
+      produces:
+      - "text/turtle"
+      - "application/ld+json"
+      parameters:
+        - in: path
+          name: mapID
+          description: ID of map that needs to be fetched
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: "Succesfull request."
+        410:
+          description: "Job Gone."
   /map:
     post:
       tags:
@@ -36,9 +57,26 @@ paths:
           schema:
             $ref: '#/definitions/Map'
       responses:
-        200:
-          description: This operation cannot be Perfomed.
-
+        202:
+          description: "Accepted."
+        405:
+          description: "Invalid Input."
+  /index:
+    post:
+      tags:
+        - "gmAPI"
+      parameters:
+        - name: index
+          in: body
+          description: Triggering the index.
+          required: true
+          schema:
+            $ref: '#/definitions/Index'
+      responses:
+        202:
+          description: "Accepted."
+        405:
+          description: "Invalid Input."
 definitions:
   Map:
     allOf:
@@ -53,6 +91,27 @@ definitions:
             type: object
           sourceGraphs:
             type: array
-            items: 
+            items:
               type: string
-            
+  Index:
+    allOf:
+      - required:
+        - targetEndpoint
+        - index
+        - type
+        - id
+        properties:
+          targetEndpoint:
+            type: string
+          index:
+            type: string
+          type:
+            type: string
+          id:
+            type: integer
+          sourceGraphs:
+            type: array
+            items:
+              type: string
+
+          
