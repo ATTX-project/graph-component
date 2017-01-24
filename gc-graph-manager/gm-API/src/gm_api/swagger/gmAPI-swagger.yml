@@ -29,10 +29,25 @@ paths:
     get:
       tags:
         - "gmAPI"
-      description: Get status of the mapping job.
+      description: "Get status of the mapping job."
       produces:
-      - "text/turtle"
-      - "application/ld+json"
+      - "application/json"
+      parameters:
+        - in: path
+          name: mapID
+          description: "Fetch map with a specific ID."
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            $ref: '#/definitions/MapResult'
+        410:
+          description: "Map Gone."
+    delete:
+      description: "Delete map with a certain ID."
       parameters:
         - in: path
           name: mapID
@@ -42,9 +57,8 @@ paths:
           format: int64
       responses:
         200:
-          description: "Successful response."
-        410:
-          description: "Map Gone."
+          description: OK
+
   /map:
     post:
       tags:
@@ -52,15 +66,28 @@ paths:
       parameters:
         - name: mapping
           in: body
-          description: Mapping object to pass to the Graph Manager API.
+          description: "Mapping object to pass to the Graph Manager API. Triggering the creation of a index and possible handling of aliases between indexes."
           required: true
           schema:
             $ref: '#/definitions/Map'
+      produces:
+          - "application/json"
       responses:
         202:
           description: "Accepted."
+          schema:
+            $ref: '#/definitions/MapResult'
         405:
           description: "Invalid Input."
+
+  /clusterids:
+    post:
+     tags:
+        - "gmAPI"
+     description: "Initiates ID clustering"
+     responses:
+        202:
+          description: "Accepted."
   /links:
     get:
      tags:
@@ -75,26 +102,10 @@ paths:
       parameters:
         - name: linking
           in: body
-          description: Linking between Working Data Graphs based on link object.
+          description: "Linking between Working Data Graphs based on link object."
           required: true
           schema:
             $ref: '#/definitions/Link'
-      responses:
-        202:
-          description: "Accepted."
-        405:
-          description: "Invalid Input."
-  /index:
-    post:
-      tags:
-        - "gmAPI"
-      parameters:
-        - name: index
-          in: body
-          description: Triggering the creation of a index, if no source graphs are specified it will index all graphs.
-          required: true
-          schema:
-            $ref: '#/definitions/Index'
       responses:
         202:
           description: "Accepted."
@@ -104,10 +115,16 @@ definitions:
   Map:
     allOf:
       - required:
+        - plugin
         - mapping
         - targetEndpoint
         - sourceGraphs
         properties:
+          plugin:
+            type: array
+            description: "list of plugin names/IDs for different mappers"
+            items:
+              type: string
           targetEndpoint:
             type: string
           mapping:
@@ -118,26 +135,16 @@ definitions:
               type: string
           format:
             type: string
-  Index:
+  MapResult:
     allOf:
       - required:
-        - targetEndpoint
-        - index
-        - type
         - id
+        - status
         properties:
-          targetEndpoint:
-            type: string
-          index:
-            type: string
-          type:
-            type: string
           id:
             type: integer
-          sourceGraphs:
-            type: array
-            items:
-              type: string
+          status:
+            type: string
   Link:
     allOf:
       - required:
@@ -148,4 +155,3 @@ definitions:
             type: string
           outputGraph:
             type: string
-          
