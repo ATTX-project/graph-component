@@ -36,7 +36,7 @@ paths:
       parameters:
         - in: path
           name: mapID
-          description: ID of map that needs to be fetched
+          description: Fetch map with a specific ID.
           required: true
           type: integer
           format: int64
@@ -75,7 +75,7 @@ paths:
       parameters:
         - name: linking
           in: body
-          description: Linking between Working Data Graphs based on the input and output graphs parameters.
+          description: Linking between Working Data Graphs based on link object.
           required: true
           schema:
             $ref: '#/definitions/Link'
@@ -91,7 +91,7 @@ paths:
       parameters:
         - name: index
           in: body
-          description: Triggering the index, if no source graphs are specified it will index all graphs.
+          description: Triggering the creation of a index, if no source graphs are specified it will index all graphs.
           required: true
           schema:
             $ref: '#/definitions/Index'
