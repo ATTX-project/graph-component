@@ -1,0 +1,167 @@
+---
+swagger: "2.0"
+info:
+  description: "ATTX GM internal  API for mapping the source data against a RML mapping\
+    \ configuration and communication between Graph Manager the Workflow Component\
+    \ and the Graph Store."
+  version: "0.2"
+  title: "ATTX GM API"
+  contact:
+    name: "ATTX project"
+    url: "http://helsinki.fi/library"
+  license:
+    name: "MIT"
+basePath: "/api/0.2/"
+tags:
+- name: "gmAPI"
+  description: "Internal GM-API for graph manager"
+  externalDocs:
+    description: "just use it"
+    url: "http://helsinki.fi/library"
+schemes:
+- "http"
+paths:
+  /map/{mapID}:
+    get:
+      tags:
+      - "gmAPI"
+      description: "Get status of the mapping job."
+      operationId: "map_map_idget"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "mapID"
+        in: "path"
+        description: "Fetch map with a specific ID."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            $ref: "#/definitions/MapResult"
+        410:
+          description: "Map Gone."
+      x-swagger-router-controller: "gm_api.api.gm_api_controller"
+    delete:
+      description: "Delete map with a certain ID."
+      operationId: "map_map_iddelete"
+      parameters:
+      - name: "mapID"
+        in: "path"
+        description: "Fetch map with a specific ID."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+      x-swagger-router-controller: "gm_api.api.default_controller"
+  /map:
+    post:
+      tags:
+      - "gmAPI"
+      operationId: "map_post"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "mapping"
+        description: "Mapping object to pass to the Graph Manager API. Triggering\
+          \ the creation of a index and possible handling of aliases between indexes."
+        required: true
+        schema:
+          $ref: "#/definitions/Map"
+      responses:
+        202:
+          description: "Accepted."
+          schema:
+            $ref: "#/definitions/MapResult"
+        405:
+          description: "Invalid Input."
+      x-swagger-router-controller: "gm_api.api.gm_api_controller"
+  /clusterids:
+    post:
+      tags:
+      - "gmAPI"
+      description: "Initiates ID clustering"
+      operationId: "clusterids_post"
+      parameters: []
+      responses:
+        202:
+          description: "Accepted."
+      x-swagger-router-controller: "gm_api.api.gm_api_controller"
+  /links:
+    get:
+      tags:
+      - "gmAPI"
+      description: "Get the links in the Graph Store"
+      operationId: "links_get"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response."
+      x-swagger-router-controller: "gm_api.api.gm_api_controller"
+    post:
+      tags:
+      - "gmAPI"
+      operationId: "links_post"
+      parameters:
+      - in: "body"
+        name: "linking"
+        description: "Linking between Working Data Graphs based on link object."
+        required: true
+        schema:
+          $ref: "#/definitions/Link"
+      responses:
+        202:
+          description: "Accepted."
+        405:
+          description: "Invalid Input."
+      x-swagger-router-controller: "gm_api.api.gm_api_controller"
+definitions:
+  Map:
+    allOf:
+    - required:
+      - "mapping"
+      - "plugin"
+      - "sourceGraphs"
+      - "targetEndpoint"
+      properties:
+        plugin:
+          type: "array"
+          description: "list of plugin names/IDs for different mappers"
+          items:
+            type: "string"
+        targetEndpoint:
+          type: "string"
+        mapping:
+          type: "object"
+          properties: {}
+        sourceGraphs:
+          type: "array"
+          items:
+            type: "string"
+        format:
+          type: "string"
+    - {}
+  MapResult:
+    required:
+    - "id"
+    - "status"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      status:
+        type: "string"
+  Link:
+    required:
+    - "inputGraph"
+    - "outputGraph"
+    properties:
+      inputGraph:
+        type: "string"
+      outputGraph:
+        type: "string"
