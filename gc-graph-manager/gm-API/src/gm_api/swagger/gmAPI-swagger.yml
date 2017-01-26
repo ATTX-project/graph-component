@@ -136,22 +136,22 @@ definitions:
           format:
             type: string
   MapResult:
-    allOf:
-      - required:
-        - id
-        - status
-        properties:
-          id:
-            type: integer
-          status:
-            type: string
+    required:
+    - id
+    - status
+    properties:
+      id:
+        type: integer
+        format: int64
+      status:
+        type: string
   Link:
-    allOf:
-      - required:
-        - inputGraph
-        - outputGraph
-        properties:
-          inputGraph:
-            type: string
-          outputGraph:
-            type: string
+    required:
+    - inputGraph
+    - outputGraph
+    properties:
+      inputGraph:
+        type: string
+      outputGraph:
+        type: string
+          
