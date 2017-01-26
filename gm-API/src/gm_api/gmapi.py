@@ -1,4 +1,4 @@
-from gc_api.app import gm_app
+from gm_api.app import gm_app
 import click
 import multiprocessing
 import gunicorn.app.base

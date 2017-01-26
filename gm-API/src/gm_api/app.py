@@ -1,7 +1,7 @@
 import falcon
-from gc_api.api.mapping import Mapping
+from gm_api.api.mapping import Mapping
 from wsgiref import simple_server  # NOQA
-from gc_api.utils.logs import main_logger
+from gm_api.utils.logs import main_logger
 
 sample_resource = Mapping()
 

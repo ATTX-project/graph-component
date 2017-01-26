@@ -1,1 +1,1 @@
-include "gc-feature-tests", "gc-API"
+include "gc-feature-tests", "gm-API"

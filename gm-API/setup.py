@@ -152,11 +152,11 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
-    name='ATTXgcAPI',
+    name='ATTXgmAPI',
     version='0.1',
-    description='ATTX GC-API',
+    description='ATTX GM-API',
     entry_points='''
         [console_scripts]
-        gcapi=gc_api.gcapi:main
+        gmapi=gm_api.gmapi:main
     '''
 )
