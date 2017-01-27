@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "inputGraph": {
+      "type": "string"
+    },
+    "outputGraph": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "inputGraph",
+    "outputGraph"
+  ]
+}

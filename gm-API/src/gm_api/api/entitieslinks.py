@@ -16,29 +16,17 @@ quotes = [
 mock_response = {'id': randint(0, 200), 'status': choice(quotes)}
 
 
-class Mapping(object):
+class Link(object):
     """Create Mapping class."""
 
-    @validate(load_schema('map'))
-    def on_post(self, req, resp, parsed):
+    @validate(load_schema('links'))
+    def on_post(self, req, resp):
         """Respond on GET request to map endpoint."""
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
 
-
-class MappingResource(object):
-    """Create Mapping Resource based on ID for retrieval."""
-
-    @validate(load_schema('mapids'))
-    def on_get(self, req, resp, mapID):
-        """Respond on GET request to map endpoint."""
-        resp.data = json.dumps(mock_response)
-        resp.content_type = 'application/json'
-        resp.status = falcon.HTTP_200
-
-    @validate(load_schema('mapids'))
-    def on_delete(self, req, resp, mapID):
+    def on_get(self, req, resp):
         """Respond on GET request to map endpoint."""
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'

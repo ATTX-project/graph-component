@@ -11,6 +11,7 @@ python {
 // project.tasks.findByName('installPythonRequirements').sorted = false
 
 dependencies {
+      python 'pypi:jsonschema:2.5.1'
       python 'pypi:appdirs:1.4.0'
       python 'pypi:packaging:16.8'
       python 'pypi:elasticsearch:5.1.0'

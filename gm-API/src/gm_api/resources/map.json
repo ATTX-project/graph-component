@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "plugin": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetEndpoint": {
+      "type": "string"
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    },
+    "sourceGraphs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "format": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "plugin",
+    "targetEndpoint",
+    "mapping",
+    "sourceGraphs"
+  ]
+}
