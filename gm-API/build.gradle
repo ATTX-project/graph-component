@@ -1,6 +1,13 @@
-plugins {
-  id "com.linkedin.python-cli" version "0.3.36"
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'com.linkedin.pygradle', name: 'pygradle-plugin', version: '0.4.1'
+    }
 }
+
+apply plugin: 'com.linkedin.python-cli'
 
 version=0.1
 

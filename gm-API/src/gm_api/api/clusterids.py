@@ -1,6 +1,7 @@
 import falcon
 import json
 from random import randint, choice
+from gm_api.utils.logs import main_logger
 
 
 quotes = [
@@ -22,3 +23,4 @@ class Cluster(object):
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
+        main_logger.info('Clustering IDs.')

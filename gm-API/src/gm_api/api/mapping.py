@@ -1,19 +1,10 @@
 import falcon
 import json
-from random import randint, choice
+# from random import randint, choice
 from gm_api.utils.validate import validate
 from gm_api.resources import load_schema
-
-
-quotes = [
-    '"Kicking ass takes getting your ass kicked" ~ Jason Calacanis',
-    '"The perfect is the enemy of the good." ~ Voltaire',
-    '"In essence, if we want to direct our lives, we must take control of our\
-    consistent actions. It\'s not what we do once in a while that shapes our\
-    lives, but what we do consistently." ~ Tony Robbins'
-    ]
-
-mock_response = {'id': randint(0, 200), 'status': choice(quotes)}
+from gm_api.utils.logs import main_logger
+from gm_api.lib.construct_map import MappingObject
 
 
 class Mapping(object):
@@ -22,9 +13,16 @@ class Mapping(object):
     @validate(load_schema('map'))
     def on_post(self, req, resp, parsed):
         """Respond on GET request to map endpoint."""
-        resp.data = json.dumps(mock_response)
+        data = MappingObject()
+        response = data.create_map(
+            parsed.get('targetEndpoint'),
+            parsed.get('mapping'),
+            parsed.get('sourceGraphs'),
+            parsed.get('format'))
+        resp.data = json.dumps(response)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
+        main_logger.info('Creating/POST a new map with ID: {0}.'.format(response['id']))
 
 
 class MappingResource(object):
@@ -33,13 +31,22 @@ class MappingResource(object):
     @validate(load_schema('mapids'))
     def on_get(self, req, resp, mapID):
         """Respond on GET request to map endpoint."""
-        resp.data = json.dumps(mock_response)
-        resp.content_type = 'application/json'
-        resp.status = falcon.HTTP_200
+        data = MappingObject()
+        response = data.retrieve_mapID(mapID)
+        if response is not None:
+            resp.data = json.dumps(response)
+            resp.content_type = 'application/json'
+            resp.status = falcon.HTTP_200
+        else:
+            resp.status = falcon.HTTP_410
+        main_logger.info('GET the map with ID: {0}.'.format(mapID))
 
-    @validate(load_schema('mapids'))
+    # @validate(load_schema('mapids'))
     def on_delete(self, req, resp, mapID):
         """Respond on GET request to map endpoint."""
-        resp.data = json.dumps(mock_response)
+        data = MappingObject()
+        data.delete_mapID(mapID)
+        resp.data = json.dumps({"deletedID": mapID})
         resp.content_type = 'application/json'
+        main_logger.info('Delete/DELETE a map with ID: {0}.'.format(mapID))
         resp.status = falcon.HTTP_200
