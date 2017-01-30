@@ -23,7 +23,7 @@ dependencies {
       python 'pypi:packaging:16.8'
       python 'pypi:elasticsearch:5.1.0'
       python 'pypi:falcon:1.1.0'
-      python 'pypi:rdflib:4.2.1'
+      python 'pypi:rdflib:4.2.2'
       python 'pypi:rdflib-jsonld:0.4.0'
       python 'pypi:gunicorn:19.6.0'
       python 'pypi:pytest-html:1.12.0'

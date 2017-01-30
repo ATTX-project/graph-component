@@ -78,7 +78,7 @@ paths:
           description: "Accepted."
           schema:
             $ref: "#/definitions/MapResult"
-        405:
+        400:
           description: "Invalid Input."
       x-swagger-router-controller: "gm_api.api.gm_api_controller"
   /clusterids:

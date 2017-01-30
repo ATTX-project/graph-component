@@ -38,7 +38,7 @@ class MappingResource(object):
             resp.content_type = 'application/json'
             resp.status = falcon.HTTP_200
         else:
-            resp.status = falcon.HTTP_410
+            raise falcon.HTTPGone()
         main_logger.info('GET the map with ID: {0}.'.format(mapID))
 
     # @validate(load_schema('mapids'))
