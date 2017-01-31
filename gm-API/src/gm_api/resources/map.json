@@ -5,7 +5,9 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "minItems": 1,
+      "uniqueItems": true
     },
     "targetEndpoint": {
       "type": "string"
@@ -13,20 +15,54 @@
     "mapping": {
       "type": "object",
       "properties": {
+        "index": {
+          "type": "string"
+        },
+        "resourceType": {
+          "type": "string"
+        },
         "query": {
           "type": "string"
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "@context": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "@context"
+          ]
         }
       },
       "required": [
-        "query"
+        "index",
+        "resourceType",
+        "query",
+        "context"
       ]
     },
     "sourceGraphs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
+     "type": "object",
+     "properties": {
+       "endpoint": {
+         "type": "string"
+       },
+       "graphs": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "minItems": 1,
+         "uniqueItems": true
+       }
+     },
+     "required": [
+       "endpoint",
+       "graphs"
+     ]
+   },
     "format": {
       "type": "string"
     }

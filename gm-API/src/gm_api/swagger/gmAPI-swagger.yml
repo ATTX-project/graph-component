@@ -117,7 +117,7 @@ paths:
       responses:
         202:
           description: "Accepted."
-        405:
+        400:
           description: "Invalid Input."
       x-swagger-router-controller: "gm_api.api.gm_api_controller"
 definitions:

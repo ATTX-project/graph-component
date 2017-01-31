@@ -18,6 +18,7 @@ class Mapping(object):
             parsed.get('targetEndpoint'),
             parsed.get('mapping'),
             parsed.get('sourceGraphs'),
+            parsed.get('plugin'),
             parsed.get('format'))
         resp.data = json.dumps(response)
         resp.content_type = 'application/json'

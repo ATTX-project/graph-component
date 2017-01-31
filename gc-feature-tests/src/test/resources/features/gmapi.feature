@@ -6,7 +6,7 @@ Feature: Handle mapping and indexing from the graph to Elasticsearch
         Then I should be able to retrieve status of mapping.
 
     Scenario: Retrieve mapping results
-        Given graph API, Elasticsearch and GraphStore are running
+        Given graph API, Elasticsearch and Graph Store are running
         When I post a mapping
         And the mapping is correct
         Then I should get indexed data in JSON-LD from the Elasticsearch.
