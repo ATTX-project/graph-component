@@ -1,4 +1,4 @@
-from gm_api.app import gm_app
+from gm_api.app import create
 import unittest
 from falcon import testing
 
@@ -9,11 +9,10 @@ class appTest(testing.TestCase):
     def setUp(self):
         """Setting the app up."""
         super(appTest, self).setUp()
-
         # Assume the hypothetical `myapp` package has a
         # function called `create()` to initialize and
         # return a `falcon.API` instance.
-        self.app = gm_app.create()
+        self.app = create()
 
 
 class TestMyApp(appTest):
@@ -21,11 +20,12 @@ class TestMyApp(appTest):
 
     def test_get_map_message(self):
         """Test GET map message."""
-        # doc = {u'message': u'Hello world!'}
-
-        result = self.simulate_get('/map/42')
-        print dir(result)
-        # self.assertEqual(result.json, doc)
+        doc = {u'id': 4, u'status': u'WIP'}
+        #
+        result = self.simulate_get('/map/4')
+        # print dir(result)
+        self.assertEqual(result.json, doc)
+        pass
 
 
 if __name__ == "__main__":

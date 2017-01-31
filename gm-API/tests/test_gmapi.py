@@ -1,5 +1,5 @@
-from gm_api.gmapi import WFApplication, number_of_workers, cli
-from gm_api.app import gm_app
+from gm_api.gmapi import GMApplication, number_of_workers, cli
+from gm_api.app import create
 import unittest
 import click
 from click.testing import CliRunner
@@ -21,7 +21,7 @@ class TestAPIStart(unittest.TestCase):
             'daemon': 'True',
             'errorlog': self.log
         }
-        self.app = WFApplication(gm_app, options).application.app.test_client()
+        self.app = GMApplication(create(), options)
         # propagate the exceptions to the test client
         self.app.testing = True
 

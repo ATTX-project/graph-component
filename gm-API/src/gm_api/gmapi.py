@@ -1,4 +1,4 @@
-from gm_api.app import gm_app
+from gm_api.app import create
 import click
 import multiprocessing
 import gunicorn.app.base
@@ -18,7 +18,7 @@ def cli(host, port, log, workers):
         'daemon': 'True',
         'errorlog': log
     }
-    GMApplication(gm_app, options).run()
+    GMApplication(create(), options).run()
 
 
 # Unless really needed to scale use this function. Otherwise 2 workers suffice.
