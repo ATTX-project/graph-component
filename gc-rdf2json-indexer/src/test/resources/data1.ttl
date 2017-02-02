@@ -1,0 +1,35 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://example.org/> .
+
+:ex1 
+    a :Test ;
+    rdfs:label "test" ;
+    :integer 1 ;
+    :decimal 2.2 ;
+    :double 4.2E9 .
+
+
+:ex2 
+    a :Test2 ;
+    rdfs:label "test" ;
+    rdfs:label "test2" ;
+    :someProperty "someProperty" .
+
+:ex3 
+    a :Test3 ;
+    rdfs:label "test3" ;
+    :objectProperty :ex2 ;
+    :objectProperty2 :ex1 ;
+    :objectProperty2 :ex2 .
+
+:ex4
+    a :Test4 ;
+    rdfs:label "test"@en ;
+    rdfs:label "testi"@fi .
+
+:ex5
+    a :Test5 ;
+    rdfs:label "test"@en ;
+    rdfs:label "test2"@en ;
+    rdfs:label "testi"@fi .
