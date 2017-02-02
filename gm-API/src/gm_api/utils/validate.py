@@ -5,7 +5,7 @@ import falcon
 
 def validate(schema):
     """
-    Validate agains JSON schema an return something.
+    Validate against JSON schema an return something.
 
     Return a parsed object if there is a POST.
     If there is a get do not return anything just validate.
@@ -23,7 +23,6 @@ def validate(schema):
                         'Invalid data',
                         'Could not properly parse the provided data as JSON'
                     )
-
                 try:
                     jsonschema.validate(obj, schema)
                 except jsonschema.ValidationError as e:

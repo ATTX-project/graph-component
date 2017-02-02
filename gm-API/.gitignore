@@ -100,4 +100,5 @@ logs/
 logs/api.log
 logs/server.log
 
-tmp[a-zA-Z]*
+tmp[a-zA-Z0-9]*
+tmp[a-zA-Z0-9]*/

@@ -21,7 +21,7 @@ class Link(object):
     """Create Mapping class."""
 
     @validate(load_schema('links'))
-    def on_post(self, req, resp):
+    def on_post(self, req, resp, parsed):
         """Respond on GET request to map endpoint."""
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'

@@ -1,0 +1,24 @@
+{
+  "plugin": "python",
+  "targetEndpoint": {
+      "host": "localhost",
+      "port": 9200
+  },
+  "mapping": {
+      "index": "default",
+      "resourceType": "work",
+      "query": "CONSTRUCT {?subject ?predicate ?object} WHERE { ?subject ?predicate ?object } LIMIT 25",
+      "context": {
+          "@context": "http://schema.org/"
+      }
+  },
+  "sourceGraphs": {
+      "endpoint": {
+          "host": "localhost",
+          "port": 3030,
+          "dataset": "ds"
+      },
+      "graphs": ["http://data.hulib.helsinki.fi/attx/ids", "http://data.hulib.helsinki.fi/attx/work1"]
+  },
+  "format": "application/json+ld"
+}
