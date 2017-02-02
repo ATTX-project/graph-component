@@ -1,18 +1,7 @@
 import falcon
 import json
-from random import randint, choice
-from gm_api.utils.logs import main_logger
-
-
-quotes = [
-    '"Kicking ass takes getting your ass kicked" ~ Jason Calacanis',
-    '"The perfect is the enemy of the good." ~ Voltaire',
-    '"In essence, if we want to direct our lives, we must take control of our\
-    consistent actions. It\'s not what we do once in a while that shapes our\
-    lives, but what we do consistently." ~ Tony Robbins'
-    ]
-
-mock_response = {'id': randint(0, 200), 'status': choice(quotes)}
+from gm_api.lib.construct_ids import ClusterIDs
+from gm_api.utils.logs import app_logger
 
 
 class Cluster(object):
@@ -20,7 +9,9 @@ class Cluster(object):
 
     def on_post(self, req, resp):
         """Respond on GET request to map endpoint."""
-        resp.data = json.dumps(mock_response)
+        data = ClusterIDs()
+        reponse = data.cluster()
+        resp.data = json.dumps(reponse, indent=1, sort_keys=True)
         resp.content_type = 'application/json'
-        resp.status = falcon.HTTP_202
-        main_logger.info('Clustering IDs.')
+        resp.status = falcon.HTTP_200  # implement 202 when it is needed
+        app_logger.info('Clustering IDs.')

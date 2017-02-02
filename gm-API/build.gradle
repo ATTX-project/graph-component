@@ -25,6 +25,7 @@ dependencies {
       python 'pypi:falcon:1.1.0'
       python 'pypi:rdflib:4.2.2'
       python 'pypi:rdflib-jsonld:0.4.0'
+      python 'pypi:requests:2.12.3'
       python 'pypi:gunicorn:19.6.0'
       python 'pypi:pytest-html:1.12.0'
       python 'pypi:PyLD:0.7.1'

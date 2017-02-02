@@ -7,7 +7,12 @@ config = {
     'disable_existing_loggers': False,
     'formatters': {
         'theFormatter': {
-            'format': "[%(asctime)s] [%(process)d] [%(levelname)s] %(message)s",
+            'format': "[%(asctime)s] [%(process)d] [%(funcName)s] [%(levelname)s] %(message)s",
+            'datefmt': '%Y-%m-%d %H:%M:%S %z',
+            'class': 'logging.Formatter'
+        },
+        'threadFormatter': {
+            'format': "[%(asctime)s] [%(process)d] (%(threadName)s) [%(funcName)s] [%(levelname)s] %(message)s",
             'datefmt': '%Y-%m-%d %H:%M:%S %z',
             'class': 'logging.Formatter'
         },
@@ -29,6 +34,12 @@ config = {
             'formatter': 'theFormatter',
             'class': 'logging.StreamHandler',
             'stream': 'ext://sys.stdout'
+        },
+        'threadHandler': {
+            'level': 'INFO',
+            'formatter': 'threadFormatter',
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stdout'
         }
     },
     'loggers': {
@@ -46,6 +57,11 @@ config = {
             'handlers': ['consoleHandler', 'fileHandler'],
             'level': 'INFO',
             'propagate': True
+        },
+        'threadLogger': {
+            'handlers': ['consoleHandler', 'threadHandler'],
+            'level': 'INFO',
+            'propagate': True
         }
     }
 }
@@ -53,3 +69,4 @@ config = {
 logging.config.dictConfig(config)
 app_logger = logging.getLogger('appLogger')
 main_logger = logging.getLogger('mainLogger')
+thread_logger = logging.getLogger('threadLogger')

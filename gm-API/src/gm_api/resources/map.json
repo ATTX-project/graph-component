@@ -2,15 +2,22 @@
   "type": "object",
   "properties": {
     "plugin": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "minItems": 1,
-      "uniqueItems": true
+      "type": "string"
     },
     "targetEndpoint": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host",
+        "port"
+      ]
     },
     "mapping": {
       "type": "object",
@@ -47,8 +54,24 @@
      "type": "object",
      "properties": {
        "endpoint": {
-         "type": "string"
-       },
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer"
+            },
+            "dataset": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "port",
+            "dataset"
+          ]
+        },
        "graphs": {
          "type": "array",
          "items": {

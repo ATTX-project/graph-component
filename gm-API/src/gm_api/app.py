@@ -18,9 +18,9 @@ def create():
     gm_app.add_route('/map/{mapID}', get_map)
     gm_app.add_route('/clusterids', do_clusterids)
     gm_app.add_route('/links', do_links)
+    main_logger.info('App is running.')
     return gm_app
 
 
 if __name__ == '__main__':
     create()
-    main_logger.info('App is running.')

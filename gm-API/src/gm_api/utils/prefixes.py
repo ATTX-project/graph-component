@@ -3,7 +3,7 @@ from ConfigParser import SafeConfigParser
 
 def bind_prefix(graph):
     """Bind Prefixes fro graph."""
-    graph.bind('kaisa', 'http://helsinki.fi/library/onto#')
+    graph.bind('kaisa', 'http://data.hulib.helsinki.fi/attx/')
     graph.bind('dc', 'http://purl.org/dc/elements/1.1/')
     graph.bind('schema', 'http://schema.org/')
     graph.bind('pwo', 'http://purl.org/spar/pwo/')
