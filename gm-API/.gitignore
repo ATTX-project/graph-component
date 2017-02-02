@@ -99,3 +99,5 @@ ENV/
 logs/
 logs/api.log
 logs/server.log
+
+tmp[a-zA-Z]*
