@@ -1,6 +1,6 @@
 import falcon
 import json
-from gm_api.lib.construct_ids import ClusterIDs
+from gm_api.applib.construct_ids import ClusterIDs
 from gm_api.utils.logs import app_logger
 
 

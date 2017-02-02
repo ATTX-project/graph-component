@@ -12,6 +12,7 @@ public class GraphAPI implements En{
         Given("^graph API, Elasticsearch and Graph Store are running$", () -> {
             // Write code here that turns the phrase above into concrete actions
             throw new PendingException();
+            
         });
 
         When("^I post a mapping$", () -> {
