@@ -49,7 +49,7 @@ class ClusterIDs(object):
             else:
                 app_logger.info('Something is wrong with updateing the graph of IDs. Status is {0}'.format(cls.update_id_graph(endpoint, graph_namespace)))
             app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
-            return {"status": "Processed.", "IDCount": len(storage)}
+            return {"status": "Processed", "IDCount": len(storage)}
         except Exception as error:
             app_logger.error('Something is wrong: {0}'.format(error))
             raise falcon.HTTPUnprocessableEntity(
