@@ -11,7 +11,7 @@ VERSION: 0.1
 Using the GM API Docker container:
 * build the container `docker build -t attxproject/gmapi .` in the current folder;
 * running the container `docker run -d -p 4302:4302 attxproject/gmapi` runs the container in detached mode on the `4302` port (production version should have this port hidden);
-* using the endpoints `http://localhost:4301/map` or `http://localhost:4302/clusterids`.
+* using the endpoints `http://localhost:4302/map` or `http://localhost:4302/clusterids`.
 
 The version number is specified in `src/gm-API/gmapi.py` under `version` variable.
 
