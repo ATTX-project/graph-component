@@ -107,9 +107,9 @@ class MappingObject(object):
     @classmethod
     def daemon(cls, result, targetEndpoint, mapping, sourceGraphs, plugin, serialization):
         """Simple worker daemon."""
+        conn = connect_DB()
         try:
             thread_logger.info('Starting Daemon thread.')
-            conn = connect_DB()
             if plugin == 'python':
                 data = LODResource()
                 data.map_lod(targetEndpoint,
@@ -121,6 +121,8 @@ class MappingObject(object):
                              mapping['index'],
                              serialization)
                 cls.update_map_status(conn, result['id'], "Done")
+                # TO DO: have a return in order to update data
+                # cls.update_map_data(conn, result['id'], data)
             elif plugin == 'java':
                 conn = connect_DB()
                 cls.update_map_status(conn, result['id'], "Done")
@@ -130,6 +132,7 @@ class MappingObject(object):
             thread_logger.info('Exiting thread!')
         except Exception as error:
             app_logger.error('Thread Failed!')
+            cls.update_map_status(conn, result['id'], str(error))
             return error
 
     @staticmethod
