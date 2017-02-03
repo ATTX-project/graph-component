@@ -1,8 +1,8 @@
 ## GM API
 
 Current directory contains:
-* WF-API implementation in `src/gm-API` folder
-* Docker container and implementation for the WF API
+* GM-API implementation in `src/gm-API` folder
+* Docker container and implementation for the GM API
 
 VERSION: 0.1
 
