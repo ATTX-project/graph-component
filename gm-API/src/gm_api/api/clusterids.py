@@ -7,9 +7,11 @@ from gm_api.utils.logs import app_logger
 class Cluster(object):
     """Create Mapping class."""
 
+# TO DO: Add validation
     def on_post(self, req, resp):
         """Respond on GET request to map endpoint."""
         data = ClusterIDs()
+        # TO DO: these settings need to come from either POST body or WF-API
         graph_namespace = 'http://data.hulib.helsinki.fi/attx/'
         endpoint = {'host': 'localhost', 'port': 3030, 'dataset': 'ds'}
         reponse = data.cluster(endpoint, graph_namespace)

@@ -44,7 +44,7 @@ class ClusterIDs(object):
                     storage.add((s, URIRef('http://data.hulib.helsinki.fi/attx/id'), o))
             # if the 200 does not happen something is wrong
             response = cls.update_id_graph(endpoint, graph_namespace)
-            if response == 200:
+            if response == 200 or response == 201:
                 app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
                 return {"status": "Processed", "IDCount": len(storage)}
             else:
@@ -91,6 +91,7 @@ class ClusterIDs(object):
     def retrieve_workingGraphs(namespace, endpoint):
         """Retrieve Working Graph based on Workflow Execution information."""
         datasets = []
+        # TO DO: Does rdflib have an easier way for distinct ?
         query = """SELECT DISTINCT ?dataset
                    WHERE { GRAPH <%sprov> {
                    ?dataset a kaisa:Dataset.
