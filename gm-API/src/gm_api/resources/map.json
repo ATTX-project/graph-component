@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "properties": {
+    "plugin": {
+      "type": "string"
+    },
+    "targetEndpoint": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host",
+        "port"
+      ]
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "string"
+        },
+        "resourceType": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "@context": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "@context"
+          ]
+        }
+      },
+      "required": [
+        "index",
+        "resourceType",
+        "query",
+        "context"
+      ]
+    },
+    "sourceGraphs": {
+     "type": "object",
+     "properties": {
+       "endpoint": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer"
+            },
+            "dataset": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "port",
+            "dataset"
+          ]
+        },
+       "graphs": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "minItems": 1,
+         "uniqueItems": true
+       }
+     },
+     "required": [
+       "endpoint",
+       "graphs"
+     ]
+   },
+    "format": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "plugin",
+    "targetEndpoint",
+    "mapping",
+    "sourceGraphs"
+  ]
+}

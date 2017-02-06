@@ -1,6 +1,7 @@
 plugins {
-  id "java"
-  id "com.github.hierynomus.jython" version "0.4.0"
+    id "java"
+    id "idea"
+    id "com.github.hierynomus.jython" version "0.4.0"
 }
 
 apply plugin: "com.github.hierynomus.jython"

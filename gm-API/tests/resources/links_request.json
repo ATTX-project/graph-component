@@ -1,0 +1,4 @@
+{
+  "inputGraph": "localhost/input",
+  "outputGraph": "localhost/output"
+}

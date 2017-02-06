@@ -1,1 +1,1 @@
-include "gc-feature-tests", "gc-graph-manager", "gc-rdf2json-indexer"
+include "gc-feature-tests", "gc-graph-manager", "gc-rdf2json-indexer", "gm-API"
