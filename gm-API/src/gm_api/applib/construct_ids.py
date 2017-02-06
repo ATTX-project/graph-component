@@ -67,7 +67,6 @@ class ClusterIDs(object):
         """Post data to a target Graph Store."""
         try:
             graph = None
-
             # reopen the graph
             graph = ConjunctiveGraph('Sleepycat')
             graph.open(path, create=False)
