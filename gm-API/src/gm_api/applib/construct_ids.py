@@ -45,11 +45,11 @@ class ClusterIDs(object):
             # if the 200 does not happen something is wrong
             response = cls.update_id_graph(endpoint, graph_namespace)
             if response == 200:
-                pass
+                app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
+                return {"status": "Processed", "IDCount": len(storage)}
             else:
-                app_logger.info('Something is wrong with updateing the graph of IDs. Status is {0}'.format(cls.update_id_graph(endpoint, graph_namespace)))
-            app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
-            return {"status": "Processed", "IDCount": len(storage)}
+                app_logger.info('Something is wrong with updating the graph of IDs. Status is {0}'.format(cls.update_id_graph(endpoint, graph_namespace)))
+                return {"status": "Error", "IDCount": len(storage)}
         except Exception as error:
             app_logger.error('Something is wrong: {0}'.format(error))
             raise falcon.HTTPUnprocessableEntity(
@@ -57,6 +57,7 @@ class ClusterIDs(object):
                 'Could not process the clustering of ids.'
             )
         finally:
+            # cleaning local graph as previously clustered ID might be problematic
             storage.remove((None, None, None))
             app_logger.info('Cleaned local graph.')
             storage.close()

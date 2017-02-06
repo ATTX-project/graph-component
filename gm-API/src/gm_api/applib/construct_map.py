@@ -23,10 +23,7 @@ class LODResource(object):
     @staticmethod
     def index_resource(targetEndpoint, graph, mapID, resource_type, index=None):
         """Index JSON-LD graph at specific ES endpoint."""
-        es = Elasticsearch([
-            # {'host': 'localhost', 'port': 9200},
-            {'host': targetEndpoint['host'], 'port': targetEndpoint['port']}
-            ])
+        es = Elasticsearch([{'host': targetEndpoint['host'], 'port': targetEndpoint['port']}])
         if index is not None and not(es.indices.exists(index)):
             es.indices.create(index=index, ignore=400)
         else:
@@ -75,14 +72,9 @@ class MappingObject(object):
         """Create a map."""
         conn = connect_DB()
         result = cls.register_map(conn, mapping)
-        d = threading.Thread(name='daemon',
-                             target=cls.daemon,
-                             args=(result,
-                                   targetEndpoint,
-                                   mapping,
-                                   sourceGraphs,
-                                   plugin,
-                                   serialization))
+        d = threading.Thread(name='daemon', target=cls.daemon,
+                             args=(result, targetEndpoint, mapping,
+                                   sourceGraphs, plugin, serialization))
         d.setDaemon(True)
         d.start()
         app_logger.info('Construct map based on Map object.')
@@ -112,14 +104,9 @@ class MappingObject(object):
             thread_logger.info('Starting Daemon thread.')
             if plugin == 'python':
                 data = LODResource()
-                data.map_lod(targetEndpoint,
-                             sourceGraphs,
-                             mapping['query'],
-                             mapping['context'],
-                             mapping['resourceType'],
-                             result['id'],
-                             mapping['index'],
-                             serialization)
+                data.map_lod(targetEndpoint, sourceGraphs, mapping['query'],
+                             mapping['context'], mapping['resourceType'], result['id'],
+                             mapping['index'], serialization)
                 cls.update_map_status(conn, result['id'], "Done")
                 # TO DO: have a return in order to update data
                 # cls.update_map_data(conn, result['id'], data)
@@ -179,7 +166,6 @@ class MappingObject(object):
     def update_map_status(conn, mapID, status):
         """Update the map status information."""
         db_cursor = conn.cursor()
-
         db_cursor.execute("SELECT rowid FROM maps WHERE rowid = ?", (mapID,))
         data = db_cursor.fetchone()
         if data is None:
