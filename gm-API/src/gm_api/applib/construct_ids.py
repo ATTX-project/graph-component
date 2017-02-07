@@ -1,10 +1,7 @@
 from rdflib import ConjunctiveGraph, URIRef
 import itertools
-# from rdflib.store import NO_STORE, VALID_STORE
 import falcon
 import requests
-import tempfile
-import random
 from gm_api.utils.logs import app_logger
 
 # static properties for now. move to ontology later.
@@ -13,10 +10,6 @@ properties = [
     'http://data.hulib.helsinki.fi/attx/urn',
     'http://purl.org/dc/terms/identifier'
 ]
-
-# TEMP solution
-file1 = tempfile.NamedTemporaryFile(dir='.', delete=False)
-path = str(file1.name).rsplit('/', 1)[-1] + str(random.getrandbits(128))
 
 
 class ClusterIDs(object):
@@ -29,13 +22,6 @@ class ClusterIDs(object):
         graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
 
         storage = ConjunctiveGraph()
-        # rt = storage.open(path, create=False)
-
-        # if rt == NO_STORE:
-        #     # There is no underlying Sleepycat infrastructure, create it
-        #     storage.open(path, create=True)
-        # else:
-        #     assert rt == VALID_STORE, 'The underlying store is corrupt'
         try:
             datasets = cls.retrieve_workingGraphs(graph_namespace, endpoint)
             zip_list = list(itertools.product(datasets, properties))
@@ -43,7 +29,7 @@ class ClusterIDs(object):
                 for s, p, o in graph.triples((None, URIRef('{0}'.format(j)), None), URIRef('{0}'.format(i))):
                     storage.add((s, URIRef('http://data.hulib.helsinki.fi/attx/id'), o))
             # if the 200 does not happen something is wrong
-            response = cls.update_id_graph(endpoint, storage, graph_namespace)
+            response = cls.update_id_graph(endpoint, graph, graph_namespace)
             if response == 200 or response == 201:
                 app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
                 return {"status": "Processed", "IDCount": len(storage)}
@@ -60,7 +46,6 @@ class ClusterIDs(object):
             # cleaning local graph as previously clustered ID might be problematic
             storage.remove((None, None, None))
             app_logger.info('Cleaned local graph.')
-            # storage.close()
 
     @staticmethod
     def update_id_graph(endpoint, graph, context=None):
@@ -88,8 +73,8 @@ class ClusterIDs(object):
         # TO DO: Does rdflib have an easier way for distinct ?
         query = """SELECT DISTINCT ?dataset
                    WHERE { GRAPH <%sprov> {
-                   ?dataset a kaisa:Dataset.
-                   ?activity prov:used ?dataset.
+                    ?dataset a kaisa:Dataset.
+                    ?activity prov:used ?dataset.
                    }}""" % (namespace)
         graph = ConjunctiveGraph(store="SPARQLStore")
 
