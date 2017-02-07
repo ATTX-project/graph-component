@@ -209,7 +209,7 @@ public class Indexer {
         }
     }
 
-    void prepareData(String[] inputGraphs) throws Exception {
+    public void prepareData(String[] inputGraphs) throws Exception {
         // download all input graphs to the model using graph store protocol            
         // Note: this could end up using a lot of memory
         if(inputGraphs == null || inputGraphs.length == 0 ) {   
