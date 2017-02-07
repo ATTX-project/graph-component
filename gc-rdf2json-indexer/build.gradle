@@ -45,12 +45,13 @@ task wrapper(type: Wrapper) {
    gradleVersion = '3.3'
 }
 
+version="1.0-SNAPSHOT"
 
 uploadArchives {
     repositories {
         mavenDeployer {
             snapshotRepository(url: "http://attx-dev:8081/repository/attx-snapshots") {
-                authentication(userName: "jenkins", password: "jenkins1")
+                authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
             }
         }
     }
@@ -60,7 +61,7 @@ uploadShadow {
   repositories {
     mavenDeployer {
         snapshotRepository(url: "http://attx-dev:8081/repository/attx-snapshots") {
-                authentication(userName: "jenkins", password: "jenkins1")
-            }    }
+                authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+    }    }
   }
 }
