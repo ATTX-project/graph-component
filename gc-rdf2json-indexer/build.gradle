@@ -44,3 +44,23 @@ compile group: 'org.apache.jena', name: 'apache-jena', version: '3.1.1'
 task wrapper(type: Wrapper) {
    gradleVersion = '3.3'
 }
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "http://attx-dev:8081/repository/attx-snapshots") {
+                authentication(userName: "jenkins", password: "jenkins1")
+            }
+        }
+    }
+}
+
+uploadShadow {
+  repositories {
+    mavenDeployer {
+        snapshotRepository(url: "http://attx-dev:8081/repository/attx-snapshots") {
+                authentication(userName: "jenkins", password: "jenkins1")
+            }    }
+  }
+}
