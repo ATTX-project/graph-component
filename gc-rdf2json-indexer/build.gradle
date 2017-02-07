@@ -50,7 +50,7 @@ version="1.0-SNAPSHOT"
 uploadArchives {
     repositories {
         mavenDeployer {
-            snapshotRepository(url: ${artifactRepo}) {
+            snapshotRepository(url: "${artifactRepo}") {
                 authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
             }
         }
@@ -60,7 +60,7 @@ uploadArchives {
 uploadShadow {
   repositories {
     mavenDeployer {
-        snapshotRepository(url: ${artifactRepo}) {
+        snapshotRepository(url: "${artifactRepo}") {
                 authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
     }    }
   }
