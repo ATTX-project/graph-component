@@ -1,15 +1,19 @@
 plugins {
     id "java"
     id "idea"
-    id "com.github.hierynomus.jython" version "0.4.0"
+    id "com.github.hierynomus.jython" version "0.4.0"    
 }
 
 apply plugin: "com.github.hierynomus.jython"
+apply plugin: 'maven'
 
 
 repositories {
   maven {
     url "https://plugins.gradle.org/m2/"
+  }
+  maven {
+      url "http://attx-dev:8081/repository/attx-snapshots"
   }
 }
 
@@ -29,7 +33,13 @@ dependencies {
             'org.skyscreamer:jsonassert:1.4.0',
             'net.javacrumbs.json-unit:json-unit:1.16.0',
             'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
-            'org.apache.jena:apache-jena-libs:3.1.1'
+            'org.apache.jena:apache-jena-libs:3.1.1',
+            'org.elasticsearch:elasticsearch:1.2.2',
+            'org.uh.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
+    
+   
+             
+
 }
 
 test {
