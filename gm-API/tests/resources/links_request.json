@@ -1,4 +1,4 @@
 {
-  "inputGraph": "localhost/input",
-  "outputGraph": "localhost/output"
+  "graph": "localhost/ids",
+  "strategy": "NER"
 }

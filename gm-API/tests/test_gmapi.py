@@ -1,9 +1,9 @@
-from gm_api.gmapi import GMApplication, number_of_workers, cli
-from gm_api.app import create
 import unittest
 import click
-from click.testing import CliRunner
 from nose.tools import eq_
+from gm_api.app import create
+from click.testing import CliRunner
+from gm_api.gmapi import GMApplication, number_of_workers, cli
 
 
 class TestAPIStart(unittest.TestCase):

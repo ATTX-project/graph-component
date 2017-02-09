@@ -1,6 +1,6 @@
-from gm_api.utils.db import connect_DB
 import unittest
 import sqlite3
+from gm_api.utils.db import connect_DB
 
 
 class DBTestCase(unittest.TestCase):

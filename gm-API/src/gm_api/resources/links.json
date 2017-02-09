@@ -1,15 +1,15 @@
 {
   "type": "object",
   "properties": {
-    "inputGraph": {
+    "graph": {
       "type": "string"
     },
-    "outputGraph": {
+    "strategy": {
       "type": "string"
     }
   },
   "required": [
-    "inputGraph",
-    "outputGraph"
+    "graph",
+    "strategy"
   ]
 }

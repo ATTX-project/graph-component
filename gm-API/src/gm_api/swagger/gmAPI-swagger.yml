@@ -4,7 +4,7 @@ info:
   description: "ATTX GM internal  API for mapping the source data against a RML mapping\
     \ configuration and communication between Graph Manager the Workflow Component\
     \ and the Graph Store."
-  version: "0.2"
+  version: "0.1"
   title: "ATTX GM API"
   contact:
     name: "ATTX project"
@@ -43,7 +43,6 @@ paths:
             $ref: "#/definitions/MapResult"
         410:
           description: "Map Gone."
-      x-swagger-router-controller: "gm_api.api.gm_api_controller"
     delete:
       description: "Delete map with a certain ID."
       operationId: "map_map_iddelete"
@@ -57,7 +56,6 @@ paths:
       responses:
         200:
           description: "OK"
-      x-swagger-router-controller: "gm_api.api.default_controller"
   /map:
     post:
       tags:
@@ -80,8 +78,7 @@ paths:
             $ref: "#/definitions/MapResult"
         400:
           description: "Invalid Input."
-      x-swagger-router-controller: "gm_api.api.gm_api_controller"
-  /clusterids:
+  /cluster:
     post:
       tags:
       - "gmAPI"
@@ -91,8 +88,25 @@ paths:
       responses:
         202:
           description: "Accepted."
-      x-swagger-router-controller: "gm_api.api.gm_api_controller"
-  /links:
+  /prov:
+    get:
+      tags:
+      - "gmAPI"
+      description: "Updates the Graph Store with provenance data."
+      operationId: "updateprov_get"
+      parameters:
+      - name: "modifiedSince"
+        in: "query"
+        description: "Date since last check."
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        200:
+          description: "Done"
+          schema:
+            $ref: "#/definitions/ProvStatus"
+  /link:
     get:
       tags:
       - "gmAPI"
@@ -110,7 +124,7 @@ paths:
       parameters:
       - in: "body"
         name: "linking"
-        description: "Linking between Working Data Graphs based on link object."
+        description: "Create links between Working Data Graphs based on different linking implementation."
         required: true
         schema:
           $ref: "#/definitions/Link"
@@ -119,7 +133,6 @@ paths:
           description: "Accepted."
         400:
           description: "Invalid Input."
-      x-swagger-router-controller: "gm_api.api.gm_api_controller"
 definitions:
   Map:
     allOf:
@@ -156,12 +169,22 @@ definitions:
         format: "int64"
       status:
         type: "string"
+  ProvStatus:
+    required:
+    - "lastStart"
+    - "status"
+    properties:
+      lastStart:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
   Link:
     required:
-    - "inputGraph"
-    - "outputGraph"
+    - "graph"
+    - "strategy"
     properties:
-      inputGraph:
+      graph:
         type: "string"
-      outputGraph:
+      strategy:
         type: "string"

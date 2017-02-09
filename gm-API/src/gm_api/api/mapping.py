@@ -1,9 +1,8 @@
-import falcon
 import json
-# from random import randint, choice
-from gm_api.utils.validate import validate
+import falcon
 from gm_api.resources import load_schema
 from gm_api.utils.logs import app_logger
+from gm_api.utils.validate import validate
 from gm_api.applib.construct_map import MappingObject
 
 

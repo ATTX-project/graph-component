@@ -1,7 +1,8 @@
-from gm_api.app import create
+import falcon
 import unittest
 from falcon import testing
-import falcon
+from gm_api.app import create
+from gm_api.app import api_version
 from gm_api.utils.db import connect_DB
 
 
@@ -29,22 +30,21 @@ class TestMyApp(appTest):
         """Test empty POST map message."""
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/map', body='', headers=hdrs)
+        result = self.simulate_post('/%s/map' % (api_version), body='', headers=hdrs)
         assert(result.status == falcon.HTTP_400)
 
     def test_map_post_good(self):
         """Test good POST map message."""
         with open('tests/resources/map_request.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
-        # test_data = open('tests/resources/map_request.json', 'r')
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/map', body=test_data, headers=hdrs)
+        result = self.simulate_post('/%s/map' % (api_version), body=test_data, headers=hdrs)
         assert(result.status == falcon.HTTP_202)
 
     def test_cluster_post_good(self):
         """Test good POST cluster message."""
-        result = self.simulate_post('/clusterids')
+        result = self.simulate_post('/%s/cluster' % (api_version))
         assert(result.status == falcon.HTTP_200)
 
     def test_getlinks_post_good(self):
@@ -54,19 +54,19 @@ class TestMyApp(appTest):
         # test_data = open('tests/resources/map_request.json', 'r')
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/links', body=test_data, headers=hdrs)
+        result = self.simulate_post('/%s/link' % (api_version), body=test_data, headers=hdrs)
         assert(result.status == falcon.HTTP_202)
 
     def test_getlinks_post_bad(self):
         """Test empty POST links message."""
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/links', body='', headers=hdrs)
+        result = self.simulate_post('/%s/link' % (api_version), body='', headers=hdrs)
         assert(result.status == falcon.HTTP_400)
 
     def test_getlinks_get_good(self):
         """Test GET entities links message."""
-        result = self.simulate_get('/links')
+        result = self.simulate_get('/%s/link' % (api_version))
         assert(result.status == falcon.HTTP_200)
 
     def test_map_get_good(self):
@@ -79,7 +79,7 @@ class TestMyApp(appTest):
         created_id = db_cursor.lastrowid
         conn.commit()
         doc = {u'id': created_id, u'status': u'Done'}
-        result = self.simulate_get('/map/{0}'.format(created_id))
+        result = self.simulate_get('/{0}/map/{1}'.format(api_version, created_id))
         assert(result.json == doc)
         conn.close()
 
@@ -92,7 +92,7 @@ class TestMyApp(appTest):
         # Save (commit) the changes
         created_id = db_cursor.lastrowid
         conn.commit()
-        result = self.simulate_get('/map/{0}'.format(created_id))
+        result = self.simulate_get('/{0}/map/{1}'.format(api_version, created_id))
         assert(result.status == falcon.HTTP_200)
         conn.close()
 
@@ -106,8 +106,8 @@ class TestMyApp(appTest):
         created_id = db_cursor.lastrowid
         conn.commit()
         conn.close()
-        self.simulate_delete('/map/{0}'.format(created_id))
-        result = self.simulate_get('/map/{0}'.format(created_id))
+        self.simulate_delete('/{0}/map/{1}'.format(api_version, created_id))
+        result = self.simulate_get('/{0}/map/{1}'.format(api_version, created_id))
         assert(result.status == falcon.HTTP_410)
 
     def test_map_get_delete(self):
@@ -119,7 +119,7 @@ class TestMyApp(appTest):
         # Save (commit) the changes
         created_id = db_cursor.lastrowid
         conn.commit()
-        result = self.simulate_delete('/map/{0}'.format(created_id))
+        result = self.simulate_delete('/{0}/map/{1}'.format(api_version, created_id))
         assert(result.status == falcon.HTTP_200)
         conn.close()
 

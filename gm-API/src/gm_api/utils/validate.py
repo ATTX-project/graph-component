@@ -1,6 +1,6 @@
 import json
-import jsonschema
 import falcon
+import jsonschema
 
 
 def validate(schema):

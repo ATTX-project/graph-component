@@ -1,7 +1,7 @@
-from gm_api.utils.prefixes import namspace_config, bind_prefix
 import unittest
 from rdflib import Graph
 from nose.tools import ok_
+from gm_api.utils.prefixes import namspace_config, bind_prefix
 
 
 class PrefixTestCase(unittest.TestCase):

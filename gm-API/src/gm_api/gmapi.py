@@ -1,7 +1,7 @@
-from gm_api.app import create
 import click
 import multiprocessing
 import gunicorn.app.base
+from gm_api.app import create
 from gunicorn.six import iteritems
 
 
