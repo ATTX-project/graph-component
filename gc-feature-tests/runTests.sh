@@ -14,5 +14,5 @@ wait_for "frontend" "8080"
 wait_for "gmapi" "4302"
 wait_for "wfapi" "4301"
 
-gradle -b /tmp/build.gradle test
+gradle -b /tmp/build.test.gradle --offline test
 

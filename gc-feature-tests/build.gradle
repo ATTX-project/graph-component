@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "idea"
     id "com.chrisgahlert.gradle-dcompose-plugin" version "0.8.2"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 apply plugin: 'maven'
@@ -22,7 +23,7 @@ if (!hasProperty('mainClass')) {
 
 
 dependencies {
-    testCompile \
+    compile \
             'junit:junit:4.10',
             'info.cukes:cucumber-java8:1.2.5',
             'info.cukes:cucumber-junit:1.2.5',
@@ -35,6 +36,9 @@ dependencies {
             'org.apache.jena:apache-jena-libs:3.1.1',
             'org.elasticsearch:elasticsearch:1.2.2'
             //'org.uh.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
+            
+    testRuntime  \
+        fileTree(dir: 'build/libs', include: ['*.jar'])
 }
 // in case we want have a ./gradlw command.
 task wrapper(type: Wrapper) {
@@ -48,10 +52,7 @@ dcompose {
     createComposeFile.useTags = true    
     registry ('http://attx-dev:5000') {}
     registry ('http://attx-dev.hulib.helsinki.fi:5000') {}  
-    
-   //volumes {
-   //          test
-    //     }    
+      
     shared {
         image = 'attx-dev.hulib.helsinki.fi:5000/uv-attx-shared'
     }
@@ -88,7 +89,7 @@ dcompose {
     wfapi {
         image = 'attx-dev.hulib.helsinki.fi:5000/wf-api:latest'
     }    
-    gcittester {
+    test {
         ignoreExitCode = true
         baseDir = file('.')
         dockerFilename = 'Dockerfile'        
@@ -103,11 +104,15 @@ dcompose {
 }
 
 task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
-    service = dcompose.gcittester       
+    service = dcompose.test       
     containerPath = '/tmp/build/reports'
     destinationDir = file("build/from-container/")
     cleanDestinationDir = false  
 }
 
-startGcittesterContainer.finalizedBy('copyReportFiles')
-//copyReportFiles.mustRunAfter('startGcittesterContainer')
+test.finalizedBy('copyReportFiles')
+
+// making sure the that fresh build of test classes is done before building the image
+startTestContainer.dependsOn('shadowJar')
+startTestContainer.dependsOn('testClasses')
+
