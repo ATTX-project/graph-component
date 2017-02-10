@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.graphmanager.rdf2json.indexer;
+package org.uh.attx.gc.graphcomponent.integration.test.rdf2json;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -23,6 +23,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+//import org.uh.attx.graphmanager.rdf2json.indexer.Indexer;
 import static org.junit.Assert.*;
 
 /**
@@ -30,9 +32,9 @@ import static org.junit.Assert.*;
  * @author jkesanie
  */
 public class IndexerIT {
-
-    String storeEndpoint = "http://localhost:3030/ds/";
-    String indexEndpoint = "localhost";
+/*
+    String storeEndpoint = "http://fuseki:3030/ds/";
+    String indexEndpoint = "fuseki";
     int bulkSize = 100;
     String mapping = null;
     TransportClient client = null;
@@ -64,21 +66,16 @@ public class IndexerIT {
     public void tearDown() {
     }
 
-    /**
-     * Test of main method, of class Indexer.
-     */
     @Test
     public void testMain() throws Exception {
         System.out.println("main");
+        fail("Implement me!");
         //String[] args = null;
         //Indexer.main(args);
         // TODO review the generated test code and remove the default call to fail.
 
     }
 
-    /**
-     * Test of map method, of class Indexer.
-     */
     @Test
     public void testMap() throws Exception {
         try {
@@ -118,9 +115,6 @@ public class IndexerIT {
         }
     }
 
-    /**
-     * Test of prepareData method, of class Indexer.
-     */
     @Test
     public void testPrepareData() throws Exception {
         Indexer i = new Indexer(storeEndpoint, client, bulkSize);
@@ -132,12 +126,11 @@ public class IndexerIT {
 
     }
 
-    /**
-     * Test of switchIndices method, of class Indexer.
-     */
+
     @Test
     public void testSwitchIndices() {
         System.out.println("switchIndices");
+        fail("Implement me!");
         //String prefix = "";
         //String newIndex = "";
         //Indexer instance = null;
@@ -145,12 +138,10 @@ public class IndexerIT {
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    /**
-     * Test of createNewSirenIndex method, of class Indexer.
-     */
     @Test
     public void testCreateNewSirenIndex() {
         System.out.println("createNewSirenIndex");
+        fail("Implement me!");
         //String index = "";
         //Indexer instance = null;
         //boolean expResult = false;
@@ -159,12 +150,11 @@ public class IndexerIT {
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    /**
-     * Test of getCurrentIndex method, of class Indexer.
-     */
+*/
     @Test
     public void testGetCurrentIndex() {
         System.out.println("getCurrentIndex");
+        fail("Implement me!");
         //String prefix = "";
         //Indexer instance = null;
         //String expResult = "";

@@ -23,6 +23,18 @@ repositories {
     //jcenter()
 }
 
+if (!project.hasProperty("artifactRepo")) {
+    ext.artifactRepo = "http://attx-dev.hulib.helsinki.fi:8081/repository/attx-snapshots"
+}
+if (!project.hasProperty("artifactRepoUser")) {
+    ext.artifactRepoUser = ""
+}
+if (!project.hasProperty("artifactRepoPassword")) {
+    ext.artifactRepoPassword = ""
+}
+
+
+
 dependencies {
      
 // https://mvnrepository.com/artifact/org.apache.jena/apache-jena
@@ -43,4 +55,25 @@ compile group: 'org.apache.jena', name: 'apache-jena', version: '3.1.1'
 // in case we want have a ./gradlw command.
 task wrapper(type: Wrapper) {
    gradleVersion = '3.3'
+}
+
+version="1.0-SNAPSHOT"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "${artifactRepo}") {
+                authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+            }
+        }
+    }
+}
+
+uploadShadow {
+  repositories {
+    mavenDeployer {
+        snapshotRepository(url: "${artifactRepo}") {
+                authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+    }    }
+  }
 }

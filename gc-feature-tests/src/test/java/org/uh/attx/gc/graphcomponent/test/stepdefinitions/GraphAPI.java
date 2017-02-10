@@ -31,18 +31,18 @@ public class GraphAPI implements En{
 
         Given("^graph API, Elasticsearch and Graph Store are running$", () -> {
             try {
-                GetRequest get = Unirest.get("http://localhost:4302/");
+                GetRequest get = Unirest.get("http://gmapi:4302/");
                 HttpResponse<JsonNode> response1 = get.asJson();
                 int result1 = response1.getStatus();
 //                If the server would not give 404 that means it does not run
                 assertEquals(result1, 404);
 
-                get = Unirest.get("http://localhost:9200/");
+                get = Unirest.get("http://essiren:9200/");
                 HttpResponse<String> response2 = get.asString();
                 int result2 = response2.getStatus();
                 assertEquals(result2, 200);
 
-                get = Unirest.get("http://localhost:3030/ds/get");
+                get = Unirest.get("http://fuseki:3030/ds/get");
                 HttpResponse<String> response3 = get.asString();
                 int result3 = response3.getStatus();
                 assertEquals(result3, 200);
@@ -56,7 +56,7 @@ public class GraphAPI implements En{
 
         When("^I post a mapping$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:4302/map")
+                HttpResponse<JsonNode> postResponse = Unirest.post("http://gmapi:4302/map")
                         .header("content-type", "application/json")
                         .body(REQUEST)
                         .asJson();
@@ -72,7 +72,7 @@ public class GraphAPI implements En{
 
         When("^I post a new mapping$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:4302/map")
+                HttpResponse<JsonNode> postResponse = Unirest.post("http://gmapi:4302/map")
                         .header("content-type", "application/json")
                         .body(REQUEST)
                         .asJson();
@@ -88,7 +88,7 @@ public class GraphAPI implements En{
 
         Then("^I should be able to retrieve status of mapping\\.$", () -> {
             try {
-                String URL = String.format("http://localhost:4302/map/%s", created_id1);
+                String URL = String.format("http://gmapi:4302/map/%s", created_id1);
                 GetRequest get = Unirest.get(URL);
                 HttpResponse<JsonNode> response1 = get.asJson();
                 JSONObject myObj = response1.getBody().getObject();
@@ -104,7 +104,7 @@ public class GraphAPI implements En{
 
         Given("^graph API is running$", () -> {
             try {
-                GetRequest get = Unirest.get("http://localhost:4302/");
+                GetRequest get = Unirest.get("http://gmapi:4302/");
                 HttpResponse<JsonNode> response1 = get.asJson();
                 int result1 = response1.getStatus();
 //                If the server would not give 404 that means it does not run
@@ -118,7 +118,7 @@ public class GraphAPI implements En{
 
         Then("^I should be able to see the resource in Elasticsearch\\.$", () -> {
             try {
-                String URL = String.format("http://localhost:9200/default/work/%s", created_id2);
+                String URL = String.format("http://essiren:9200/default/work/%s", created_id2);
 //                Wait for thread to execute
                 Thread.sleep(5000);
                 GetRequest get = Unirest.get(URL);
@@ -133,7 +133,7 @@ public class GraphAPI implements En{
 
         And("^I retrieve that mapping$", () -> {
             try {
-                String URL = String.format("http://localhost:4302/map/%s", created_id2);
+                String URL = String.format("http://gmapi:4302/map/%s", created_id2);
                 GetRequest get = Unirest.get(URL);
                 HttpResponse<JsonNode> response1 = get.asJson();
                 int result1 = response1.getStatus();
@@ -147,7 +147,7 @@ public class GraphAPI implements En{
 
         When("^I delete a mapping$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:4302/map")
+                HttpResponse<JsonNode> postResponse = Unirest.post("http://gmapi:4302/map")
                         .header("content-type", "application/json")
                         .body(REQUEST)
                         .asJson();
@@ -155,7 +155,7 @@ public class GraphAPI implements En{
                 deleted_id = myObj.getInt("id");
 //                Wait for thread to execute
                 Thread.sleep(5000);
-                String URL = String.format("http://localhost:4302/map/%s", deleted_id);
+                String URL = String.format("http://gmapi:4302/map/%s", deleted_id);
                 HttpRequestWithBody request = Unirest.delete(URL);
                 HttpResponse<String> response = request.asString();
                 int result1 = response.getStatus();
@@ -182,7 +182,7 @@ public class GraphAPI implements En{
 
         Then("^the mapping result still exists in Elasticsearch\\.$", () -> {
             try {
-                String URL = String.format("http://localhost:9200/default/work/%s", deleted_id);
+                String URL = String.format("http://essiren:9200/default/work/%s", deleted_id);
 //                Wait for thread to execute
                 Thread.sleep(5000);
                 GetRequest get = Unirest.get(URL);

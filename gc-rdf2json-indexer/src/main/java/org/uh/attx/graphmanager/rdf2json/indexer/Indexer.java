@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
@@ -72,22 +73,37 @@ public class Indexer {
     
     public static void main(String[] args) throws Exception {
         Options options = new Options();
-        options.addOption("s", "store", true, "StoreEndpoint");
-        options.addOption("i", "index", true, "IndexEndpoint");
-        options.addOption("p", "indexPort", true, "IndexPort");
-        options.addOption("g", "graphs", true, "Comma separated list of input graphs");
-        options.addOption("b", "bulksize", true, "Bulk size");
-        options.addOption("m", "mapping", true, "Mapping json");
+        
+        options.addOption("s", true, "StoreEndpoint");
+        options.addOption("i", true, "IndexEndpoint");
+        options.addOption("p", true, "IndexPort");
+        options.addOption("g", true, "Comma separated list of input graphs");
+        options.addOption("b", true, "Bulk size");
+        options.addOption("m", true, "Mapping json");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse( options, args);
         
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Indexer", options);
         
-        String storeEndpoint = cmd.getOptionValue('s', "http://localhost:3030/ds/");
-        String indexEndpoint = cmd.getOptionValue('i', "localhost");
-        int indexPort = Integer.parseInt(cmd.getOptionValue('p', "9300"));
-        String graphs = cmd.getOptionValue('g', "");
-        int bulkSize = Integer.parseInt(cmd.getOptionValue('b', "100"));
-        String mapping = cmd.getOptionValue('m', "");
+        if(     !cmd.hasOption("s") ||
+                !cmd.hasOption("i") ||
+                !cmd.hasOption("p") ||                
+                !cmd.hasOption("g") || 
+                !cmd.hasOption("p") || 
+                !cmd.hasOption("m")
+                
+            ) {
+               System.out.println("Required options missing!");
+               return;
+        }
+        
+        String storeEndpoint = cmd.getOptionValue('s');
+        String indexEndpoint = cmd.getOptionValue('i');
+        int indexPort = Integer.parseInt(cmd.getOptionValue('p'));
+        String graphs = cmd.getOptionValue('g');
+        int bulkSize = Integer.parseInt(cmd.getOptionValue('b'));
+        String mapping = cmd.getOptionValue('m');
                 
         TransportClient client = Indexer.getClient(indexEndpoint, indexPort, "elasticsearch");        
         String[] inputGraphs = null;
@@ -152,11 +168,11 @@ public class Indexer {
 
     }
     
-    void setModel(Model model) {
+    public void setModel(Model model) {
         this.model = model;
     }
 
-    Model getModel() {
+    public Model getModel() {
         return this.model;
     }
     public void map(String[] inputGraphs, String mapping, int bulkSize) throws Exception {
@@ -193,7 +209,7 @@ public class Indexer {
         }
     }
 
-    void prepareData(String[] inputGraphs) throws Exception {
+    public void prepareData(String[] inputGraphs) throws Exception {
         // download all input graphs to the model using graph store protocol            
         // Note: this could end up using a lot of memory
         if(inputGraphs == null || inputGraphs.length == 0 ) {   
