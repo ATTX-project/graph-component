@@ -1,6 +1,5 @@
 import unittest
 from rdflib import Graph
-from nose.tools import ok_
 from gm_api.utils.prefixes import namspace_config, bind_prefix
 
 
@@ -14,8 +13,7 @@ class PrefixTestCase(unittest.TestCase):
     def test_bind_prefix(self):
         """Test for Namespaces."""
         bind_prefix(self.graph)
-        ok_(list(self.graph.namespaces()) != [],
-            "Test if there are namespaces.")
+        self.assertTrue(list(self.graph.namespaces()) != [], "Test if there are namespaces.")
 
     def test_namespace(self):
         """Test connection."""
