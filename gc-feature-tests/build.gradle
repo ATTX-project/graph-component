@@ -113,6 +113,6 @@ task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
 test.finalizedBy('copyReportFiles')
 
 // making sure the that fresh build of test classes is done before building the image
-startTestContainer.dependsOn('shadowJar')
-startTestContainer.dependsOn('testClasses')
+buildTestImage.dependsOn('shadowJar')
+buildTestImage.dependsOn('testClasses')
 
