@@ -1,13 +1,13 @@
+import json
+import threading
+import subprocess
+from pyld import jsonld
 from rdflib import ConjunctiveGraph
+from elasticsearch import Elasticsearch
 from SPARQLWrapper import SPARQLWrapper
-from gm_api.utils.logs import app_logger, thread_logger
 from gm_api.utils.db import connect_DB
 from gm_api.utils.prefixes import bind_prefix
-from elasticsearch import Elasticsearch
-from pyld import jsonld
-import json
-import subprocess
-import threading
+from gm_api.utils.logs import app_logger, thread_logger
 
 
 class LODResource(object):
@@ -71,7 +71,8 @@ class MappingObject(object):
     def create_map(cls, targetEndpoint, mapping, sourceGraphs, plugin, serialization=None):
         """Create a map."""
         conn = connect_DB()
-        result = cls.register_map(conn, mapping)
+        status = "WIP"
+        result = cls.register_map(conn, status, mapping)
         d = threading.Thread(name='daemon', target=cls.daemon,
                              args=(result, targetEndpoint, mapping,
                                    sourceGraphs, plugin, serialization))
@@ -113,7 +114,7 @@ class MappingObject(object):
             elif plugin == 'java':
                 conn = connect_DB()
                 cls.update_map_status(conn, result['id'], "Done")
-                subprocess.call(['java', '-jar', 'Blender.jar'])
+                subprocess.call(['java', '-jar', 'java/gc-rdf2json-indexer.jar'])
             else:
                 return
             thread_logger.info('Exiting thread!')
@@ -123,14 +124,14 @@ class MappingObject(object):
             return error
 
     @staticmethod
-    def register_map(conn, mapping):
+    def register_map(conn, status, mapping):
         """Create the map."""
         db_cursor = conn.cursor()
         # Insert a row of data
-        db_cursor.execute("insert into maps values (?, ?, ?)", ('WIP', '', str(mapping)))
+        db_cursor.execute("INSERT INTO maps VALUES (?, ?, ?)", (status, '', str(mapping)))
         # Save (commit) the changes
         conn.commit()
-        result = {'id': db_cursor.lastrowid, 'status': 'WIP'}
+        result = {'id': db_cursor.lastrowid, 'status': status}
         app_logger.info('Create row in the database with ID: {0}'.format(db_cursor.lastrowid))
         db_cursor.close()
         return result
@@ -140,7 +141,7 @@ class MappingObject(object):
         """Check the map status."""
         db_cursor = conn.cursor()
         # Insert a row of data
-        for row in db_cursor.execute('select rowid, status from maps where rowid=?', (mapID, )):
+        for row in db_cursor.execute('SELECT rowid, status FROM maps WHERE rowid=?', (mapID, )):
             result = {'id': row[0], 'status': row[1]}
             app_logger.info('Check status in the database for ID: {0}'.format(mapID))
             break
@@ -155,7 +156,7 @@ class MappingObject(object):
         """Detele the map data."""
         db_cursor = conn.cursor()
         # Delete a row of data
-        db_cursor.execute('delete from maps where rowid=?', (mapID, ))
+        db_cursor.execute('DELETE FROM maps WHERE rowid=?', (mapID, ))
         # Save (commit) the changes
         conn.commit()
         app_logger.info('Delete map in the database with ID: {0}'.format(mapID))
@@ -172,7 +173,7 @@ class MappingObject(object):
             app_logger.info('There is no record for ID:'.format(mapID))
             pass
         else:
-            db_cursor.execute('update maps set status=? where rowid=?', (status, mapID))
+            db_cursor.execute('UPDATE maps SET status=? WHERE rowid=?', (status, mapID))
             # Save (commit) the changes
             conn.commit()
             app_logger.info('Update status in the database for ID: {0}'.format(mapID))
@@ -189,7 +190,7 @@ class MappingObject(object):
             app_logger.info('There is no record for ID:'.format(mapID))
             pass
         else:
-            db_cursor.execute('update maps set data=? where rowid=?', (data, mapID, ))
+            db_cursor.execute('UPDATE maps SET data=? WHERE rowid=?', (data, mapID, ))
             # Save (commit) the changes
             conn.commit()
             app_logger.info('Update data field in the database for ID: {0}'.format(mapID))

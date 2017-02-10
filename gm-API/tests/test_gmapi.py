@@ -1,9 +1,8 @@
-from gm_api.gmapi import GMApplication, number_of_workers, cli
-from gm_api.app import create
 import unittest
 import click
+from gm_api.app import create
 from click.testing import CliRunner
-from nose.tools import eq_
+from gm_api.gmapi import GMApplication, number_of_workers, cli
 
 
 class TestAPIStart(unittest.TestCase):
@@ -43,7 +42,7 @@ class TestAPIStart(unittest.TestCase):
     def running_app(self):
         """Test running app."""
         response = self.app.get('/')
-        eq_(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def nb_workers(self):
         """Test running app."""
