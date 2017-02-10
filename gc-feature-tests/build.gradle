@@ -7,7 +7,6 @@ plugins {
 
 apply plugin: 'maven'
 
-
 repositories {
   maven {
     url "https://plugins.gradle.org/m2/"
@@ -23,12 +22,10 @@ if (!hasProperty('mainClass')) {
 
 
 dependencies {
-    compile \
+    testCompile \
             'junit:junit:4.10',
             'info.cukes:cucumber-java8:1.2.5',
             'info.cukes:cucumber-junit:1.2.5',
-            'info.cukes:cucumber-jython:1.2.5',
-            'org.python:jython-standalone:2.7.1b3',
             'com.mashape.unirest:unirest-java:1.4.9',
             'org.skyscreamer:jsonassert:1.4.0',
             'net.javacrumbs.json-unit:json-unit:1.16.0',
@@ -37,8 +34,6 @@ dependencies {
             'org.elasticsearch:elasticsearch:1.2.2'
             //'org.uh.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
             
-    testRuntime  \
-        fileTree(dir: 'build/libs', include: ['*.jar'])
 }
 // in case we want have a ./gradlw command.
 task wrapper(type: Wrapper) {
@@ -110,9 +105,14 @@ task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
     cleanDestinationDir = false  
 }
 
-test.finalizedBy('copyReportFiles')
+startTestContainer.finalizedBy('copyReportFiles')
 
 // making sure the that fresh build of test classes is done before building the image
 buildTestImage.dependsOn('shadowJar')
 buildTestImage.dependsOn('testClasses')
 
+shadowJar {
+  classifier = 'tests'
+  from sourceSets.test.output
+  configurations = [project.configurations.testRuntime]
+}

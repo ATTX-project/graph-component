@@ -6,7 +6,10 @@ task wrapper(type: Wrapper) {
    gradleVersion = '3.3'
 }
 
+repositories {
+    mavenCentral()
+}
 dependencies {
-    testRuntime  \
-        fileTree(dir: 'build/libs', include: ['*.jar'])
+    testCompile  \
+        fileTree(dir: 'build/libs', include: ['*.jar'])      
 }
