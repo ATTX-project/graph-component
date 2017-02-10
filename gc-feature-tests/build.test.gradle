@@ -1,14 +1,7 @@
 plugins {
     id "java"
 }
-// in case we want have a ./gradlw command.
-task wrapper(type: Wrapper) {
-   gradleVersion = '3.3'
-}
 
-repositories {
-    mavenCentral()
-}
 dependencies {
     testCompile  \
         fileTree(dir: 'build/libs', include: ['*.jar'])      
