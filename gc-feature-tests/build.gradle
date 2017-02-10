@@ -78,7 +78,7 @@ dcompose {
         portBindings = ['9200:9200', '9300:9300']            
     }  
     gmapi {
-        image = 'attx-dev.hulib.helsinki.fi:5000/gm-api'
+        image = 'attx-dev.hulib.helsinki.fi:5000/gm-api:latest'
     }    
 
     wfapi {
