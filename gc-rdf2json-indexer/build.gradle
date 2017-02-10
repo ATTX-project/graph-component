@@ -23,6 +23,18 @@ repositories {
     //jcenter()
 }
 
+if (!project.hasProperty("artifactRepo")) {
+    ext.artifactRepo = "http://attx-dev.hulib.helsinki.fi:8081/repository/attx-snapshots"
+}
+if (!project.hasProperty("artifactRepoUser")) {
+    ext.artifactRepoUser = ""
+}
+if (!project.hasProperty("artifactRepoPassword")) {
+    ext.artifactRepoPassword = ""
+}
+
+
+
 dependencies {
      
 // https://mvnrepository.com/artifact/org.apache.jena/apache-jena

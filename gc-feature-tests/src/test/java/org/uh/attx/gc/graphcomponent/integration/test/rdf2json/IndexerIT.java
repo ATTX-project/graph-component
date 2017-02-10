@@ -23,7 +23,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uh.attx.graphmanager.rdf2json.indexer.Indexer;
+
+//import org.uh.attx.graphmanager.rdf2json.indexer.Indexer;
 import static org.junit.Assert.*;
 
 /**
@@ -31,9 +32,9 @@ import static org.junit.Assert.*;
  * @author jkesanie
  */
 public class IndexerIT {
-
-    String storeEndpoint = "http://localhost:3030/ds/";
-    String indexEndpoint = "localhost";
+/*
+    String storeEndpoint = "http://fuseki:3030/ds/";
+    String indexEndpoint = "fuseki";
     int bulkSize = 100;
     String mapping = null;
     TransportClient client = null;
@@ -65,9 +66,6 @@ public class IndexerIT {
     public void tearDown() {
     }
 
-    /**
-     * Test of main method, of class Indexer.
-     */
     @Test
     public void testMain() throws Exception {
         System.out.println("main");
@@ -78,9 +76,6 @@ public class IndexerIT {
 
     }
 
-    /**
-     * Test of map method, of class Indexer.
-     */
     @Test
     public void testMap() throws Exception {
         try {
@@ -120,9 +115,6 @@ public class IndexerIT {
         }
     }
 
-    /**
-     * Test of prepareData method, of class Indexer.
-     */
     @Test
     public void testPrepareData() throws Exception {
         Indexer i = new Indexer(storeEndpoint, client, bulkSize);
@@ -134,9 +126,7 @@ public class IndexerIT {
 
     }
 
-    /**
-     * Test of switchIndices method, of class Indexer.
-     */
+
     @Test
     public void testSwitchIndices() {
         System.out.println("switchIndices");
@@ -148,9 +138,6 @@ public class IndexerIT {
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    /**
-     * Test of createNewSirenIndex method, of class Indexer.
-     */
     @Test
     public void testCreateNewSirenIndex() {
         System.out.println("createNewSirenIndex");
@@ -163,9 +150,7 @@ public class IndexerIT {
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    /**
-     * Test of getCurrentIndex method, of class Indexer.
-     */
+*/
     @Test
     public void testGetCurrentIndex() {
         System.out.println("getCurrentIndex");

@@ -1,10 +1,9 @@
 plugins {
     id "java"
     id "idea"
-    id "com.github.hierynomus.jython" version "0.4.0"    
+    id "com.chrisgahlert.gradle-dcompose-plugin" version "0.8.2"
 }
 
-apply plugin: "com.github.hierynomus.jython"
 apply plugin: 'maven'
 
 
@@ -13,7 +12,7 @@ repositories {
     url "https://plugins.gradle.org/m2/"
   }
   maven {
-      url "http://attx-dev:8081/repository/attx-snapshots"
+      url "http://attx-dev.hulib.helsinki.fi:8081/repository/attx-snapshots"
   }
 }
 
@@ -34,20 +33,81 @@ dependencies {
             'net.javacrumbs.json-unit:json-unit:1.16.0',
             'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
             'org.apache.jena:apache-jena-libs:3.1.1',
-            'org.elasticsearch:elasticsearch:1.2.2',
-            'org.uh.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
+            'org.elasticsearch:elasticsearch:1.2.2'
+            //'org.uh.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
+}
+// in case we want have a ./gradlw command.
+task wrapper(type: Wrapper) {
+   gradleVersion = '3.3'
+}
+
+
+// services needed for the tests
+
+dcompose {
+    createComposeFile.useTags = true    
+    registry ('http://attx-dev:5000') {}
+    registry ('http://attx-dev.hulib.helsinki.fi:5000') {}  
     
-   
-             
+   //volumes {
+   //          test
+    //     }    
+    shared {
+        image = 'attx-dev.hulib.helsinki.fi:5000/uv-attx-shared'
+    }
+    frontend {
+        image = 'tenforce/unified-views-frontend:latest'
+        volumesFrom = [shared]
+    }
+    mysql {
+        image = 'tenforce/unified-views-mariadb:latest'
+        env = ['MYSQL_ROOT_PASSWORD=iamroot!']
+    }
+    backend {
+        image = 'tenforce/unified-views-backend:latest'
+        volumesFrom =  [shared]
+    }
+    uvdpus {
+        image = 'tenforce/unified-views-add-dpus'
+        dependsOn = [mysql]
+    }      
+    fuseki {
+        image = 'stain/jena-fuseki'
+        exposedPorts = ['3030']
+        portBindings = ['3030:3030']
+    }   
+    essiren {
+        image = 'attxproject/elasticsearch:latest'
+        exposedPorts = ['9200', '9300']
+        portBindings = ['9200:9200', '9300:9300']            
+    }  
+    gmapi {
+        image = 'attx-dev.hulib.helsinki.fi:5000/gm-api'
+    }    
+
+    wfapi {
+        image = 'attx-dev.hulib.helsinki.fi:5000/wf-api:latest'
+    }    
+    gcittester {
+        ignoreExitCode = true
+        baseDir = file('.')
+        dockerFilename = 'Dockerfile'        
+        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        command = ['sh', '-c', '/tmp/runTests.sh']
+        dependsOn = [shared,frontend,mysql,backend,uvdpus,fuseki,essiren,gmapi,wfapi]
+        links = [fuseki.link(), essiren.link(), wfapi.link(), gmapi.link(), frontend.link() ]
+        waitForCommand = true
+    }
+    
 
 }
 
-test {
-    testLogging.showStandardStreams = true
-    systemProperties System.getProperties()
+task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
+    service = dcompose.gcittester       
+    containerPath = '/tmp/build/reports'
+    destinationDir = file("build/from-container/")
+    cleanDestinationDir = false  
 }
 
-task copyToLib(type: Copy) {
-    into "$buildDir/output/lib"
-    from configurations.testCompile
-}
+startGcittesterContainer.finalizedBy('copyReportFiles')
+//copyReportFiles.mustRunAfter('startGcittesterContainer')
