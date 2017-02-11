@@ -73,11 +73,11 @@ class MappingObject(object):
         conn = connect_DB()
         status = "WIP"
         result = cls.register_map(conn, status, mapping)
-        d = threading.Thread(name='daemon', target=cls.daemon,
-                             args=(result, targetEndpoint, mapping,
-                                   sourceGraphs, plugin, serialization))
-        d.setDaemon(True)
-        d.start()
+        daemon_thread = threading.Thread(name='daemon', target=cls.daemon,
+                                         args=(result, targetEndpoint, mapping,
+                                               sourceGraphs, plugin, serialization))
+        daemon_thread.setDaemon(True)
+        daemon_thread.start()
         app_logger.info('Construct map based on Map object.')
         return result
 
@@ -128,7 +128,7 @@ class MappingObject(object):
         """Create the map."""
         db_cursor = conn.cursor()
         # Insert a row of data
-        db_cursor.execute("INSERT INTO maps VALUES (?, ?, ?)", (status, '', str(mapping)))
+        db_cursor.execute("INSERT INTO maps VALUES (?, ?)", (status, str(mapping)))
         # Save (commit) the changes
         conn.commit()
         result = {'id': db_cursor.lastrowid, 'status': status}
@@ -177,22 +177,5 @@ class MappingObject(object):
             # Save (commit) the changes
             conn.commit()
             app_logger.info('Update status in the database for ID: {0}'.format(mapID))
-        db_cursor.close()
-        return
-
-    @staticmethod
-    def update_map_data(conn, mapID, data):
-        """Update the map data."""
-        db_cursor = conn.cursor()
-        db_cursor.execute("SELECT rowid FROM maps WHERE rowid = ?", (mapID,))
-        data = db_cursor.fetchone()
-        if data is None:
-            app_logger.info('There is no record for ID:'.format(mapID))
-            pass
-        else:
-            db_cursor.execute('UPDATE maps SET data=? WHERE rowid=?', (data, mapID, ))
-            # Save (commit) the changes
-            conn.commit()
-            app_logger.info('Update data field in the database for ID: {0}'.format(mapID))
         db_cursor.close()
         return

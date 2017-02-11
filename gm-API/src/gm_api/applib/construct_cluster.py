@@ -72,17 +72,25 @@ class ClusterID(object):
     def retrieve_workingGraphs(endpoint):
         """Retrieve Working Graph based on Workflow Execution information."""
         datasets = []
-        # TO DO: Does rdflib have an easier way for distinct ?
-        query = """SELECT DISTINCT ?dataset
-                   WHERE { GRAPH <%s> {
-                   ?dataset a attxonto:Dataset.
-                   ?activity prov:used ?dataset.
-                   }}""" % (ATTXProv)
-        graph = ConjunctiveGraph(store="SPARQLStore")
+        try:
+            # TO DO: Does rdflib have an easier way for distinct ?
+            query = """SELECT DISTINCT ?dataset
+                       WHERE { GRAPH <%s> {
+                       ?dataset a attxonto:Dataset.
+                       ?activity prov:used ?dataset.
+                       }}""" % (ATTXProv)
+            graph = ConjunctiveGraph(store="SPARQLStore")
 
-        graph.open("http://{0}:{1}/ds/query".format(endpoint['host'], endpoint['port']))
-        # TO DO once the data is properly formated replace ATTXBase with ATTXOnto
-        for row in graph.query(query, initNs={"attxonto": ATTXOnto, "prov": PROV}):
-            datasets.append(row[0].toPython())
-        app_logger.info('Retrieve the working graphs for the ID clustering. Number of graphs: {0}.'.format(len(datasets)))
-        return datasets
+            graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
+            # TO DO once the data is properly formated replace ATTXBase with ATTXOnto
+            for row in graph.query(query, initNs={"attxonto": ATTXOnto, "prov": PROV}):
+                datasets.append(row[0].toPython())
+            app_logger.info('Retrieve the working graphs for the ID clustering. Number of graphs: {0}.'.format(len(datasets)))
+            return datasets
+        except Exception as error:
+            app_logger.error('Something is wrong: {0}'.format(error))
+            raise falcon.HTTPUnprocessableEntity(
+                'Unprocessable ID Clustering',
+                'Could not get the dataasets.'
+            )
+            return error
