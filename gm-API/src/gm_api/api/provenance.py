@@ -1,6 +1,6 @@
 import json
 import falcon
-from gm_api.utils.logs import main_logger
+from gm_api.utils.logs import app_logger
 from gm_api.applib.update_prov import UpdateProv
 
 
@@ -18,4 +18,4 @@ class Provenance(object):
         resp.data = json.dumps(result)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_200
-        main_logger.info('Finished operations on /prov GET Request.')
+        app_logger.info('Finished operations on /prov GET Request.')

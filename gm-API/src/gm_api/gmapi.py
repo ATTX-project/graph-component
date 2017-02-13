@@ -21,17 +21,6 @@ def cli(host, port, log, workers):
     GMApplication(create(), options).run()
 
 
-# Unless really needed to scale use this function. Otherwise 2 workers suffice.
-def number_of_workers():
-    """Establish the numberb or workers based on cpu_count."""
-    return (multiprocessing.cpu_count() * 2) + 1
-
-
-def main():
-    """Main function."""
-    cli()
-
-
 class GMApplication(gunicorn.app.base.BaseApplication):
     """Create Standalone Application WF-API."""
 
@@ -51,6 +40,17 @@ class GMApplication(gunicorn.app.base.BaseApplication):
     def load(self):
         """Load configuration."""
         return self.application
+
+
+# Unless really needed to scale use this function. Otherwise 2 workers suffice.
+def number_of_workers():
+    """Establish the numberb or workers based on cpu_count."""
+    return (multiprocessing.cpu_count() * 2) + 1
+
+
+def main():
+    """Main function."""
+    cli()
 
 
 if __name__ == '__main__':

@@ -1,6 +1,5 @@
 import click
 import unittest
-# from mock import patch
 from gm_api.app import create
 from click.testing import CliRunner
 from gm_api.gmapi import GMApplication, number_of_workers
