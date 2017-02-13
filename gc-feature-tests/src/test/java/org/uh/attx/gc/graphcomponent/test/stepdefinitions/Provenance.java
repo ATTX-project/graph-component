@@ -80,5 +80,11 @@ public class Provenance implements En {
 //            Need to see how to compare the date
 //            assertEquals(lastStart, "Done");
         });
+
+        Then("^I should have provenance information in the Graph Store\\.$", () -> {
+//            Need to see how to compare the date
+//            assertEquals(lastStart, "Done");
+        });
+    }
     }
 }

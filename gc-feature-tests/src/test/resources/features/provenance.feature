@@ -8,3 +8,8 @@ Feature: Handle updating and retrieving provenance data in the graph store
     Given graph API, workflow API and Graph Store are running
     When I start a provenance update
     Then I should obtain when the job was last started and its status.
+
+  Scenario: Start provenance job performed
+    Given graph API, workflow API and Graph Store are running
+    When I start a provenance update
+    Then I should have provenance information in the Graph Store.
