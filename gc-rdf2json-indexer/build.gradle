@@ -74,6 +74,8 @@ uploadShadow {
     mavenDeployer {
         snapshotRepository(url: "${artifactRepo}") {
                 authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
-    }    }
+        }
+        pom.artifactId = 'gc-rdf2json-indexer-all'
+    }
   }
 }
