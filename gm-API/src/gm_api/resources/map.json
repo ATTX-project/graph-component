@@ -50,7 +50,7 @@
         "context"
       ]
     },
-    "sourceGraphs": {
+    "graphStore": {
      "type": "object",
      "properties": {
        "endpoint": {
@@ -85,10 +85,7 @@
        "endpoint",
        "graphs"
      ]
-   },
-    "format": {
-      "type": "string"
-    }
+   }
   },
   "required": [
     "plugin",

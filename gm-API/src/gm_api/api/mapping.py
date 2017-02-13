@@ -14,7 +14,7 @@ class Mapping(object):
         """Respond on GET request to map endpoint."""
         data = MappingObject()
         response = data.create_map(parsed.get('targetEndpoint'), parsed.get('mapping'),
-                                   parsed.get('sourceGraphs'), parsed.get('plugin'), parsed.get('format'))
+                                   parsed.get('graphStore'), parsed.get('plugin'))
         resp.data = json.dumps(response, indent=1, sort_keys=True)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
