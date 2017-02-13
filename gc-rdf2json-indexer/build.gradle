@@ -13,6 +13,7 @@ plugins {
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven-publish'
 
 mainClassName = "org.uh.attx.graphmanager.rdf2json.indexer.Indexer"
 
@@ -59,15 +60,25 @@ task wrapper(type: Wrapper) {
 
 version="1.0-SNAPSHOT"
 
-uploadArchives {
+publishing {
     repositories {
-        mavenDeployer {
-            snapshotRepository(url: "${artifactRepo}") {
-                authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            url "${artifactRepo}"
+            credentials {
+                username "${artifactRepoUser}"
+                password "${artifactRepoPassword}"
             }
         }
     }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    
 }
+
 
 uploadShadow {
   repositories {
