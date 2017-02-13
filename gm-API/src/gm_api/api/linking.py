@@ -3,7 +3,7 @@ import falcon
 from random import randint, choice
 from gm_api.utils.validate import validate
 from gm_api.resources import load_schema
-from gm_api.utils.logs import main_logger
+from gm_api.utils.logs import app_logger
 
 
 quotes = [
@@ -26,11 +26,11 @@ class Link(object):
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
-        main_logger.info('Finished operations on /link POST Request.')
+        app_logger.info('Finished operations on /link POST Request.')
 
     def on_get(self, req, resp):
         """Respond on GET request to map endpoint."""
         resp.data = json.dumps(mock_response)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_200
-        main_logger.info('Finished operations on /link GET Request.')
+        app_logger.info('Finished operations on /link GET Request.')

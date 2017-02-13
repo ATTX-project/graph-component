@@ -2,13 +2,17 @@ import sqlite3
 from gm_api.utils.logs import app_logger
 
 
-def connect_DB():
+def connect_DB(db_file=None):
     """Connect to DB by parsing configuration."""
-    db_filename = 'data.db'
+    db_filename = ''
+    if db_file is None:
+        db_filename = 'data.db'
+    else:
+        db_filename = db_file
     try:
         conn = sqlite3.connect(db_filename)
         app_logger.info('Connecting to database.')
-        create_table(conn, """create table if not exists maps (status text, data text, map text)""")
+        create_table(conn, """create table if not exists maps (status text, map text)""")
         # create_table(conn, """create table if not exists graphstore (host text, port integer, dataset text)""")
         # create_table(conn, """create table if not exists esstore (host text, port integer, index text, resourcetype text)""")
         create_table(conn, """create table if not exists prov (status text, start text)""")

@@ -19,3 +19,7 @@ class PrefixTestCase(unittest.TestCase):
         """Test connection."""
         namspace_config('file.conf')
         pass
+
+
+if __name__ == "__main__":
+    unittest.main()

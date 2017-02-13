@@ -1,8 +1,8 @@
 {
-  "plugin": "python",
+  "plugin": "java",
   "targetEndpoint": {
       "host": "localhost",
-      "port": 9210
+      "port": 9200
   },
   "mapping": {
       "index": "default",
