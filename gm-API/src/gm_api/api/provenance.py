@@ -14,7 +14,8 @@ class Provenance(object):
         data = UpdateProv()
         graph_store = {'host': 'localhost', 'port': 3030, 'dataset': 'ds'}
         wf_endpoint = {'host': 'localhost', 'port': 4301, 'version': "0.1"}
-        result = data.do_update(graph_store, wf_endpoint, modifiedSince, start)
+        prov_args = [graph_store, wf_endpoint, modifiedSince, start]
+        result = data.do_update(*prov_args)
         resp.data = json.dumps(result)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_200

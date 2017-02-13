@@ -91,6 +91,6 @@
     "plugin",
     "targetEndpoint",
     "mapping",
-    "sourceGraphs"
+    "graphStore"
   ]
 }

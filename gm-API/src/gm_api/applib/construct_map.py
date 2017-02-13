@@ -11,11 +11,10 @@ class MappingObject(object):
     def create_map(cls, targetEndpoint, mapping, graphStore, plugin):
         """Create a map."""
         conn = connect_DB()
-        status = "WIP"
+        status = "WIP"  # status for Work In Progress
         result = cls.register_map(conn, status, mapping)
         daemon_thread = threading.Thread(name='daemon', target=cls.daemon,
-                                         args=(result, targetEndpoint, mapping,
-                                               graphStore, plugin))
+                                         args=(result, targetEndpoint, mapping, graphStore, plugin))
         daemon_thread.setDaemon(True)
         daemon_thread.start()
         app_logger.info('Construct map based on Map object.')
@@ -41,12 +40,12 @@ class MappingObject(object):
     def daemon(cls, result, targetEndpoint, mapping, graphStore, plugin):
         """Simple worker daemon."""
         conn = connect_DB()
+        ldmap_args = [targetEndpoint, graphStore, mapping['query'], mapping['context'], mapping['resourceType'], result['id'], mapping['index']]
         try:
             thread_logger.info('Starting Daemon thread.')
             if plugin == 'python':
                 data = LODResource()
-                data.map_jsonld(targetEndpoint, graphStore, mapping['query'],
-                                mapping['context'], mapping['resourceType'], result['id'], mapping['index'])
+                data.map_jsonld(*ldmap_args)
                 cls.update_map_status(conn, result['id'], "Done")
             elif plugin == 'java':
                 conn = connect_DB()
