@@ -12,11 +12,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
+import org.uh.attx.gc.graphcomponent.test.PlatformServices;
 
 /**
  * Created by stefanne on 2/13/17.
  */
 public class Provenance implements En {
+    private PlatformServices s = new PlatformServices(true);
+    
     private int statusCode;
     private String status;
     private String lastStart;
@@ -24,12 +27,12 @@ public class Provenance implements En {
     public Provenance(){
         Given("^graph API, Workflow API and Graph Store are running$", () -> {
             try {
-                GetRequest get = Unirest.get("http://localhost:4302/");
+                GetRequest get = Unirest.get(s.getGmapi());
                 HttpResponse<JsonNode> response1 = get.asJson();
                 int result1 = response1.getStatus();
                 assertEquals(result1, 404);
 
-                get = Unirest.get("http://localhost:3030/ds/get");
+                get = Unirest.get(s.getFuseki() + "/ds/get");
                 HttpResponse<String> response3 = get.asString();
                 int result3 = response3.getStatus();
                 assertEquals(result3, 200);
@@ -42,7 +45,7 @@ public class Provenance implements En {
 
         When("^I retrieve the provenance job status$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:4302/prov")
+                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov")
                         .header("content-type", "application/json")
                         .asJson();
                  statusCode = postResponse.getStatus();
@@ -60,7 +63,7 @@ public class Provenance implements En {
 
         When("^I start a provenance update$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:4302/prov?start=true")
+                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov?start=true")
                         .header("content-type", "application/json")
                         .asJson();
                 JSONObject myObj = postResponse.getBody().getObject();
