@@ -32,6 +32,8 @@ class TestCluster(appClusterTest):
     @httpretty.activate
     def test_cluster_post_bad(self):
         """Test bad POST cluster request."""
+        with open('tests/resources/cluster_request.json', 'r') as datafile:
+            test_data = datafile.read().replace('\n', '')
         xml_result = """<?xml version="1.0"?>
                         <sparql xmlns="http://www.w3.org/2005/sparql-results#">
                             <head>
@@ -51,13 +53,15 @@ class TestCluster(appClusterTest):
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=500)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXIDs), status=500)
         httpretty.register_uri(httpretty.POST, "http://localhost:4302/0.1/cluster", status=200)
-        result = self.simulate_post('/%s/cluster' % (api_version), body='')
+        result = self.simulate_post('/%s/cluster' % (api_version), body=test_data)
         doc = {"status": "Error", "IDCount": 0}
         assert(result.json == doc)
 
     @httpretty.activate
     def test_cluster_post_good(self):
         """Test good POST cluster request."""
+        with open('tests/resources/cluster_request.json', 'r') as datafile:
+            test_data = datafile.read().replace('\n', '')
         xml_result = """<?xml version="1.0"?>
                         <sparql xmlns="http://www.w3.org/2005/sparql-results#">
                             <head>
@@ -77,17 +81,19 @@ class TestCluster(appClusterTest):
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXIDs), status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:4302/0.1/cluster", status=200)
-        result = self.simulate_post('/%s/cluster' % (api_version), body='')
+        result = self.simulate_post('/%s/cluster' % (api_version), body=test_data)
         assert(result.status == falcon.HTTP_200)
 
     @httpretty.activate
     def test_cluster_post_message_error(self):
         """Test Unprocessable POST cluster message."""
+        with open('tests/resources/cluster_request.json', 'r') as datafile:
+            test_data = datafile.read().replace('\n', '')
         doc = {u'description': u'Could not process the clustering of ids.', u'title': u'Unprocessable ID Clustering'}
         httpretty.register_uri(httpretty.POST, "http://localhost:4302/0.1/cluster", body=doc, status=200)
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/%s/cluster' % (api_version), body='', headers=hdrs)
+        result = self.simulate_post('/%s/cluster' % (api_version), body=test_data, headers=hdrs)
         print result.json
         assert(result.json == doc)
 
