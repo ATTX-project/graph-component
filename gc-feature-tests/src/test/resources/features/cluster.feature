@@ -9,4 +9,4 @@ Feature: Handle clustering IDs in the graph store
         And the graph contains data for the test case 1
         When I run a clusterids job
         Then I should get the status processed
-        And number of clustered ids is 1
+        And number of clustered ids is 3
