@@ -12,13 +12,12 @@
           "@context": "http://schema.org/"
       }
   },
-  "sourceGraphs": {
+  "graphStore": {
       "endpoint": {
           "host": "localhost",
           "port": 3030,
           "dataset": "ds"
       },
       "graphs": ["http://data.hulib.helsinki.fi/attx/ids", "http://data.hulib.helsinki.fi/attx/work1"]
-  },
-  "format": "application/json+ld"
+  }
 }

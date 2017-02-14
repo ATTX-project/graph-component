@@ -102,3 +102,6 @@ logs/server.log
 
 tmp[a-zA-Z0-9]*
 tmp[a-zA-Z0-9]*/
+
+java/gc-rdf2json-indexer.jar
+tests/resources/test.db

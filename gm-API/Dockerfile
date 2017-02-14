@@ -9,6 +9,8 @@ RUN apk add --update\
     && apk add --no-cache db-dev \
     && apk add --no-cache py-setuptools
 
+# reused from https://github.com/docker-library/openjdk/blob/master/8-jdk/alpine/Dockerfile
+
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 
@@ -39,6 +41,9 @@ WORKDIR /app
 
 COPY build/distributions/gm-API-${version}.tar.gz /app
 RUN tar -xf gm-API-${version}.tar.gz
+
+# TBC when moving to Jenkins to donwload from artifact repo
+COPY java/gc-rdf2json-indexer.jar /app/java/gc-rdf2json-indexer.jar
 
 RUN mkdir logs
 RUN touch data.db

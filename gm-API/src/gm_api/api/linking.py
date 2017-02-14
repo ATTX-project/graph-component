@@ -2,7 +2,7 @@ import json
 import falcon
 from random import randint, choice
 from gm_api.utils.validate import validate
-from gm_api.resources import load_schema
+from gm_api.schemas import load_schema
 from gm_api.utils.logs import app_logger
 
 

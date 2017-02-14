@@ -43,11 +43,6 @@ config = {
         }
     },
     'loggers': {
-        '': {
-            'handlers': ['consoleHandler'],
-            'level': 'INFO',
-            'propagate': True
-        },
         'mainLogger': {
             'handlers': ['consoleHandler', 'fileHandler'],
             'level': 'INFO',

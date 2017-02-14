@@ -16,7 +16,7 @@ def connect_DB(db_file=None):
         # create_table(conn, """create table if not exists graphstore (host text, port integer, dataset text)""")
         # create_table(conn, """create table if not exists esstore (host text, port integer, index text, resourcetype text)""")
         create_table(conn, """create table if not exists prov (status text, start text)""")
-        app_logger.info('Creating maps, graphstore and esstore table in the database.')
+        app_logger.info('Creating tables in the database.')
         return conn
     except Exception as error:
         app_logger.error('Connection Failed!\

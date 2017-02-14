@@ -1,7 +1,7 @@
 import json
 import falcon
-from gm_api.resources import load_schema
 from gm_api.utils.logs import app_logger
+from gm_api.schemas import load_schema
 from gm_api.utils.validate import validate
 from gm_api.applib.construct_map import MappingObject
 
@@ -13,8 +13,8 @@ class Mapping(object):
     def on_post(self, req, resp, parsed):
         """Respond on GET request to map endpoint."""
         data = MappingObject()
-        response = data.create_map(parsed.get('targetEndpoint'), parsed.get('mapping'),
-                                   parsed.get('sourceGraphs'), parsed.get('plugin'), parsed.get('format'))
+        map_args = [parsed.get('targetEndpoint'), parsed.get('mapping'), parsed.get('graphStore'), parsed.get('plugin')]
+        response = data.create_map(*map_args)
         resp.data = json.dumps(response, indent=1, sort_keys=True)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
