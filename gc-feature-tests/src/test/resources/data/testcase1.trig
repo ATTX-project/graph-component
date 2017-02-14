@@ -1,0 +1,15 @@
+
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<http://test/1> {
+    <http://data.hulib.helsinki.fi/attx/work/test/infra/1>
+      a <http://data.hulib.helsinki.fi/attx/types/Infrastructure> ;
+      dct:title "Test 1" ;
+      dct:identifier <uri:1> .
+
+    <http://data.hulib.helsinki.fi/attx/work/test/infra/uuid1>
+      a <http://data.hulib.helsinki.fi/attx/types/Infrastructure> ;
+      dct:identifier "uuid1" ;
+      dct:idenfifier <uri:1> ;
+      dct:title "Test 3" .
+}  

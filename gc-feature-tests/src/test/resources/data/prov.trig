@@ -1,0 +1,5 @@
+<http://data.hulib.helsinki.fi/attx/prov> {
+    <http://data.hulib.helsinki.fi/attx/prov/1>
+        a <http://data.hulib.helsinki.fi/attx/prov/Dataset> ;
+        <http://www.w3.org/ns/prov#used> <http://test/1> .
+}

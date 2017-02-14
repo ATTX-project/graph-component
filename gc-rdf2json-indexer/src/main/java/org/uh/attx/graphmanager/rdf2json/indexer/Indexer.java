@@ -41,6 +41,7 @@ import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
@@ -61,7 +62,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 public class Indexer {
 
     private Logger log = Logger.getLogger(Indexer.class.getName());
-    
+
     private Model model = null;
 
     private BulkProcessor bulkProcessor;
@@ -69,11 +70,10 @@ public class Indexer {
     private TransportClient client;
 
     private final String APIBASEURI = "http://data.hulib.helsinki.fi/api/v1/";
-    
-    
+
     public static void main(String[] args) throws Exception {
         Options options = new Options();
-        
+
         options.addOption("s", true, "StoreEndpoint");
         options.addOption("i", true, "IndexEndpoint");
         options.addOption("p", true, "IndexPort");
@@ -81,93 +81,90 @@ public class Indexer {
         options.addOption("b", true, "Bulk size");
         options.addOption("m", true, "Mapping json");
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse( options, args);
-        
+        CommandLine cmd = parser.parse(options, args);
+
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Indexer", options);
-        
-        if(     !cmd.hasOption("s") ||
-                !cmd.hasOption("i") ||
-                !cmd.hasOption("p") ||                
-                !cmd.hasOption("g") || 
-                !cmd.hasOption("p") || 
-                !cmd.hasOption("m")
-                
-            ) {
-               System.out.println("Required options missing!");
-               return;
+
+        if (!cmd.hasOption("s")
+                || !cmd.hasOption("i")
+                || !cmd.hasOption("p")
+                || !cmd.hasOption("g")
+                || !cmd.hasOption("p")
+                || !cmd.hasOption("m")) {
+            System.out.println("Required options missing!");
+            return;
         }
-        
+
         String storeEndpoint = cmd.getOptionValue('s');
         String indexEndpoint = cmd.getOptionValue('i');
         int indexPort = Integer.parseInt(cmd.getOptionValue('p'));
         String graphs = cmd.getOptionValue('g');
         int bulkSize = Integer.parseInt(cmd.getOptionValue('b'));
         String mapping = cmd.getOptionValue('m');
-                
-        TransportClient client = Indexer.getClient(indexEndpoint, indexPort, "elasticsearch");        
+
+        TransportClient client = Indexer.getClient(indexEndpoint, indexPort, "elasticsearch");
         String[] inputGraphs = null;
-        if(graphs != null && !"".equals(graphs))
+        if (graphs != null && !"".equals(graphs)) {
             inputGraphs = graphs.split(",");
-        
+        }
+
         Indexer i = new Indexer(storeEndpoint, client, bulkSize);
         i.prepareData(inputGraphs);
         i.map(inputGraphs, mapping, bulkSize);
-        
+
     }
-    
+
     public static TransportClient getClient(String indexEndpoint, int port, String clusterName) {
-        if(indexEndpoint != null) {
+        if (indexEndpoint != null) {
             Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", clusterName).build();
             return new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(indexEndpoint, port));
-        }
-        else {
+        } else {
             return null;
         }
-             
 
     }
 
-    
     public Indexer(String storeEndpoint, TransportClient client, int bulkSize) {
         this.client = client;
         this.storeEndpoint = storeEndpoint;
         this.model = ModelFactory.createMemModelMaker().createDefaultModel();
 
-        if(client != null) {
-        bulkProcessor = BulkProcessor.builder(
-                this.client,
-                new BulkProcessor.Listener() {
-            @Override
-            public void beforeBulk(long executionId,
-                    BulkRequest request) {
-            }
+        if (client != null) {
+            bulkProcessor = BulkProcessor.builder(
+                    this.client,
+                    new BulkProcessor.Listener() {
+                @Override
+                public void beforeBulk(long executionId,
+                        BulkRequest request) {
+                    System.out.println("Bulk started");
+                }
 
-            @Override
-            public void afterBulk(long executionId,
-                    BulkRequest request,
-                    BulkResponse response) {
-            }
+                @Override
+                public void afterBulk(long executionId,
+                        BulkRequest request,
+                        BulkResponse response) {
+                    System.out.println("Bulk success");
+                }
 
-            @Override
-            public void afterBulk(long executionId,
-                    BulkRequest request,
-                    Throwable failure) {
-                
-            }
-        })
-                .setBulkActions(bulkSize)
-                .setBulkSize(new ByteSizeValue(5, ByteSizeUnit.MB))
-                .setFlushInterval(TimeValue.timeValueSeconds(1))
-                .setConcurrentRequests(1)
-                .build();
-        }
-        else {
+                @Override
+                public void afterBulk(long executionId,
+                        BulkRequest request,
+                        Throwable failure) {
+                    System.out.println("Bulk failure");
+                }
+            })
+                    .setBulkActions(bulkSize)
+                    //.setBulkSize(new ByteSizeValue(5, ByteSizeUnit.MB))
+                    .setFlushInterval(TimeValue.timeValueSeconds(1))
+                    .setConcurrentRequests(1)
+                    .build();
+        } else {
             log.info("ES Client was null. Could not create bulk processor");
         }
 
     }
-    
+
     public void setModel(Model model) {
         this.model = model;
     }
@@ -175,6 +172,7 @@ public class Indexer {
     public Model getModel() {
         return this.model;
     }
+
     public void map(String[] inputGraphs, String mapping, int bulkSize) throws Exception {
 
         // read mapping
@@ -189,16 +187,17 @@ public class Indexer {
                     .get("targets");
 
             String newIndex = index + "_" + getSuffix();
-            
+
             try {
                 createNewSirenIndex(newIndex);
                 for (String uri : targets.keySet()) {
                     handleTarget(newIndex, uri,
                             (Map<String, Object>) targets.get(uri));
-                    
+
                 }
-                this.bulkProcessor.flush();                
-                switchIndices(index, newIndex);                
+                this.bulkProcessor.flush();
+                this.bulkProcessor.close();
+                switchIndices(index, newIndex);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -212,9 +211,9 @@ public class Indexer {
     public void prepareData(String[] inputGraphs) throws Exception {
         // download all input graphs to the model using graph store protocol            
         // Note: this could end up using a lot of memory
-        if(inputGraphs == null || inputGraphs.length == 0 ) {   
-            String url = storeEndpoint + "data";            
-            RDFDataMgr.read(this.model, url);            
+        if (inputGraphs == null || inputGraphs.length == 0) {
+            String url = storeEndpoint + "data";
+            RDFDataMgr.read(this.model, url);
             return;
         }
         for (String graphURI : inputGraphs) {
@@ -225,16 +224,22 @@ public class Indexer {
     }
 
     void indexDocument(XContentBuilder x, String index,
-			String type, String id) {
-        
-        if(this.bulkProcessor != null)
+            String type, String id) {
+        /*
+        if(this.bulkProcessor != null) {            
             this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
-        else
+        }
+        else {
             this.log.warning("No bulkprocessor. Document is not indexed");
+        }
+         */
+        IndexResponse response = client.prepareIndex(index, type, id)
+                .setSource(x).execute().actionGet();
 
     }
 
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     String getSuffix() {
         long millis = System.currentTimeMillis();
         Date today = new Date(millis);
@@ -249,7 +254,7 @@ public class Indexer {
     }
 
     void switchIndices(String prefix, String newIndex) {
-        String currentIndex = getCurrentIndex(prefix);        
+        String currentIndex = getCurrentIndex(prefix);
         if (currentIndex == null) {
             // just add new alias to current
             IndicesAliasesResponse ir = client.admin().indices()
@@ -315,9 +320,10 @@ public class Indexer {
                 ResourceFactory.createResource(typeURI));
         String indexName = index;
         String typeName = (String) conf.get("type");
-        
+
         while (resi.hasNext()) {
             Resource r = resi.nextResource();
+            //System.out.println("Handling resource " + r.getURI());
             String id = "";
             String idProperty = null;
             // id
@@ -336,6 +342,9 @@ public class Indexer {
             XContentBuilder indexDocBuilder = generateDocument(idProperty, id,
                     r, docConf);
             indexDocBuilder.close();
+
+            //System.out.println("Got document");
+            //System.out.println(indexDocBuilder.string());
             indexDocument(indexDocBuilder, indexName, typeName, id);
         }
     }
@@ -358,7 +367,6 @@ public class Indexer {
                         builder.startArray(targetProperty);
                     }
 
-                    
                     while (stmts.hasNext()) {
                         Statement stmt = stmts.next();
                         RDFNode node = stmt.getObject();
@@ -370,18 +378,17 @@ public class Indexer {
                             if ("java:java.sql.Date".equals(typeURI)) {
                                 value = lit.getLexicalForm();
                             } else {
-                                
-                                
+
                                 if (lit.getValue() != null) {
                                     Object litValue = lit.getValue();
-                                    
+
                                     if (typeURI.equals("http://www.w3.org/2001/XMLSchema#decimal")) {
-                                        value = ((BigDecimal)litValue).doubleValue();
+                                        value = ((BigDecimal) litValue).doubleValue();
                                     } else if (typeURI.equals("http://www.w3.org/2001/XMLSchema#integer")) {
                                         value = (Integer) litValue;
                                     } else if (typeURI.equals("http://www.w3.org/2001/XMLSchema#double")) {
                                         value = (Double) litValue;
-                                        
+
                                     } else {
                                         value = lit;
                                     }
