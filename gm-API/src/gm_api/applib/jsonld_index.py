@@ -18,7 +18,7 @@ class LODResource(object):
         graph = cls.create_graph(graphStore, query)
         resource = cls.create_jsonLD(graph, context)
         cls.index_resource(targetEndpoint, resource, mapID, resource_type)
-        app_logger.info('Performed mapping from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
+        app_logger.info('Performed PYTHON based mapping from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @classmethod
     def map_esJava(cls, java_file, graphStore, targetEndpoint, mapping):
@@ -32,8 +32,9 @@ class LODResource(object):
         cmd = ['java', '-jar', java_file, '-b', '1', '-i', index, '-p', port, '-s', storeEndpoint, '-m', mapping, '-g', graphs]
         process = subprocess.Popen(cmd, stdout=PIPE, stderr=STDOUT)
         for line in iter(process.stdout.readline, ''):
-            app_logger('[JAVA RUN log {0}]: {1}'.format(process.pid, line))
+            app_logger.info('[JAVA RUN log {0}]: {1}'.format(process.pid, line))
         process.terminate()
+        app_logger.info('Performed JAVA based mapping from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @staticmethod
     def index_resource(targetEndpoint, graph, mapID, resource_type, index=None):

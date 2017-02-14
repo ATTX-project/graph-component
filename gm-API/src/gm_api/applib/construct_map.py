@@ -51,7 +51,7 @@ class MappingObject(object):
                 conn = connect_DB()
                 data = LODResource()
                 cls.update_map_status(conn, result['id'], "Done")
-                data.map_esJava('gc-rdf2json-indexer.jar', graphStore, targetEndpoint, mapping)
+                data.map_esJava('java/gc-rdf2json-indexer.jar', graphStore, targetEndpoint, mapping)
             else:
                 return
             thread_logger.info('Exiting thread!')
