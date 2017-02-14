@@ -66,7 +66,7 @@ class LODResource(object):
             graph.parse(data=data.serialize(), format='xml')
             return graph
         except Exception as error:
-            app_logger.error('Mapping Failed!')
+            app_logger.error('Mapping Failed when processing the graph!')
             return error
 
     @staticmethod
@@ -86,5 +86,5 @@ class LODResource(object):
             app_logger.info('Serialized as JSON-LD compact with the context: {0}'.format(context))
             return result
         except Exception as error:
-            app_logger.error('Mapping Failed!')
+            app_logger.error('Mapping Failed when creating the JSON-LD!')
             return error

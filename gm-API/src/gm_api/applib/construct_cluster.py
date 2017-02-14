@@ -91,6 +91,6 @@ class ClusterID(object):
             app_logger.error('Something is wrong: {0}'.format(error))
             raise falcon.HTTPUnprocessableEntity(
                 'Unprocessable ID Clustering',
-                'Could not get the dataasets.'
+                'Could not get the working datasets.'
             )
             return error

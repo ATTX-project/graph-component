@@ -54,10 +54,10 @@ class MappingObject(object):
                 data.map_esJava('java/gc-rdf2json-indexer.jar', graphStore, targetEndpoint, mapping)
             else:
                 return
-            thread_logger.info('Exiting thread!')
+            thread_logger.info('Exiting Daemon thread!')
         except Exception as error:
-            app_logger.error('Thread Failed!')
-            cls.update_map_status(conn, result['id'], str(error))
+            app_logger.error('Daemon Thread Failed! with error: {0}'.format(error))
+            cls.update_map_status(conn, result['id'], "Error")
             return error
 
     @staticmethod
