@@ -25,7 +25,7 @@ repositories {
 }
 
 if (!project.hasProperty("artifactRepo")) {
-    ext.artifactRepo = "http://attx-dev.hulib.helsinki.fi:8081/repository/attx-snapshots"
+    ext.artifactRepo = "http://attx-dev.hulib.helsinki.fi:8081/repository/attx-releases"
 }
 if (!project.hasProperty("artifactRepoUser")) {
     ext.artifactRepoUser = ""
@@ -83,7 +83,7 @@ publishing {
 uploadShadow {
   repositories {
     mavenDeployer {
-        snapshotRepository(url: "${artifactRepo}") {
+       repository(url: "${artifactRepo}") {
                 authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
         }
         pom.artifactId = 'gc-rdf2json-indexer-all'
