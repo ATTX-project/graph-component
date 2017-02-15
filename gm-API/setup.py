@@ -89,7 +89,7 @@ class install_egg_info(_install_egg_info):  # noqa
 
 
 class GradleDistribution(Distribution, object):
-    """Get entrypoints for a distribution."""
+    """GradleDistribution wiht requirements."""
 
     PINNED_TXT = 'pinned.txt'
 
@@ -151,12 +151,35 @@ setup(
     distclass=GradleDistribution,
     package_dir={'': 'src'},
     packages=find_packages('src'),
+    package_data={
+        # If any package contains *.json, include them:
+        '': ['*.json']
+    },
     include_package_data=True,
     name='ATTXgmAPI',
     version='0.1',
-    description='ATTX GM-API',
+    description='ATTX Graph Manager API',
     entry_points='''
         [console_scripts]
         gmapi=gm_api.gmapi:main
-    '''
+    ''',
+    author='ATTX Project',
+    author_email='stefan.negru@helsinki.fi',
+    url='https://www.helsinki.fi/en/projects/attx-2016',
+    long_description="ATTX Graph Manager API for handling interactions with Graph Store. It also interacts with the Workflow API, and Elasticsearch.",
+    license='Apache Software License',
+    platforms='Linux',
+    classifiers=[
+          'Development Status :: 3 - Alpha',
+          'Environment :: Console',
+          'Environment :: Web Environment',
+          'Intended Audience :: Developers',
+          'Intended Audience :: System Administrators',
+          'License :: OSI Approved :: Apache Software License',
+          'Operating System :: POSIX',
+          'Operating System :: POSIX :: Linux',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2.7',
+          'Topic :: Scientific/Engineering :: Information Analysis'
+          ],
 )

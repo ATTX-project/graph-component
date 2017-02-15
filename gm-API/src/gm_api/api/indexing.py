@@ -9,7 +9,7 @@ from gm_api.applib.construct_index import IndexingObject
 class IndexClass(object):
     """Create Indexing class for API."""
 
-    @validate(load_schema('map'))
+    @validate(load_schema('index'))
     def on_post(self, req, resp, parsed):
         """Respond on GET request to index endpoint."""
         data = IndexingObject()
@@ -24,7 +24,7 @@ class IndexClass(object):
 class IndexingResource(object):
     """Create Indexing Resource based on ID for retrieval."""
 
-    @validate(load_schema('mapids'))
+    @validate(load_schema('idtype'))
     def on_get(self, req, resp, indexID):
         """Respond on GET request to index endpoint."""
         data = IndexingObject()

@@ -13,11 +13,11 @@ class LODResource(object):
     """Create and Index Linked Data Resource."""
 
     @classmethod
-    def index_jsonld(cls, targetEndpoint, graphStore, query, context, resource_type, mapID, index=None):
+    def index_jsonld(cls, targetEndpoint, graphStore, filter, resource_type, indexID, index=None):
         """Perform the indexing and index to Elasticsearch."""
         graph = cls.create_graph(graphStore, query)
         resource = cls.create_jsonLD(graph, context)
-        cls.index_resource(targetEndpoint, resource, mapID, resource_type)
+        cls.index_resource(targetEndpoint, resource, indexID, resource_type)
         app_logger.info('Performed PYTHON based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @classmethod
@@ -37,15 +37,15 @@ class LODResource(object):
         app_logger.info('Performed JAVA based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @staticmethod
-    def index_resource(targetEndpoint, graph, mapID, resource_type, index=None):
+    def index_resource(targetEndpoint, graph, indexID, resource_type, index=None):
         """Index JSON-LD graph at specific ES endpoint."""
         es = Elasticsearch([{'host': targetEndpoint['host'], 'port': targetEndpoint['port']}])
         if index is not None and not(es.indices.exists(index)):
             es.indices.create(index=index, ignore=400)
         else:
             index = 'default'
-        es.index(index=index, doc_type=resource_type, id=mapID, body=json.loads(graph))
-        app_logger.info("Index in Elasticsearch at index: \"{0}\" with type: \"{1}\" and ID: \"{2}\".".format(index, resource_type, mapID))
+        es.index(index=index, doc_type=resource_type, id=indexID, body=json.loads(graph))
+        app_logger.info("Index in Elasticsearch at index: \"{0}\" with type: \"{1}\" and ID: \"{2}\".".format(index, resource_type, indexID))
         return
 
     @staticmethod

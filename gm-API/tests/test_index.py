@@ -1,7 +1,6 @@
 import falcon
 import unittest
 import httpretty
-import requests
 from falcon import testing
 from gm_api.app import create
 from gm_api.app import api_version
@@ -39,7 +38,7 @@ class TestIndex(appIndexTest):
     @httpretty.activate
     def test_index_post_good(self):
         """Test good POST index message."""
-        with open('tests/resources/map_request.json', 'r') as datafile:
+        with open('tests/resources/index_request.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
         xml_result = """<?xml version="1.0"?>
                         <sparql xmlns="http://www.w3.org/2005/sparql-results#">
@@ -57,7 +56,7 @@ class TestIndex(appIndexTest):
 
     def test_index_post_good_java(self):
         """Test good POST index message."""
-        with open('tests/resources/map_request_java.json', 'r') as datafile:
+        with open('tests/resources/index_request_java.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
@@ -96,9 +95,9 @@ class TestIndex(appIndexTest):
 
     @httpretty.activate
     def test_index_get_gone(self):
-        """Test GET index response is OK."""
+        """Test GET index response is Gone."""
         httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/index/35", status=410)
-        result = requests.get('http://localhost:4302/0.1/index/35')
+        result = self.simulate_get('/{0}/index/{1}'.format(api_version, 35))
         assert(result.status_code == 410)
 
     @httpretty.activate
