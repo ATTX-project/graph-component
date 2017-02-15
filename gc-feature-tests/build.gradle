@@ -97,7 +97,7 @@ dcompose {
         dockerFilename = 'Dockerfile'        
         binds = ["/var/run/docker.sock:/run/docker.sock"]
         command = ['sh', '-c', '/tmp/runTests.sh']
-        dependsOn = [gmapi, essiren,]
+        dependsOn = [gmapi, essiren,fuseki]
         waitForCommand = true
     }
     
