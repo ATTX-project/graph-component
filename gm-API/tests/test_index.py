@@ -8,8 +8,8 @@ from gm_api.app import api_version
 from gm_api.utils.db import connect_DB
 
 
-class appMapTest(testing.TestCase):
-    """Testing GM map function and initialize it for that purpose."""
+class appIndexTest(testing.TestCase):
+    """Testing GM index function and initialize it for that purpose."""
 
     def setUp(self):
         """Setting the app up."""
@@ -21,24 +21,24 @@ class appMapTest(testing.TestCase):
         pass
 
 
-class TestMap(appMapTest):
-    """Testing GM map function and initialize it for that purpose."""
+class TestIndex(appIndexTest):
+    """Testing GM index function and initialize it for that purpose."""
 
     def test_create(self):
-        """Test GET map message."""
+        """Test GET index message."""
         self.app
         pass
 
-    def test_map_post_bad(self):
-        """Test empty POST map message."""
+    def test_index_post_bad(self):
+        """Test empty POST index message."""
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/%s/map' % (api_version), body='', headers=hdrs)
+        result = self.simulate_post('/%s/index' % (api_version), body='', headers=hdrs)
         assert(result.status == falcon.HTTP_400)
 
     @httpretty.activate
-    def test_map_post_good(self):
-        """Test good POST map message."""
+    def test_index_post_good(self):
+        """Test good POST index message."""
         with open('tests/resources/map_request.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
         xml_result = """<?xml version="1.0"?>
@@ -52,61 +52,61 @@ class TestMap(appMapTest):
         httpretty.register_uri(httpretty.GET, "http://localhost:3030/ds/query", body=xml_result, status=200)
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/%s/map' % (api_version), body=test_data, headers=hdrs)
+        result = self.simulate_post('/%s/index' % (api_version), body=test_data, headers=hdrs)
         assert(result.status == falcon.HTTP_202)
 
-    def test_map_post_good_java(self):
-        """Test good POST map message."""
+    def test_index_post_good_java(self):
+        """Test good POST index message."""
         with open('tests/resources/map_request_java.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
-        result = self.simulate_post('/%s/map' % (api_version), body=test_data, headers=hdrs)
+        result = self.simulate_post('/%s/index' % (api_version), body=test_data, headers=hdrs)
         assert(result.status == falcon.HTTP_202)
 
     @httpretty.activate
-    def test_map_get_good(self):
-        """Test GET correct map data."""
+    def test_index_get_good(self):
+        """Test GET correct index data."""
         cur2 = self.conn.cursor()
-        cur2.execute("INSERT INTO maps VALUES (?, ?)", ("Done", 'smth'))
+        cur2.execute("INSERT INTO indexes VALUES (?, ?)", ("Done", 'smth'))
         self.conn.commit()
         created_id = cur2.lastrowid
         doc = {u'id': created_id, u'status': u'Done'}
-        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/map/%s" % (created_id), body=doc, status=200)
-        result = self.simulate_get('/{0}/map/{1}'.format(api_version, created_id))
+        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/index/%s" % (created_id), body=doc, status=200)
+        result = self.simulate_get('/{0}/index/{1}'.format(api_version, created_id))
         assert(result.json == doc)
-        cur2.execute('drop table if exists maps')
+        cur2.execute('drop table if exists indexes')
         self.conn.commit()
         cur2.close()
 
     @httpretty.activate
-    def test_map_get_ok(self):
-        """Test GET map response is OK."""
+    def test_index_get_ok(self):
+        """Test GET index response is OK."""
         cur2 = self.conn.cursor()
-        cur2.execute("INSERT INTO maps VALUES (?, ?)", ("Done", 'smth'))
+        cur2.execute("INSERT INTO indexes VALUES (?, ?)", ("Done", 'smth'))
         self.conn.commit()
         created_id = cur2.lastrowid
         doc = {u'id': created_id, u'status': u'Done'}
-        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/map/1", body=doc, status=200)
-        result = self.simulate_get('/{0}/map/{1}'.format(api_version, created_id))
+        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/index/1", body=doc, status=200)
+        result = self.simulate_get('/{0}/index/{1}'.format(api_version, created_id))
         assert(result.status == falcon.HTTP_200)
-        cur2.execute('drop table if exists maps')
+        cur2.execute('drop table if exists indexes')
         self.conn.commit()
         cur2.close()
 
     @httpretty.activate
-    def test_map_get_gone(self):
-        """Test GET map response is OK."""
-        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/map/35", status=410)
-        result = requests.get('http://localhost:4302/0.1/map/35')
+    def test_index_get_gone(self):
+        """Test GET index response is OK."""
+        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/index/35", status=410)
+        result = requests.get('http://localhost:4302/0.1/index/35')
         assert(result.status_code == 410)
 
     @httpretty.activate
-    def test_map_get_delete(self):
-        """Test DELETE map response is OK."""
+    def test_index_get_delete(self):
+        """Test DELETE index response is OK."""
         created_id = 36
-        httpretty.register_uri(httpretty.DELETE, "http://localhost:4302/0.1/map/36", status=200)
-        result = self.simulate_delete('/{0}/map/{1}'.format(api_version, created_id))
+        httpretty.register_uri(httpretty.DELETE, "http://localhost:4302/0.1/index/36", status=200)
+        result = self.simulate_delete('/{0}/index/{1}'.format(api_version, created_id))
         assert(result.status == falcon.HTTP_200)
 
 

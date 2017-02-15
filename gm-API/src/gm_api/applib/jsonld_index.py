@@ -13,28 +13,28 @@ class LODResource(object):
     """Create and Index Linked Data Resource."""
 
     @classmethod
-    def map_jsonld(cls, targetEndpoint, graphStore, query, context, resource_type, mapID, index=None):
-        """Perform the mapping and index to Elasticsearch."""
+    def index_jsonld(cls, targetEndpoint, graphStore, query, context, resource_type, mapID, index=None):
+        """Perform the indexing and index to Elasticsearch."""
         graph = cls.create_graph(graphStore, query)
         resource = cls.create_jsonLD(graph, context)
         cls.index_resource(targetEndpoint, resource, mapID, resource_type)
-        app_logger.info('Performed PYTHON based mapping from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
+        app_logger.info('Performed PYTHON based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @classmethod
-    def map_esJava(cls, java_file, graphStore, targetEndpoint, mapping):
+    def index_esJava(cls, java_file, graphStore, targetEndpoint, indexing):
         """Return ES parameters for elasticsearch 1.3.4 to run process."""
         storeEndpoint = 'http://{0}:{1}/{2}/'.format(graphStore['endpoint']['host'], graphStore['endpoint']['port'], graphStore['endpoint']['dataset'])
 
         graphs = ','.join(graphStore['graphs'])
         port = str(targetEndpoint['port'])
         index = str(targetEndpoint['host'])
-        mapping = mapping['query']
-        cmd = ['java', '-jar', java_file, '-b', '1', '-i', index, '-p', port, '-s', storeEndpoint, '-m', mapping, '-g', graphs]
+        indexing = indexing['filter']
+        cmd = ['java', '-jar', java_file, '-b', '1', '-i', index, '-p', port, '-s', storeEndpoint, '-m', indexing, '-g', graphs]
         process = subprocess.Popen(cmd, stdout=PIPE, stderr=STDOUT)
         for line in iter(process.stdout.readline, ''):
             app_logger.info('[JAVA RUN log {0}]: {1}'.format(process.pid, line))
         process.terminate()
-        app_logger.info('Performed JAVA based mapping from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
+        app_logger.info('Performed JAVA based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @staticmethod
     def index_resource(targetEndpoint, graph, mapID, resource_type, index=None):
@@ -50,7 +50,7 @@ class LODResource(object):
 
     @staticmethod
     def create_graph(graphStore, query):
-        """Retrieve graph based on mapping."""
+        """Retrieve graph based on indexing."""
         graph = ConjunctiveGraph()
         bind_prefix(graph)
         store = graphStore['endpoint']

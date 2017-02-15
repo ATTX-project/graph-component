@@ -4,13 +4,8 @@
       "host": "localhost",
       "port": 9200
   },
-  "mapping": {
-      "index": "default",
-      "resourceType": "work",
-      "query": "{\"configs\":[{\"index\":\"uc1\",\"targets\":{\"http://data.hulib.helsinki.fi/attx/types/Infrastructure\":{\"type\":\"infra\",\"indexDoc\":{\"dataProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/title\",\"targetProperty\":\"title\",\"isFunctional\":\"true\"}],\"multiLingualDataProperties\":[],\"objectProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/identifier\",\"targetProperty\":\"identifier\",\"isFunctional\":\"true\"}]}},\"http://data.hulib.helsinki.fi/attx/types/Publication\":{\"type\":\"pub\",\"indexDoc\":{\"dataProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/title\",\"targetProperty\":\"title\",\"isFunctional\":\"true\"},{\"sourceProperty\":\"http://purl.org/dc/terms/identifier\",\"targetProperty\":\"identifier\",\"isFunctional\":\"true\"}],\"multiLingualDataProperties\":[],\"objectProperties\":[]}}}}]}",
-      "context": {
-          "@context": "http://schema.org/"
-      }
+  "indexing": {
+      "filter": "{\"configs\":[{\"index\":\"uc1\",\"targets\":{\"http://data.hulib.helsinki.fi/attx/types/Infrastructure\":{\"type\":\"infra\",\"indexDoc\":{\"dataProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/title\",\"targetProperty\":\"title\",\"isFunctional\":\"true\"}],\"multiLingualDataProperties\":[],\"objectProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/identifier\",\"targetProperty\":\"identifier\",\"isFunctional\":\"true\"}]}},\"http://data.hulib.helsinki.fi/attx/types/Publication\":{\"type\":\"pub\",\"indexDoc\":{\"dataProperties\":[{\"sourceProperty\":\"http://purl.org/dc/terms/title\",\"targetProperty\":\"title\",\"isFunctional\":\"true\"},{\"sourceProperty\":\"http://purl.org/dc/terms/identifier\",\"targetProperty\":\"identifier\",\"isFunctional\":\"true\"}],\"multiLingualDataProperties\":[],\"objectProperties\":[]}}}}]}"
   },
   "graphStore": {
       "endpoint": {

@@ -4,13 +4,8 @@
       "host": "localhost",
       "port": 9210
   },
-  "mapping": {
-      "index": "default",
-      "resourceType": "work",
-      "query": "CONSTRUCT {?subject ?predicate ?object} WHERE { ?subject ?predicate ?object } LIMIT 25",
-      "context": {
-          "@context": "http://schema.org/"
-      }
+  "indexing": {
+      "filter": "CONSTRUCT {?subject ?predicate ?object} WHERE { ?subject ?predicate ?object } LIMIT 25"
   },
   "graphStore": {
       "endpoint": {
