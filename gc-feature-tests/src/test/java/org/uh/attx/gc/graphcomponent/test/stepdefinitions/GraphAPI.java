@@ -16,7 +16,7 @@ import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import org.uh.attx.gc.graphcomponent.test.PlatformServices;
+import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
 
 /**
  * Created by stefanne on 1/31/17.
@@ -27,7 +27,7 @@ public class GraphAPI implements En{
     private int created_id1;
     private int created_id2;
     private int deleted_id;
-    private final String REQUEST = "{\n  \"plugin\": \"python\",\n  \"targetEndpoint\": {\n  \t\"host\":\"localhost\",\n  \t\"port\": 9200\n  },\n  \"mapping\": {\n  \t\"index\": \"default\",\n  \t\"resourceType\": \"work\",\n    \"query\": \"CONSTRUCT {?subject ?predicate ?object} WHERE { ?subject ?predicate ?object } LIMIT 25\",\n    \"context\": {\"@context\": \"http://schema.org/\"}\n  },\n  \"sourceGraphs\": {\n  \t\"endpoint\": {\n  \t\t\"host\":\"localhost\", \n  \t\t\"port\":3030, \n  \t\t\"dataset\": \"ds\"\n  \t},\n  \t\"graphs\":[\"http://data.hulib.helsinki.fi/attx/ids\", \"http://data.hulib.helsinki.fi/attx/work1\"]\n  \t\n  },\n  \"format\": \"application/json+ld\"\n}";
+    private final String REQUEST = "{\n  \"plugin\": \"java\",\n  \"targetEndpoint\": {\n  \t\"host\":\"" + s.ESSIREN + "\",\n  \t\"port\": 9200\n  },\n  \"mapping\": {\n  \t\"index\": \"default\",\n  \t\"resourceType\": \"work\",\n    \"query\": \"CONSTRUCT {?subject ?predicate ?object} WHERE { ?subject ?predicate ?object } LIMIT 25\",\n    \"context\": {\"@context\": \"http://schema.org/\"}\n  },\n  \"sourceGraphs\": {\n  \t\"endpoint\": {\n  \t\t\"host\":\"localhost\", \n  \t\t\"port\":3030, \n  \t\t\"dataset\": \"ds\"\n  \t},\n  \t\"graphs\":[\"http://data.hulib.helsinki.fi/attx/ids\", \"http://data.hulib.helsinki.fi/attx/work1\"]\n  \t\n  },\n  \"format\": \"application/json+ld\"\n}";
 
 
     public GraphAPI() {
@@ -40,7 +40,7 @@ public class GraphAPI implements En{
 //                If the server would not give 404 that means it does not run
                 assertEquals(result1, 404);
 
-                get = Unirest.get(s.getES5());
+                get = Unirest.get(s.getESSiren());
                 HttpResponse<String> response2 = get.asString();
                 int result2 = response2.getStatus();
                 assertEquals(result2, 200);
@@ -59,11 +59,12 @@ public class GraphAPI implements En{
 
         When("^I post a mapping$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/map")
+                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/0.1/map")
                         .header("content-type", "application/json")
                         .body(REQUEST)
                         .asJson();
                 JSONObject myObj = postResponse.getBody().getObject();
+                System.out.println(myObj.toString());
                 created_id1 = myObj.getInt("id");
                 int result3 = postResponse.getStatus();
                 assertEquals(result3, 202);
