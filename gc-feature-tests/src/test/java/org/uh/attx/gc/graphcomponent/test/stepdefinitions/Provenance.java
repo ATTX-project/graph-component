@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
-import org.uh.attx.gc.graphcomponent.test.PlatformServices;
+import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
 
 /**
  * Created by stefanne on 2/13/17.

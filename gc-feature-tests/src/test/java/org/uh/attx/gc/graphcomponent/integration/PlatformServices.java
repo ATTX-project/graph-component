@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.gc.graphcomponent.test;
+package org.uh.attx.gc.graphcomponent.integration;
 
 /**
  *
@@ -11,17 +11,17 @@ package org.uh.attx.gc.graphcomponent.test;
  */
 public class PlatformServices {
 
-    private final String ESSIREN = "http://essiren";
-    private final int ESSIREN_PORT = 9200;
+    public final String ESSIREN = "http://essiren";
+    public final int ESSIREN_PORT = 9200;
 
-    private final String ES5 = "http://es5";
-    private final int ES5_PORT = 9210;
+    public final String ES5 = "http://es5";
+    public final int ES5_PORT = 9210;
 
-    private final String FUSEKI = "http://fuseki";
-    private final int FUSEKI_PORT = 3030;
+    public final String FUSEKI = "http://fuseki";
+    public final int FUSEKI_PORT = 3030;
 
-    private final String GMAPI = "http://gmapi";
-    private final int GMAPI_PORT = 4302;
+    public final String GMAPI = "http://gmapi";
+    public final int GMAPI_PORT = 4302;
 
     private boolean isLocalhost = false;
 

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.gc.graphcomponent.integration.test.rdf2json;
+package org.uh.attx.gc.graphcomponent.integration.gc;
 
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.logging.Level;
@@ -24,42 +25,70 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-//import org.uh.attx.graphmanager.rdf2json.indexer.Indexer;
 import static org.junit.Assert.*;
+import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
+import org.uh.attx.gc.graphcomponent.test.stepdefinitions.ClusterIDs;
+import org.uh.attx.graphmanager.rdf2json.indexer.Indexer;
 
 /**
  *
  * @author jkesanie
  */
 public class IndexerIT {
-/*
-    String storeEndpoint = "http://fuseki:3030/ds/";
-    String indexEndpoint = "fuseki";
+
+    final static PlatformServices s = new PlatformServices(false);
+    static String storeEndpoint = s.getFuseki() + "/ds/";
+    static String indexEndpoint = "essiren";
     int bulkSize = 100;
-    String mapping = null;
-    TransportClient client = null;
+    static String mapping = null;
+    static TransportClient client = null;
 
     public IndexerIT() throws Exception {
-        try {
-            this.mapping = IOUtils.toString(IndexerIT.class.getResourceAsStream("/mapping-uc1.json"), "UTF-8");
-
-            client = Indexer.getClient(indexEndpoint, 9300, "elasticsearch");
-        } catch (Exception ex) {
-            fail("Initialization failed." + ex.getMessage());
-        }
 
     }
 
     @BeforeClass
     public static void setUpClass() {
+        try {
+                String payload = IOUtils.toString(IndexerIT.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");                
+                HttpResponse<JsonNode> response = Unirest.post(s.getFuseki() + "/ds/data?graph=http://test/es")
+                        .header("Content-type", "text/turtle")
+                        .body(payload)
+                        .asJson();
+                
+                mapping = IOUtils.toString(IndexerIT.class.getResourceAsStream("/data/mapping-uc1.json"), "UTF-8");
+
+                client = Indexer.getClient(indexEndpoint, 9300, "elasticsearch");
+                
+                
+                // cleaup index current
+                response = Unirest.delete(s.getESSiren() + "/current")
+                        .asJson();
+                
+                
+                
+        }catch(Exception ex) {
+            fail(ex.getMessage());
+        }
+        
     }
 
     @AfterClass
     public static void tearDownClass() {
+        try {
+            HttpResponse<String> deleteResponse1 = Unirest.post(s.getFuseki() + "/ds/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://test/es>")
+                    .asString();
+
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }        
     }
 
     @Before
     public void setUp() {
+        
     }
 
     @After
@@ -67,23 +96,14 @@ public class IndexerIT {
     }
 
     @Test
-    public void testMain() throws Exception {
-        System.out.println("main");
-        fail("Implement me!");
-        //String[] args = null;
-        //Indexer.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-
-    }
-
-    @Test
     public void testMap() throws Exception {
         try {
-            String[] inputGraphs = null;
+            String[] inputGraphs = new String[] {"http://test/es"};
 
             Indexer i = new Indexer(storeEndpoint, client, bulkSize);
-            Model testModel = RDFDataMgr.loadModel("infras.ttl");
-            i.setModel(testModel);
+            i.prepareData(inputGraphs);
+//            Model testModel = RDFDataMgr.loadModel("infras.ttl");
+  //          i.setModel(testModel);
             i.map(inputGraphs, mapping, bulkSize);
 
             // flushing the values
@@ -91,7 +111,7 @@ public class IndexerIT {
                 @Override
                 public void onResponse(FlushResponse rspns) {
                     try {
-                        HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get("http://localhost:9200/current/_search?q=Finnish")
+                        HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(s.getESSiren() + "/current/_search?q=Finnish")
                                 .asJson();
 
                         Assert.assertTrue(jsonResponse.getBody().getObject().getJSONObject("hits").getJSONArray("hits").length() > 0);
@@ -118,7 +138,7 @@ public class IndexerIT {
     @Test
     public void testPrepareData() throws Exception {
         Indexer i = new Indexer(storeEndpoint, client, bulkSize);
-        i.prepareData(null);
+        i.prepareData(new String[] {"http://test/es"});
 
         Model m = i.getModel();
 
@@ -127,40 +147,5 @@ public class IndexerIT {
     }
 
 
-    @Test
-    public void testSwitchIndices() {
-        System.out.println("switchIndices");
-        fail("Implement me!");
-        //String prefix = "";
-        //String newIndex = "";
-        //Indexer instance = null;
-        //instance.switchIndices(prefix, newIndex);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-    @Test
-    public void testCreateNewSirenIndex() {
-        System.out.println("createNewSirenIndex");
-        fail("Implement me!");
-        //String index = "";
-        //Indexer instance = null;
-        //boolean expResult = false;
-        //boolean result = instance.createNewSirenIndex(index);
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-*/
-    @Test
-    public void testGetCurrentIndex() {
-        System.out.println("getCurrentIndex");
-        fail("Implement me!");
-        //String prefix = "";
-        //Indexer instance = null;
-        //String expResult = "";
-        //String result = instance.getCurrentIndex(prefix);
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }
 
 }
