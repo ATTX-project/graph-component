@@ -3,8 +3,10 @@ import subprocess
 from pyld import jsonld
 from subprocess import STDOUT, PIPE
 from rdflib import ConjunctiveGraph
+# from rdflib.namespace import RDF
+# from rdflib.util import get_tree
 from elasticsearch import Elasticsearch
-from SPARQLWrapper import SPARQLWrapper
+# from SPARQLWrapper import SPARQLWrapper
 from gm_api.utils.prefixes import bind_prefix
 from gm_api.utils.logs import app_logger
 
@@ -13,11 +15,17 @@ class LODResource(object):
     """Create and Index Linked Data Resource."""
 
     @classmethod
-    def index_jsonld(cls, targetEndpoint, graphStore, filter, resource_type, indexID, index=None):
+    def index_jsonld(cls, targetEndpoint, graphStore, indexing):
         """Perform the indexing and index to Elasticsearch."""
-        graph = cls.create_graph(graphStore, query)
-        resource = cls.create_jsonLD(graph, context)
-        cls.index_resource(targetEndpoint, resource, indexID, resource_type)
+        # subjects = []
+        # for subject in graph.subjects(RDF.type, None):
+        #     print get_tree(graph, subject, None)
+        indexingID = indexing["indexingID"]
+        graph = cls.create_graph(graphStore)
+        framedRDF = cls.create_jsonLD(graph, indexing['filter'])
+        jdata = json.loads(framedRDF)
+        for resource in jdata["@graph"]:
+            cls.index_resource(targetEndpoint, json.dumps(resource), resource[indexingID], indexing['resourceType'], indexing['index'])
         app_logger.info('Performed PYTHON based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @classmethod
@@ -37,54 +45,54 @@ class LODResource(object):
         app_logger.info('Performed JAVA based indexing from "{0}" and indexing at "{1}".'.format(graphStore['endpoint']['host'], targetEndpoint['host']))
 
     @staticmethod
-    def index_resource(targetEndpoint, graph, indexID, resource_type, index=None):
+    def index_resource(targetEndpoint, graph, indexingID, resource_type, index=None):
         """Index JSON-LD graph at specific ES endpoint."""
         es = Elasticsearch([{'host': targetEndpoint['host'], 'port': targetEndpoint['port']}])
         if index is not None and not(es.indices.exists(index)):
             es.indices.create(index=index, ignore=400)
         else:
             index = 'default'
-        es.index(index=index, doc_type=resource_type, id=indexID, body=json.loads(graph))
-        app_logger.info("Index in Elasticsearch at index: \"{0}\" with type: \"{1}\" and ID: \"{2}\".".format(index, resource_type, indexID))
+        es.index(index=index, doc_type=resource_type, id=indexingID, body=json.loads(graph))
+        app_logger.info("Index in Elasticsearch at index: \"{0}\" with type: \"{1}\" and ID: \"{2}\".".format(index, resource_type, indexingID))
         return
 
     @staticmethod
-    def create_graph(graphStore, query):
+    def create_graph(graphStore):
         """Retrieve graph based on indexing."""
         graph = ConjunctiveGraph()
         bind_prefix(graph)
         store = graphStore['endpoint']
-        store_api = "http://{0}:{1}/{2}/query".format(store['host'], store['port'], store['dataset'])
+        store_api = "http://{0}:{1}/{2}/data?graph=".format(store['host'], store['port'], store['dataset'])
         try:
-            sparql = SPARQLWrapper(store_api)
-            # add a default graph, though that can also be in the query string
+            # sparql = SPARQLWrapper(store_api)
+            # # add a default graph, though that can also be in the query string
+            # for named_graph in graphStore['graphs']:
+            #     sparql.addDefaultGraph(named_graph)
+            # sparql.setQuery(query)
             for named_graph in graphStore['graphs']:
-                sparql.addDefaultGraph(named_graph)
-            sparql.setQuery(query)
+                graph.parse('{0}{1}'.format(store_api, named_graph))
             app_logger.info('Construct outputgraph based on endpoint.')
-            data = sparql.query().convert()
-            graph.parse(data=data.serialize(), format='xml')
+            # data = sparql.query().convert()
+            # graph.parse(data=data.serialize(), format='xml')
             return graph
         except Exception as error:
-            app_logger.error('Mapping Failed when processing the graph!')
+            app_logger.error('Mapping Failed when processing the graph! with error: {0}'.format(error))
             return error
 
     @staticmethod
-    def create_jsonLD(graph, graph_context):
+    def create_jsonLD(graph, filter_frame):
         """Create JSON-LD output for the given subject."""
         try:
             # pyld likes nquads, by default
-            expand = jsonld.from_rdf(graph.serialize(format="nquads"))
-            # framed = jsonld.frame(doc, json.load(open('example_frame.jsonld', 'r')))
+            expanded = jsonld.from_rdf(graph.serialize(format="nquads"))
+            framed = jsonld.frame(expanded, json.loads(filter_frame))
             # compact a document according to a particular context
             # see: http://json-ld.org/spec/latest/json-ld/#compacted-document-form
-            context = graph_context
-            compacted = jsonld.compact(expand, context)
-            # result = json.dumps(jsonld.flatten(expand), indent=1, sort_keys=True)
-            # normalized = jsonld.normalize(expand, {'algorithm': 'URDNA2015', 'format': 'application/json+ld'})
-            result = json.dumps(compacted, indent=1, sort_keys=True)
-            app_logger.info('Serialized as JSON-LD compact with the context: {0}'.format(context))
+            # context = graph_context
+            # compacted = jsonld.compact(expand, filter_frame)
+            result = json.dumps(framed, indent=1, sort_keys=True)
+            app_logger.info('Serialized as JSON-LD compact with the frame: {0}'.format(filter_frame))
             return result
         except Exception as error:
-            app_logger.error('Mapping Failed when creating the JSON-LD!')
+            app_logger.error('Mapping Failed when creating the JSON-LD!with error: {0}'.format(error))
             return error

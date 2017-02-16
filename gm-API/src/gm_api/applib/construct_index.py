@@ -43,7 +43,7 @@ class IndexingObject(object):
         try:
             thread_logger.info('Starting Daemon thread.')
             if plugin == 'python':
-                ldindex_args = [targetEndpoint, graphStore, indexing['filter'], indexing['resourceType'], result['id'], indexing['index']]
+                ldindex_args = [targetEndpoint, graphStore, indexing]
                 data = LODResource()
                 data.index_jsonld(*ldindex_args)
                 cls.update_index_status(conn, result['id'], "Done")
