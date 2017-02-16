@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  */
 public class GMApi {
 
-    private static PlatformServices s = new PlatformServices(false);
+    private static PlatformServices s = new PlatformServices(true);
     private static final String VERSION = "/0.1";
     private static final long startDelay = 1000;
     private static final long pollingInterval = 5000;
@@ -43,13 +43,20 @@ public class GMApi {
 
     @BeforeClass
     public static void setUpFuseki() throws Exception {
-        String payload = IOUtils.toString(IndexerIT.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
+        String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
         HttpResponse<String> response = Unirest.post(s.getFuseki() + "/ds/data?graph=http://test/index")
                 .header("Content-type", "text/turtle")
                 .body(payload)
                 .asString();
 
         assertEquals(201, response.getStatus());
+
+        HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/ds/data?graph=http://test/index2")
+                .header("Content-type", "text/turtle")
+                .body(payload)
+                .asString();
+
+        assertEquals(201, response2.getStatus());
     }
 
     @BeforeClass
@@ -73,7 +80,16 @@ public class GMApi {
                 .body("drop graph <http://test/index>")
                 .asString();
 
+        HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/ds/update")
+                .header("Content-Type", "application/sparql-update")
+                .body("drop graph <http://test/index2>")
+                .asString();
+
+
         HttpResponse<JsonNode> response = Unirest.delete(s.getES5() + "/default")
+                .asJson();
+
+        HttpResponse<JsonNode> response1 = Unirest.delete(s.getESSiren() + "/current")
                 .asJson();
     }
 
@@ -146,25 +162,33 @@ public class GMApi {
 
     @Test
     public void testPythonIndexing() {
+        doIndexing("/index_request.json", s.getES5(), "default");
+    }
+
+    @Test
+    public void testJavaIndexing() {
+        doIndexing("/index_request_java.json", s.getESSiren(), "current");
+    }
+
+    public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
         try {
             // index
-            String indexPython = IOUtils.toString(IndexerIT.class.getResourceAsStream("/index_request.json"), "UTF-8");
+            String indexPython = IOUtils.toString(GMApi.class.getResourceAsStream(requestFixture), "UTF-8");
 
             HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + VERSION + "/index")
                     .header("content-type", "application/json")
                     .body(indexPython)
                     .asJson();
             JSONObject myObj = postResponse.getBody().getObject();
-            System.out.println(myObj.toString());
             int createdIDPython = myObj.getInt("id");
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
             pollForIndexing(createdIDPython);
-
-            HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(s.getES5() + "/default/_search?q=Finnish")
+            Thread.sleep(5000);
+            HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
                     .asJson();
-
             assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
+
 
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
             HttpRequestWithBody request = Unirest.delete(URL);
