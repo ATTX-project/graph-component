@@ -16,10 +16,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
@@ -71,6 +73,9 @@ public class GMApi {
                 .header("Content-Type", "application/sparql-update")
                 .body("drop graph <http://test/index>")
                 .asString();
+
+        HttpResponse<JsonNode> response = Unirest.delete(s.getES5() + "/default")
+                .asJson();
     }
 
     @Test
@@ -156,6 +161,22 @@ public class GMApi {
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
             pollForIndexing(createdIDPython);
+
+            HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(s.getES5() + "/default/_search?q=Finnish")
+                    .asJson();
+
+            assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
+
+            String URL = String.format(s.getGmapi() + "/0.1/index/%s", createdIDPython);
+            HttpRequestWithBody request = Unirest.delete(URL);
+            HttpResponse<String> response = request.asString();
+            int result1 = response.getStatus();
+            assertEquals(200, result1);
+
+            GetRequest requestDelete = Unirest.get(URL);
+            HttpResponse<String> response2 = requestDelete.asString();
+            int result2 = response2.getStatus();
+            assertEquals(410, result2);
 
         } catch (Exception ex) {
             Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
