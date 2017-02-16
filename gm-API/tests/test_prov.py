@@ -44,6 +44,19 @@ class TestProv(appProvTest):
         assert(result.status == falcon.HTTP_200)
 
     @httpretty.activate
+    def test_start_prov_params(self):
+        """Test GET start prov with parameters for hosts."""
+        httpretty.register_uri(httpretty.GET, "http://localhost:4301/0.1/workflow", status=200)
+        httpretty.register_uri(httpretty.GET, "http://localhost:4301/0.1/activity", status=200)
+        httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=200)
+        httpretty.register_uri(httpretty.DELETE, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=200)
+        doc = {"lastStart": str(datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")), "status": "Done"}
+        params = {"start": True, "wfapi": "localhost", "graphStore": "localhost"}
+        httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/prov?start=True&wfapi=localhost&graphStore=localhost", body=doc, status=200)
+        result = self.simulate_get('/{0}/prov'.format(api_version), params=params)
+        assert(result.status == falcon.HTTP_200)
+
+    @httpretty.activate
     def test_start_prov_not_modified(self):
         """Test GET start prov not modified."""
         modifiedSince = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))

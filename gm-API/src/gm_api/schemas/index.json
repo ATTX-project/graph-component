@@ -19,7 +19,7 @@
         "port"
       ]
     },
-    "mapping": {
+    "indexing": {
       "type": "object",
       "properties": {
         "index": {
@@ -28,26 +28,15 @@
         "resourceType": {
           "type": "string"
         },
-        "query": {
+        "indexingID": {
           "type": "string"
         },
-        "context": {
-          "type": "object",
-          "properties": {
-            "@context": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "@context"
-          ]
+        "filter": {
+          "type": "string"
         }
       },
       "required": [
-        "index",
-        "resourceType",
-        "query",
-        "context"
+        "filter"
       ]
     },
     "graphStore": {
@@ -90,7 +79,7 @@
   "required": [
     "plugin",
     "targetEndpoint",
-    "mapping",
+    "indexing",
     "graphStore"
   ]
 }

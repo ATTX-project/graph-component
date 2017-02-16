@@ -12,7 +12,7 @@ def connect_DB(db_file=None):
     try:
         conn = sqlite3.connect(db_filename)
         app_logger.info('Connecting to database.')
-        create_table(conn, """create table if not exists maps (status text, map text)""")
+        create_table(conn, """create table if not exists indexes (status text, filter text)""")
         # create_table(conn, """create table if not exists graphstore (host text, port integer, dataset text)""")
         # create_table(conn, """create table if not exists esstore (host text, port integer, index text, resourcetype text)""")
         create_table(conn, """create table if not exists prov (status text, start text)""")
