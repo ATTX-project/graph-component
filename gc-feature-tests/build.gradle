@@ -50,31 +50,8 @@ task wrapper(type: Wrapper) {
 dcompose {
     createComposeFile.useTags = true    
     registry ('http://attx-dev:5000') {}
-    registry ('http://attx-dev.hulib.helsinki.fi:5000') {}  
-    /*  
-    shared {
-        image = 'attx-dev.hulib.helsinki.fi:5000/uv-attx-shared'
-    }
-    frontend {
-        image = 'tenforce/unified-views-frontend:latest'
-        volumesFrom = [shared]
-    }
-    mysql {
-        image = 'tenforce/unified-views-mariadb:latest'
-        env = ['MYSQL_ROOT_PASSWORD=iamroot!']
-    }
-    backend {
-        image = 'tenforce/unified-views-backend:latest'
-        volumesFrom =  [shared]
-    }
-    uvdpus {
-        image = 'tenforce/unified-views-add-dpus'
-        dependsOn = [mysql]
-    }      
-    wfapi {
-        image = 'attx-dev.hulib.helsinki.fi:5000/wf-api:latest'
-    }     
-    */
+    registry ('http://attx-dev.hulib.helsinki.fi:5000') {}
+
     fuseki {
         image = 'stain/jena-fuseki'
         exposedPorts = ['3030']
@@ -83,10 +60,15 @@ dcompose {
     essiren {
         image = 'attx-dev.hulib.helsinki.fi:5000/essiren:latest'
         exposedPorts = ['9200', '9300']
-        portBindings = ['9200:9200', '9300:9300']            
-    }   
+        portBindings = ['9200:9200', '9300:9300']
+    }
+    es5 {
+        image = 'attx-dev:5000/attx-es5:latest'
+        exposedPorts = ['9210', '9310']
+        portBindings = ['9210:9210', '9310:9310']
+    }
     gmapi {
-        image = 'attx-dev.hulib.helsinki.fi:5000/gm-api:latest'
+        image = 'attx-dev:5000/gm-api:latest'
         exposedPorts = ['4302']
         portBindings = ['4302:4302']            
         
@@ -97,7 +79,7 @@ dcompose {
         dockerFilename = 'Dockerfile'        
         binds = ["/var/run/docker.sock:/run/docker.sock"]
         command = ['sh', '-c', '/tmp/runTests.sh']
-        dependsOn = [gmapi, essiren,fuseki]
+        dependsOn = [gmapi, essiren, fuseki, es5]
         waitForCommand = true
     }
     

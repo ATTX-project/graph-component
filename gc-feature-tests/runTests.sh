@@ -11,7 +11,8 @@ wait_for() {
 wait_for "fuseki" "3030"
 wait_for "essiren" "9200"
 wait_for "essiren" "9300"
+wait_for "es5" "9210"
 wait_for "gmapi" "4302"
 
-gradle -b /tmp/build.test.gradle --offline test
+gradle build.gradle --offline test
 
