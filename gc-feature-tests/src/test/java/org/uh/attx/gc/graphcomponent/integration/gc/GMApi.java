@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
@@ -35,7 +34,7 @@ import static org.junit.Assert.*;
  */
 public class GMApi {
 
-    private static PlatformServices s = new PlatformServices(true);
+    private static PlatformServices s = new PlatformServices(false);
     private static final String VERSION = "/0.1";
     private static final long startDelay = 1000;
     private static final long pollingInterval = 5000;
@@ -118,7 +117,7 @@ public class GMApi {
             public void run() {
                 HttpResponse<JsonNode> resp = null;
                 try {
-                    String URL = String.format(s.getGmapi() + "/0.1/index/%s", createdIDPython);
+                    String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
                     GetRequest get = Unirest.get(URL);
                     HttpResponse<JsonNode> response1 = get.asJson();
                     JSONObject myObj = response1.getBody().getObject();
@@ -151,7 +150,7 @@ public class GMApi {
             // index
             String indexPython = IOUtils.toString(IndexerIT.class.getResourceAsStream("/index_request.json"), "UTF-8");
 
-            HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/0.1/index")
+            HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + VERSION + "/index")
                     .header("content-type", "application/json")
                     .body(indexPython)
                     .asJson();
@@ -167,7 +166,7 @@ public class GMApi {
 
             assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
 
-            String URL = String.format(s.getGmapi() + "/0.1/index/%s", createdIDPython);
+            String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
             HttpRequestWithBody request = Unirest.delete(URL);
             HttpResponse<String> response = request.asString();
             int result1 = response.getStatus();
