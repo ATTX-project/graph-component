@@ -13,7 +13,6 @@ class Cluster(object):
     def on_post(self, req, resp, parsed):
         """Respond on GET request to map endpoint."""
         data = ClusterID()
-        print parsed
         endpoint = parsed.get('graphStore')
         graph_store = {'host': endpoint['host'], 'port': endpoint['port'], 'dataset': endpoint['dataset']}
         reponse = data.cluster(graph_store)
