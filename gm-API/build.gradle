@@ -34,41 +34,6 @@ dependencies {
       test 'pypi:httpretty:0.8.14'
 }
 
-repositories {
-  // using a local repository
-  ivy{
-    name 'pypi-local'
-    url "/home/user/pivy/"
-    layout 'pattern' , {
-      artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
-      ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
-    }
-  }
-  // using a web repository
-  ivy{
-    name 'pypi-attx'
-    url "http://attx-dev.hulib.helsinki.fi:5039/"
-    layout 'pattern' , {
-      artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
-      ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
-    }
-  }
-  // setting the repository for jenkins use
-  ivy{
-    name 'pypi-jenkins'
-    url "http://pypirepo:5039/"
-    layout 'pattern' , {
-      artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
-      ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
-    }
-  }
-}
-
-// in case we want have a ./gradlw command.
-task wrapper(type: Wrapper) {
-   gradleVersion = '3.3'
-}
-
 // Succesfully running the tests requires a logs folder existing.
 task creatLogsFolder {
   description = "Create logs folder."
