@@ -1,21 +1,31 @@
-import org.gradle.api.artifacts.*
+plugins {
+    id "java"
+    id "idea"
+    id "com.chrisgahlert.gradle-dcompose-plugin" version "0.8.2"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
+}
 
-apply plugin: 'base' // To add "clean" task to the root project.
-
+ext {
+    javaProjectList = ['gc-feature-tests', 'gc-rdf2json-indexer']
+    pythonProjectList = ['gm-API']
+}
 
 subprojects {
     apply from: rootProject.file('common.gradle')
 }
 
-task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the projects.') {
-    title = 'All modules'
-    destinationDir = new File(project.buildDir, 'merged-javadoc')
+def javaProjects() {
+    subprojects.findAll { javaProjectList.contains(it.name) }
+}
 
-    // Note: The closures below are executed lazily.
-    source {
-       subprojects*.sourceSets*.main*.allSource
-    }
-    classpath.from {
-        subprojects*.configurations*.compile*.copyRecursive({ !(it instanceof ProjectDependency); })*.resolve()
-    }
+def pythonProjects() {
+    subprojects.findAll { pythonProjectList.contains(it.name) }
+}
+
+configure(javaProjects()) {
+    apply from: rootProject.file('commonJava.gradle')
+}
+
+configure(pythonProjects()) {
+    apply from: rootProject.file('commonPython.gradle')
 }
