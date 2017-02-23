@@ -33,38 +33,38 @@ task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates a jar from 
 }
 
 artifacts {
-      archives jar
-      archives sourcesJar
+    archives jar
+    archives sourcesJar
 }
 
 configure(install.repositories.mavenInstaller) {
-      pom.project {
-          groupId = mavenGroupId
-          artifactId = mavenArtifactId
-          version = mavenVersion
-      }
+    pom.project {
+        groupId = mavenGroupId
+        artifactId = mavenArtifactId
+        version = mavenVersion
+    }
 }
 
 task createFolders(description: 'Creates the source folders if they do not exist.') doLast {
-      sourceSets*.allSource*.srcDirs*.each { File srcDir ->
-          if (!srcDir.isDirectory()) {
-              println "Creating source folder: ${srcDir}"
-              srcDir.mkdirs()
-          }
-      }
+    sourceSets*.allSource*.srcDirs*.each { File srcDir ->
+        if (!srcDir.isDirectory()) {
+            println "Creating source folder: ${srcDir}"
+            srcDir.mkdirs()
+        }
+    }
 }
 
 task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the projects.') {
-      title = 'All modules'
-      destinationDir = new File(project.buildDir, 'merged-javadoc')
+    title = 'All modules'
+    destinationDir = new File(project.buildDir, 'merged-javadoc')
 
-      // Note: The closures below are executed lazily.
-      source {
-          subprojects*.sourceSets*.main*.allSource
-      }
-      classpath.from {
-          subprojects*.configurations*.compile*.copyRecursive({ !(it instanceof ProjectDependency); })*.resolve()
-      }
+    // Note: The closures below are executed lazily.
+    source {
+        subprojects*.sourceSets*.main*.allSource
+    }
+    classpath.from {
+        subprojects*.configurations*.compile*.copyRecursive({ !(it instanceof ProjectDependency); })*.resolve()
+    }
 }
 
 // This might
