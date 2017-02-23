@@ -1,8 +1,8 @@
 plugins {
-    id "java"
+  id "java"
 }
 
 dependencies {
-    testCompile  \
-        fileTree(dir: 'build/libs', include: ['*.jar'])
+  testCompile  \
+      fileTree(dir: 'build/libs', include: ['*.jar'])
 }

@@ -1,8 +1,8 @@
 plugins {
-    id "java"
-    id "idea"
-    id "com.chrisgahlert.gradle-dcompose-plugin" version "0.8.2"
-    id "com.github.johnrengelman.shadow" version "1.2.4"
+  id "java"
+  id "idea"
+  id "com.chrisgahlert.gradle-dcompose-plugin" version "0.8.2"
+  id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 ext {
@@ -11,21 +11,21 @@ ext {
 }
 
 subprojects {
-    apply from: rootProject.file('common.gradle')
+  apply from: rootProject.file('common.gradle')
 }
 
 def javaProjects() {
-    subprojects.findAll { javaProjectList.contains(it.name) }
+  subprojects.findAll { javaProjectList.contains(it.name) }
 }
 
 def pythonProjects() {
-    subprojects.findAll { pythonProjectList.contains(it.name) }
+  subprojects.findAll { pythonProjectList.contains(it.name) }
 }
 
 configure(javaProjects()) {
-    apply from: rootProject.file('commonJava.gradle')
+  apply from: rootProject.file('commonJava.gradle')
 }
 
 configure(pythonProjects()) {
-    apply from: rootProject.file('commonPython.gradle')
+  apply from: rootProject.file('commonPython.gradle')
 }

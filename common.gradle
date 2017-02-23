@@ -9,25 +9,25 @@ ext {
 }
 
 if (!project.hasProperty("registryURL")) {
-    ext.registryURL = "http://${imageRepo}:${imageRepoPort}"
+  ext.registryURL = "http://${imageRepo}:${imageRepoPort}"
 }
 
 if (!project.hasProperty("artifactRepoURL")) {
-    ext.artifactRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-releases"
+  ext.artifactRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-releases"
 }
 
 if (!project.hasProperty("snapshotRepoURL")) {
-    ext.snapshotRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-snapshots"
+  ext.snapshotRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-snapshots"
 }
 
 if (!project.hasProperty("pypiURL")) {
-    ext.pypiURL = "http://${imageRepo}:${pypiRepoPort}/"
+  ext.pypiURL = "http://${imageRepo}:${pypiRepoPort}/"
 }
 
 if (!project.hasProperty("artifactRepoUser")) {
-    ext.artifactRepoUser = ""
+  ext.artifactRepoUser = ""
 }
 
 if (!project.hasProperty("artifactRepoPassword")) {
-    ext.artifactRepoPassword = ""
+  ext.artifactRepoPassword = ""
 }

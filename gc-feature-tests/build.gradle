@@ -22,37 +22,38 @@ dcompose {
   }
 
   fuseki {
-      image = "${imageRepo}:${imageRepoPort}/attx-fuseki:latest"
-      exposedPorts = ['3030']
-      portBindings = ['3030:3030']
+    image = "${imageRepo}:${imageRepoPort}/attx-fuseki:latest"
+    exposedPorts = ['3030']
+    portBindings = ['3030:3030']
+    env = ['ADMIN_PASSWORD=pw123']
   }
 
   essiren {
-      image = "${imageRepo}:${imageRepoPort}/essiren:latest"
-      exposedPorts = ['9200', '9300']
-      portBindings = ['9200:9200', '9300:9300']
+    image = "${imageRepo}:${imageRepoPort}/essiren:latest"
+    exposedPorts = ['9200', '9300']
+    portBindings = ['9200:9200', '9300:9300']
   }
 
   es5 {
-      image = "${imageRepo}:${imageRepoPort}/attx-es5:latest"
-      exposedPorts = ['9210', '9310']
-      portBindings = ['9210:9210', '9310:9310']
+    image = "${imageRepo}:${imageRepoPort}/attx-es5:latest"
+    exposedPorts = ['9210', '9310']
+    portBindings = ['9210:9210', '9310:9310']
   }
 
   gmapi {
-      image = "${imageRepo}:${imageRepoPort}/gm-api:latest"
-      exposedPorts = ['4302']
-      portBindings = ['4302:4302']
+    image = "${imageRepo}:${imageRepoPort}/gm-api:latest"
+    exposedPorts = ['4302']
+    portBindings = ['4302:4302']
   }
 
   test {
-      ignoreExitCode = true
-      baseDir = file('.')
-      dockerFilename = 'Dockerfile'
-      binds = ["/var/run/docker.sock:/run/docker.sock"]
-      command = ['sh', '-c', '/tmp/runTests.sh']
-      dependsOn = [gmapi, essiren, fuseki, es5]
-      waitForCommand = true
+    ignoreExitCode = true
+    baseDir = file('.')
+    dockerFilename = 'Dockerfile'
+    binds = ["/var/run/docker.sock:/run/docker.sock"]
+    command = ['sh', '-c', '/tmp/runTests.sh']
+    dependsOn = [gmapi, essiren, fuseki, es5]
+    waitForCommand = true
   }
 }
 
