@@ -44,14 +44,14 @@ public class GMApi {
     @BeforeClass
     public static void setUpFuseki() throws Exception {
         String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
-        HttpResponse<String> response = Unirest.post(s.getFuseki() + "/ds/data?graph=http://test/index")
+        HttpResponse<String> response = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
                 .header("Content-type", "text/turtle")
                 .body(payload)
                 .asString();
 
         assertEquals(201, response.getStatus());
 
-        HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/ds/data?graph=http://test/index2")
+        HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index2")
                 .header("Content-type", "text/turtle")
                 .body(payload)
                 .asString();
@@ -75,12 +75,12 @@ public class GMApi {
 
     @AfterClass
     public static void tearDown () throws Exception {
-        HttpResponse<String> deleteResponse1 = Unirest.post(s.getFuseki() + "/ds/update")
+        HttpResponse<String> deleteResponse1 = Unirest.post(s.getFuseki() + "/test/update")
                 .header("Content-Type", "application/sparql-update")
                 .body("drop graph <http://test/index>")
                 .asString();
 
-        HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/ds/update")
+        HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/test/update")
                 .header("Content-Type", "application/sparql-update")
                 .body("drop graph <http://test/index2>")
                 .asString();
@@ -111,7 +111,7 @@ public class GMApi {
 
 
             // cluster
-            String clusterPayload = "{ \"graphStore\": { \"host\": \"fuseki\", \"port\": 3030, \"dataset\": \"ds\" }}";
+            String clusterPayload = "{ \"graphStore\": { \"host\": \"fuseki\", \"port\": 3030, \"dataset\": \"test\" }}";
             response = Unirest.post(s.getGmapi() + VERSION + "/cluster")
                     .body(clusterPayload)
                     .asJson();
