@@ -12,5 +12,3 @@ COPY build /tmp/build
 COPY build.test.gradle /tmp/build.gradle
 COPY runTests.sh /tmp/
 RUN chmod 700 /tmp/runTests.sh
-
-# WORKDIR /tmp/
