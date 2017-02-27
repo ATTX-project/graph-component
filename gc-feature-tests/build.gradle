@@ -73,7 +73,7 @@ task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
     cleanDestinationDir = false
 }
 
-startTestContainer.finalizedBy('copyReportFiles')
+startTestContainer.finalizedBy copyReportFiles
 
 shadowJar {
     classifier = 'tests'
