@@ -13,7 +13,7 @@ version=0.1
 
 python {
     testDir = file('tests')
-    forceVersion('pypi', 'appdirs', '1.4.1')
+    forceVersion('pypi', 'appdirs', '1.4.2')
 }
 // define an explicit installation sequence for the dependencies.
 // project.tasks.findByName('installPythonRequirements').sorted = false
