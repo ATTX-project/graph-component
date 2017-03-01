@@ -20,6 +20,46 @@ dcompose {
     registry ("$registryURL") {
         // no user/pass
     }
+    shared {
+        forcePull = true
+        forceRemoveImage = true
+        image = "${imageRepo}:${imageRepoPort}/uv-attx-shared"
+    }
+    
+    mysql {
+        forcePull = true
+        forceRemoveImage = true
+        image = 'tenforce/unified-views-mariadb:feat-compact-modular'
+        env = ['MYSQL_ROOT_PASSWORD=iamroot!']
+        portBindings = ['3306:3306']
+    }
+
+    backend {
+        forcePull = true
+        forceRemoveImage = true
+        image = 'tenforce/unified-views-backend:latest'
+        volumesFrom =  [shared]
+        dependsOn = [mysql, shared]
+    }
+
+
+
+    frontend {
+        forcePull = true
+        forceRemoveImage = true
+        image = 'tenforce/unified-views-frontend:latest'
+        volumesFrom = [shared]
+        exposedPorts = ['8080']
+        portBindings = ['8080:8080']
+        dependsOn = [backend, shared]
+    }    
+    
+    uvdpus {
+        forcePull = true
+        forceRemoveImage = true
+        image = 'tenforce/unified-views-add-dpus'
+        dependsOn = [mysql, frontend]
+    }    
 
     fuseki {
         forcePull = true
@@ -45,6 +85,16 @@ dcompose {
         exposedPorts = ['9210', '9310']
         portBindings = ['9210:9210', '9310:9310']
     }
+    
+    wfapi {
+        forcePull = true
+        forceRemoveImage = true
+        image = "${imageRepo}:${imageRepoPort}/wf-api:latest"
+        exposedPorts = ['4301']
+        portBindings = ['4301:4301']
+        dependsOn = [mysql]
+    }
+    
 
     gmapi {
         forcePull = true
@@ -60,7 +110,7 @@ dcompose {
         dockerFilename = 'Dockerfile'
         binds = ["/var/run/docker.sock:/run/docker.sock"]
         command = ['sh', '-c', '/tmp/runTests.sh']
-        dependsOn = [gmapi, essiren, fuseki, es5]
+        dependsOn = [frontend, backend, shared, uvdpus, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
     }

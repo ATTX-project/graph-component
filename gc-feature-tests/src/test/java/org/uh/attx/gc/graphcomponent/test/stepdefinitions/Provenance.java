@@ -38,7 +38,7 @@ public class Provenance implements En {
                 assertEquals(result3, 200);
 
             } catch (Exception ex) {
-                Logger.getLogger(ClusterIDs.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Provenance.class.getName()).log(Level.SEVERE, null, ex);
                 TestCase.fail(ex.getMessage());
             }
         });
@@ -50,7 +50,7 @@ public class Provenance implements En {
                         .asJson();
                  statusCode = postResponse.getStatus();
             } catch (Exception ex) {
-                Logger.getLogger(ClusterIDs.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Provenance.class.getName()).log(Level.SEVERE, null, ex);
                 TestCase.fail(ex.getMessage());
             }
         });
@@ -72,7 +72,7 @@ public class Provenance implements En {
                 int result3 = postResponse.getStatus();
                 assertEquals(result3, 200);
             } catch (Exception ex) {
-                Logger.getLogger(ClusterIDs.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Provenance.class.getName()).log(Level.SEVERE, null, ex);
                 TestCase.fail(ex.getMessage());
             }
         });
