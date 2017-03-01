@@ -11,17 +11,24 @@ package org.uh.attx.gc.graphcomponent.integration;
  */
 public class PlatformServices {
 
-    public final String ESSIREN = "http://essiren";
-    public final int ESSIREN_PORT = 9200;
+    private final String ESSIREN = "http://essiren";
+    private final int ESSIREN_PORT = 9200;
 
-    public final String ES5 = "http://es5";
-    public final int ES5_PORT = 9210;
+    private final String ES5 = "http://es5";
+    private final int ES5_PORT = 9210;
 
-    public final String FUSEKI = "http://fuseki";
-    public final int FUSEKI_PORT = 3030;
+    private final String FUSEKI = "http://fuseki";
+    private final int FUSEKI_PORT = 3030;
 
-    public final String GMAPI = "http://gmapi";
-    public final int GMAPI_PORT = 4302;
+    private final String GMAPI = "http://gmapi";
+    private final int GMAPI_PORT = 4302;
+
+
+    private final String UV = "http://frontend";
+    private final int UV_PORT = 8080;
+
+    private final String WFAPI = "http://wfapi";
+    private final int WFAPI_PORT = 4301;
 
     private boolean isLocalhost = false;
 
@@ -39,20 +46,28 @@ public class PlatformServices {
             return ESSIREN + ":" + ESSIREN_PORT;
         }
     }
-    
+
     public String getES5() {
         if (isLocalhost) {
             return "http://localhost:" + ES5_PORT;
         } else {
             return ES5 + ":" + ES5_PORT;
         }
-    }    
+    }
 
     public String getFuseki() {
         if (isLocalhost) {
             return "http://localhost:" + FUSEKI_PORT;
         } else {
             return FUSEKI + ":" + FUSEKI_PORT;
+        }
+    }
+
+    public String getUV() {
+        if (isLocalhost) {
+            return "http://localhost:" + UV_PORT;
+        } else {
+            return UV + ":" + UV_PORT;
         }
     }
 
@@ -64,4 +79,11 @@ public class PlatformServices {
         }
     }
 
+    public String getWfapi() {
+        if (isLocalhost) {
+            return "http://localhost:" + WFAPI_PORT;
+        } else {
+            return WFAPI + ":" + WFAPI_PORT;
+        }
+    }
 }
