@@ -35,7 +35,7 @@ class ClusterID(object):
                 app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
                 return {"status": "Processed", "IDCount": len(storage)}
             else:
-                app_logger.info('Something is wrong with updating the graph of IDs. Status is {0}'.format(cls.update_id_graph(endpoint, storage)))
+                app_logger.info('Something is wrong with updating the graph of IDs. Status is {0}'.format(response))
                 return {"status": "Error", "IDCount": len(storage)}
         except Exception as error:
             app_logger.error('Something is wrong: {0}'.format(error))
