@@ -2,6 +2,7 @@ apply plugin: 'application'
 
 mainClassName = "org.uh.attx.graphmanager.rdf2json.indexer.Indexer"
 version="0.1"
+group = "${gmGroupID}"
 
 dependencies {
       // https://mvnrepository.com/artifact/org.apache.jena/apache-jena

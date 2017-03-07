@@ -6,7 +6,7 @@ ext {
     artifactRepoPort = "8081"
     jenkinsPort = "49001"
     pypiRepoPort = "5039"
-    gmGroupID = "org.uh.hulib.attx"
+    gmGroupID = "org.uh.hulib.attx.gc"
 }
 
 if (!project.hasProperty("registryURL")) {
