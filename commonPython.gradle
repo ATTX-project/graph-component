@@ -1,3 +1,5 @@
+apply plugin: 'maven' // For Uploading artifacts to repository
+
 repositories {
     // using a local repository
     ivy{

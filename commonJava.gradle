@@ -67,7 +67,7 @@ task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the pro
     }
 }
 
-// This might
+// We might need to change this
 
 publishing {
     repositories {
