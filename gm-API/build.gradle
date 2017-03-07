@@ -64,7 +64,7 @@ uploadArchives {
                   authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
             }
             pom.project {
-                groupId = "org.uh.hulib.attx"
+                groupId = "${gmGroupID}"
                 description "Graph Manager API."
             }
         }
