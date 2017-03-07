@@ -9,18 +9,16 @@ buildscript {
 
 apply plugin: 'com.linkedin.python-web-app'
 
-version=0.1
+version="0.1"
 
 python {
     testDir = file('tests')
-    forceVersion('pypi', 'appdirs', '1.4.2')
+    forceVersion('pypi', 'appdirs', '1.4.3')
 }
 // define an explicit installation sequence for the dependencies.
 // project.tasks.findByName('installPythonRequirements').sorted = false
 
 dependencies {
-    python 'pypi:appdirs:1.4.1'
-    python 'pypi:packaging:16.8'
     python 'pypi:jsonschema:2.5.1'
     python 'pypi:elasticsearch:5.1.0'
     python 'pypi:falcon:1.1.0'
@@ -58,3 +56,17 @@ task runTests(type:Exec) {
 
 buildPex.dependsOn creatLogsFolder
 pytest.dependsOn creatLogsFolder
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${artifactRepoURL}") {
+                  authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+            }
+            pom.project {
+                groupId = "org.uh.hulib.attx"
+                description "Graph Manager API."
+            }
+        }
+    }
+}
