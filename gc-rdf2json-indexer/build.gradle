@@ -1,7 +1,7 @@
 apply plugin: 'application'
 
 mainClassName = "org.uh.attx.graphmanager.rdf2json.indexer.Indexer"
-version="1.0-SNAPSHOT"
+version="0.1"
 
 dependencies {
       // https://mvnrepository.com/artifact/org.apache.jena/apache-jena
