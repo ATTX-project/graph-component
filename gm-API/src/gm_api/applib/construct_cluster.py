@@ -77,7 +77,7 @@ class ClusterID(object):
             query = """SELECT DISTINCT ?dataset
                        WHERE { GRAPH <%s> {
                        ?dataset a attxonto:Dataset.
-                       ?activity prov:used ?dataset.
+                       ?activity prov:used|prov:generated ?dataset.
                        }}""" % (ATTXProv)
             graph = ConjunctiveGraph(store="SPARQLStore")
 
