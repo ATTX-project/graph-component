@@ -9,7 +9,13 @@ buildscript {
 
 apply plugin: 'com.linkedin.python-web-app'
 
-version="0.1"
+ext.version_nb = "1.0"
+
+if (!project.hasProperty("env")) {
+    ext.artifactVersion = "${version_nb}-SNAPSHOT"
+} else if (project.env == "release"){
+    ext.artifactVersion = "${version_nb}"
+}
 
 python {
     testDir = file('tests')
@@ -64,6 +70,7 @@ uploadArchives {
                   authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
             }
             pom.project {
+                version = "${artifactVersion}"
                 groupId = "${gmGroupID}"
                 description "Graph Manager API."
             }
