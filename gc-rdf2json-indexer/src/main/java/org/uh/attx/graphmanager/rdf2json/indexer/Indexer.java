@@ -227,13 +227,14 @@ public class Indexer {
             String type, String id) {
         
         if(this.bulkProcessor != null) {            
-            this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
+            //this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
+            IndexResponse response = client.prepareIndex(index, type, id)
+                .setSource(x).execute().actionGet();
+
         }
         else {
             this.log.warning("No bulkprocessor. Document is not indexed");
         }
-        //IndexResponse response = client.prepareIndex(index, type, id)
-        //        .setSource(x).execute().actionGet();
 
     }
 
