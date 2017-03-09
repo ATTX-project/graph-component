@@ -112,6 +112,8 @@ paths:
       - "gmAPI"
       description: "Get the links in the Graph Store"
       operationId: "links_get"
+      produces:
+      - "application/json"
       parameters: []
       responses:
         200:
@@ -181,10 +183,12 @@ definitions:
         type: "string"
   Link:
     required:
-    - "graph"
-    - "strategy"
+    - "graphStore"
+    - "linking"
     properties:
-      graph:
-        type: "string"
-      strategy:
-        type: "string"
+      graphStore:
+        type: "object"
+        properties: {}
+      linking:
+        type: "object"
+        properties: {}
