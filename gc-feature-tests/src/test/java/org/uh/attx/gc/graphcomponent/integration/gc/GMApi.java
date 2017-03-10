@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
  */
 public class GMApi {
 
-    private static PlatformServices s = new PlatformServices(true);
+    private static PlatformServices s = new PlatformServices(false);
     private static final String VERSION = "/0.1";
     private static final long startDelay = 1000;
     private static final long pollingInterval = 5000;
