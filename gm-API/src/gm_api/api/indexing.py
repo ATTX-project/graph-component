@@ -18,7 +18,7 @@ class IndexClass(object):
         resp.data = json.dumps(response, indent=1, sort_keys=True)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_202
-        app_logger.info('Creating/POST a new index with ID: {0}.'.format(response['id']))
+        app_logger.info('Creating/POST a new indexing job with ID: {0}.'.format(response['id']))
 
 
 class IndexingResource(object):
@@ -33,10 +33,10 @@ class IndexingResource(object):
             resp.data = json.dumps(response, indent=1, sort_keys=True)
             resp.content_type = 'application/json'
             resp.status = falcon.HTTP_200
-            app_logger.info('GET the index with ID: {0}.'.format(indexID))
+            app_logger.info('GET /index the indexing job with ID: {0}.'.format(indexID))
         else:
             raise falcon.HTTPGone()
-            app_logger.warning('Index with ID: {0} is gone.'.format(indexID))
+            app_logger.warning('Indexing job with ID: {0} is gone/deleted.'.format(indexID))
 
     def on_delete(self, req, resp, indexID):
         """Respond on GET request to index endpoint."""
@@ -44,5 +44,5 @@ class IndexingResource(object):
         data.delete_indexID(indexID)
         resp.data = json.dumps({"deletedID": indexID}, indent=1, sort_keys=True)
         resp.content_type = 'application/json'
-        app_logger.info('Deleted/DELETE a index with ID: {0}.'.format(indexID))
+        app_logger.info('Deleted/DELETE /index a indexing job with ID: {0}.'.format(indexID))
         resp.status = falcon.HTTP_200

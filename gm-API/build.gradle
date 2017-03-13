@@ -3,13 +3,15 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath group: 'com.linkedin.pygradle', name: 'pygradle-plugin', version: '0.4.1'
+        classpath group: 'com.linkedin.pygradle', name: 'pygradle-plugin', version: '0.4.8'
     }
 }
 
 apply plugin: 'com.linkedin.python-web-app'
 
 ext.version_nb = "1.0"
+
+version = "$version_nb"
 
 if (!project.hasProperty("env")) {
     ext.artifactVersion = "${version_nb}-SNAPSHOT"
@@ -19,7 +21,8 @@ if (!project.hasProperty("env")) {
 
 python {
     testDir = file('tests')
-    forceVersion('pypi', 'appdirs', '1.4.3')
+    // forceVersion('pypi', 'appdirs', '1.4.3')
+    // forceVersion('pypi', 'pip', '9.0.1')
 }
 // define an explicit installation sequence for the dependencies.
 // project.tasks.findByName('installPythonRequirements').sorted = false
