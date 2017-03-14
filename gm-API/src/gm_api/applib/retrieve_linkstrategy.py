@@ -32,6 +32,8 @@ def retrieve_strategies(endpoint):
             'Could not get the strategies list.'
         )
         return error
+    finally:
+        graph.close()
 
 
 def retrieve_strategy(endpoint, strategyID):
@@ -63,3 +65,5 @@ def retrieve_strategy(endpoint, strategyID):
             'Could not get a specific strategy.'
         )
         return error
+    finally:
+        graph.close()

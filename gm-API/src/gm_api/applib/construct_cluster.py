@@ -47,6 +47,7 @@ class ClusterID(object):
             # cleaning local graph as previously clustered ID might be problematic
             storage.remove((None, None, None))
             app_logger.info('Cleaned local graph.')
+            graph.close()
             # storage.close()
 
     @staticmethod
@@ -57,8 +58,8 @@ class ClusterID(object):
                 store_api = "http://{0}:{1}/{2}/data".format(endpoint['host'], endpoint['port'], endpoint['dataset'])
             else:
                 store_api = "http://{0}:{1}/{2}/data?graph={3}".format(endpoint['host'], endpoint['port'], endpoint['dataset'], context)
-            headers = {'Content-Type': 'application/trig'}
-            result = requests.post(store_api, data=graph.serialize(format='trig'), headers=headers)
+            headers = {'Content-Type': 'text/turtle'}
+            result = requests.post(store_api, data=graph.serialize(format='turtle'), headers=headers)
             app_logger.info('Add to graph: "{0}" the new IDs.'.format(context))
             return result.status_code
         except Exception as error:
@@ -94,3 +95,5 @@ class ClusterID(object):
                 'Could not get the working datasets.'
             )
             return error
+        finally:
+            graph.close()
