@@ -45,7 +45,7 @@ class IndexingObject(object):
             if plugin == 'python':
                 ldindex_args = [targetEndpoint, graphStore, indexing]
                 data = LODResource()
-                data.index_jsonld(*ldindex_args)
+                data.index_json(*ldindex_args)
                 cls.update_index_status(conn, result['id'], "Done")
             elif plugin == 'java':
                 data = LODResource()

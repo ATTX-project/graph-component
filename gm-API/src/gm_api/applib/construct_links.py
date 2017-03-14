@@ -1,6 +1,7 @@
 import threading
 from gm_api.utils.db import connect_DB
 from gm_api.utils.logs import app_logger, thread_logger
+from gm_api.applib.generate_links import determine_strategy
 
 
 class LinkingObject(object):
@@ -41,7 +42,7 @@ class LinkingObject(object):
         conn = connect_DB('data.db')
         try:
             thread_logger.info('Starting Daemon thread.')
-            # TO DO
+            determine_strategy(graphStore, strategy)
             cls.update_link_status(conn, result['id'], "Done")
             thread_logger.info('Exiting Daemon thread!')
         except Exception as error:

@@ -65,7 +65,7 @@ class ClusterID(object):
             app_logger.error('Something is wrong: {0}'.format(error))
             raise falcon.HTTPUnprocessableEntity(
                 'Unprocessable ID Clustering',
-                'Could post the IDs to the graph store.'
+                'Could not post the IDs to the graph store.'
             )
 
     @staticmethod
