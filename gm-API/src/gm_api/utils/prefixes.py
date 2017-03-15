@@ -3,6 +3,9 @@ from ConfigParser import SafeConfigParser
 
 PROV = Namespace('http://www.w3.org/ns/prov#')
 SD = Namespace('http://www.w3.org/ns/sparql-service-description#')
+CC = Namespace('https://creativecommons.org/ns#')
+PWO = Namespace('http://purl.org/spar/pwo/')
+
 ATTXURL = 'http://data.hulib.helsinki.fi/attx/'
 ATTXBase = Namespace(ATTXURL)
 ATTXIDs = Namespace("{0}ids".format(ATTXURL))

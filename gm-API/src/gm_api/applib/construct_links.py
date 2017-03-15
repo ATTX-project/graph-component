@@ -1,7 +1,11 @@
+import time
 import threading
+from datetime import datetime
 from gm_api.utils.db import connect_DB
 from gm_api.utils.logs import app_logger, thread_logger
 from gm_api.applib.generate_links import perform_strategy
+from gm_api.applib.generate_prov import update_linking_provenance
+from gm_api.utils.prefixes import ATTXIDs
 
 
 class LinkingObject(object):
@@ -40,10 +44,14 @@ class LinkingObject(object):
     def daemon(cls, result, strategy, graphStore):
         """Simple worker daemon."""
         conn = connect_DB('data.db')
+        startTime = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S%z')
         try:
             thread_logger.info('Starting Daemon thread.')
-            perform_strategy(graphStore, strategy)
+            generatedDataset = perform_strategy(graphStore, strategy)
             cls.update_link_status(conn, result['id'], "Done")
+            endTime = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S%z')
+            usedDatasetList = graphStore['graphs'] if 'graphs' in graphStore else [ATTXIDs]
+            update_linking_provenance(graphStore['endpoint'], startTime, endTime, generatedDataset, usedDatasetList)
             thread_logger.info('Exiting Daemon thread!')
         except Exception as error:
             app_logger.error('Daemon Thread Failed! with error: {0}'.format(error))

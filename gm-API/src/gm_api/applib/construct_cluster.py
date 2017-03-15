@@ -13,30 +13,44 @@ properties = [
 ]
 
 
+def strategy_cluster(datasets, endpoint):
+    """Cluster the IDs into the IDs Graph."""
+    graph = ConjunctiveGraph(store="SPARQLStore")
+    graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
+    storage = ConjunctiveGraph()
+    try:
+        zip_list = list(itertools.product(datasets, properties))
+        for i, j in zip_list:
+            for s, p, o in graph.triples((None, URIRef('{0}'.format(j)), None), URIRef('{0}'.format(i))):
+                storage.add((s, ATTXBase.id, o))
+        return storage
+    except Exception as error:
+        app_logger.error('Something is wrong: {0}'.format(error))
+        raise falcon.HTTPUnprocessableEntity(
+            'Unprocessable ID Clustering',
+            'Could not process the clustering of ids.'
+        )
+    finally:
+        graph.close()
+
+
 class ClusterID(object):
     """Cluster IDs in the Graph Store based on the working graphs."""
 
     @classmethod
     def cluster(cls, endpoint):
         """Cluster the IDs into the IDs Graph."""
-        graph = ConjunctiveGraph(store="SPARQLStore")
-        graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
-
-        storage = ConjunctiveGraph()
         try:
             datasets = cls.retrieve_workingGraphs(endpoint)
-            zip_list = list(itertools.product(datasets, properties))
-            for i, j in zip_list:
-                for s, p, o in graph.triples((None, URIRef('{0}'.format(j)), None), URIRef('{0}'.format(i))):
-                    storage.add((s, ATTXBase.id, o))
+            local_cluster = strategy_cluster(datasets, endpoint)
             # if the 200 or 201 does not happen something is wrong
-            response = cls.update_id_graph(endpoint, storage, ATTXIDs)
+            response = cls.update_id_graph(endpoint, local_cluster, ATTXIDs)
             if response == 200 or response == 201:
-                app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(storage)))
-                return {"status": "Processed", "IDCount": len(storage)}
+                app_logger.info('Clustered and added exactly: {0} triples to the graph.'.format(len(local_cluster)))
+                return {"status": "Processed", "IDCount": len(local_cluster)}
             else:
                 app_logger.info('Something is wrong with updating the graph of IDs. Status is {0}'.format(response))
-                return {"status": "Error", "IDCount": len(storage)}
+                return {"status": "Error", "IDCount": len(local_cluster)}
         except Exception as error:
             app_logger.error('Something is wrong: {0}'.format(error))
             raise falcon.HTTPUnprocessableEntity(
@@ -45,10 +59,8 @@ class ClusterID(object):
             )
         finally:
             # cleaning local graph as previously clustered ID might be problematic
-            storage.remove((None, None, None))
+            local_cluster.remove((None, None, None))
             app_logger.info('Cleaned local graph.')
-            graph.close()
-            # storage.close()
 
     @staticmethod
     def update_id_graph(endpoint, graph, context=None):

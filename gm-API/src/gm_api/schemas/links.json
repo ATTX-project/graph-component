@@ -45,8 +45,7 @@
         }
       },
       "required": [
-        "endpoint",
-        "graphs"
+        "endpoint"
       ]
     }
   },

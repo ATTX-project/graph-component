@@ -4,10 +4,10 @@ import random
 import requests
 from rdflib import ConjunctiveGraph
 from SPARQLWrapper import SPARQLWrapper
-from gm_api.utils.prefixes import bind_prefix
 from gm_api.utils.logs import app_logger
+from gm_api.applib.construct_cluster import strategy_cluster
 from gm_api.applib.retrieve_linkstrategy import retrieve_strategy
-from gm_api.utils.prefixes import ATTXURL
+from gm_api.utils.prefixes import bind_prefix, ATTXURL, ATTXIDs
 
 
 def perform_strategy(graphStore, strategy):
@@ -19,6 +19,7 @@ def perform_strategy(graphStore, strategy):
         result = sparql_strategy(graphStore, current_strategy['parameters']['query'])
         app_logger.info('Executing SPARQL based linking strategy. Resulting: {0} triples.'.format(len(result)))
         output_generated_graph(graphStore['endpoint'], result, work_graph_context)
+        return work_graph_context
     else:
         pass
         app_logger.info('Could not determine strategy type.')
@@ -28,24 +29,28 @@ def sparql_strategy(graphStore, query):
     """Generate Links based on SPARQL query strategy."""
     graph = ConjunctiveGraph()
     bind_prefix(graph)
-    store = graphStore['endpoint']
-    store_api = "http://{0}:{1}/{2}/query".format(store['host'], store['port'], store['dataset'])
     try:
-        sparql = SPARQLWrapper(store_api)
-        # add a default graph, though that can also be in the query string
-        for named_graph in graphStore['graphs']:
-            sparql.addDefaultGraph(named_graph)
-        sparql.setQuery(query)
-        # for named_graph in graphStore['graphs']:
-        #     graph.parse('{0}{1}'.format(store_api, named_graph))
-        app_logger.info('Construct outputgraph based on endpoint.')
-        data = sparql.query().convert()
-        graph.parse(data=data.serialize(), format='xml')
+        if 'graphs' in graphStore:
+            local_cluster = strategy_cluster(graphStore['graphs'], graphStore['endpoint'])
+            result = local_cluster.query(query)
+            for s, p, o in result:
+                graph.add((s, p, o))
+        else:
+            store = graphStore['endpoint']
+            store_api = "http://{0}:{1}/{2}/query".format(store['host'], store['port'], store['dataset'])
+            sparql = SPARQLWrapper(store_api)
+            # add a default graph, though that can also be in the query string
+            sparql.addDefaultGraph(ATTXIDs)
+            sparql.setQuery(query)
+            # for named_graph in graphStore['graphs']:
+            #     graph.parse('{0}{1}'.format(store_api, named_graph))
+            app_logger.info('Construct output graph based on strategy query.')
+            data = sparql.query().convert()
+            graph.parse(data=data.serialize(), format='xml')
         return graph
     except Exception as error:
-        app_logger.error('Mapping Failed when processing the graph! with error: {0}'.format(error))
+        app_logger.error('SPARQL strategy failed when processing the graph! with error: {0}'.format(error))
         return error
-
 
 # def insert_named_graph(endpoint, name):
 #     """Adding a new named graph to the graph store."""
@@ -64,11 +69,15 @@ def output_generated_graph(endpoint, graph, context):
     """Post data to a target Graph Store."""
     # insert_named_graph(endpoint, context)
     try:
-        store_api = "http://{0}:{1}/{2}/data?graph={3}".format(endpoint['host'], endpoint['port'], endpoint['dataset'], context)
-        headers = {'Content-Type': 'text/turtle'}
-        result = requests.post(store_api, data=graph.serialize(format='turtle'), headers=headers)
-        app_logger.info('Add to graph store: "{0}" result of a linking strategy.'.format(context))
-        return result.status_code
+        if len(graph) > 0:
+            store_api = "http://{0}:{1}/{2}/data?graph={3}".format(endpoint['host'], endpoint['port'], endpoint['dataset'], context)
+            headers = {'Content-Type': 'text/turtle'}
+            result = requests.post(store_api, data=graph.serialize(format='turtle'), headers=headers)
+            app_logger.info('Add to graph store: "{0}" the result of the linking strategy.'.format(context))
+            return result.status_code
+        else:
+            app_logger.info('Nothing to add to graph store.')
+            pass
     except Exception as error:
         app_logger.error('Something is wrong: {0}'.format(error))
         raise falcon.HTTPUnprocessableEntity(
