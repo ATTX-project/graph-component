@@ -48,7 +48,7 @@ class TestCluster(appClusterTest):
                     SELECT DISTINCT ?dataset WHERE {
                     GRAPH <http://data.hulib.helsinki.fi/attx/prov> {
                     ?dataset a attxonto:Dataset.
-                    ?activity prov:used ?dataset. }}"""
+                    ?activity prov:used|prov:generated ?dataset. }}"""
         httpretty.register_uri(httpretty.GET, "{0}?query={1}&output=xml&results=xml&format=xml".format(store_url, query), body=xml_result, status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=500)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXIDs), status=500)
@@ -76,7 +76,7 @@ class TestCluster(appClusterTest):
                     SELECT DISTINCT ?dataset WHERE {
                     GRAPH <http://data.hulib.helsinki.fi/attx/prov> {
                     ?dataset a attxonto:Dataset.
-                    ?activity prov:used ?dataset. }}"""
+                    ?activity prov:used|prov:generated ?dataset. }}"""
         httpretty.register_uri(httpretty.GET, "{0}?query={1}&output=xml&results=xml&format=xml".format(store_url, query), body=xml_result, status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXProv), status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXIDs), status=200)

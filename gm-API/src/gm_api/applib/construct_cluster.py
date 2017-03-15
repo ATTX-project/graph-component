@@ -40,6 +40,7 @@ class ClusterID(object):
     @classmethod
     def cluster(cls, endpoint):
         """Cluster the IDs into the IDs Graph."""
+        local_cluster = ConjunctiveGraph()
         try:
             datasets = cls.retrieve_workingGraphs(endpoint)
             local_cluster = strategy_cluster(datasets, endpoint)
