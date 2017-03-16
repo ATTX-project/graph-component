@@ -44,9 +44,9 @@ def sparql_strategy(graphStore, query):
             sparql.setQuery(query)
             # for named_graph in graphStore['graphs']:
             #     graph.parse('{0}{1}'.format(store_api, named_graph))
-            app_logger.info('Construct output graph based on strategy query.')
             data = sparql.query().convert()
             graph.parse(data=data.serialize(), format='xml')
+            app_logger.info('Construct output graph based on strategy query.')
         return graph
     except Exception as error:
         app_logger.error('SPARQL strategy failed when processing the graph! with error: {0}'.format(error))
