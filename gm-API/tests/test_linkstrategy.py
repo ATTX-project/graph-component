@@ -9,7 +9,7 @@ from gm_api.utils.db import connect_DB
 from gm_api.utils.prefixes import ATTXStrategy, ATTXBase
 
 
-class appLinkTest(testing.TestCase):
+class appLinkStrategyTest(testing.TestCase):
     """Testing GM link function and initialize it for that purpose."""
 
     def setUp(self):
@@ -22,7 +22,7 @@ class appLinkTest(testing.TestCase):
         pass
 
 
-class TestLink(appLinkTest):
+class TestLinkStrategy(appLinkStrategyTest):
     """Testing GM link function and initialize it for that purpose."""
 
     def test_create(self):
@@ -117,55 +117,8 @@ class TestLink(appLinkTest):
     @httpretty.activate
     def test_linkstrategy_ok(self):
         """Test GET link strategy."""
-        xml_result = """<?xml version="1.0"?>
-                <sparql xmlns="http://www.w3.org/2005/sparql-results#">
-                  <head>
-                    <variable name="property"/>
-                    <variable name="value"/>
-                  </head>
-                  <results>
-                    <result>
-                      <binding name="property">
-                        <uri>http://data.hulib.helsinki.fi/attx/onto#hasStrategyType</uri>
-                      </binding>
-                      <binding name="value">
-                        <literal>SPARQL</literal>
-                      </binding>
-                    </result>
-                    <result>
-                      <binding name="property">
-                        <uri>http://purl.org/dc/terms/title</uri>
-                      </binding>
-                      <binding name="value">
-                        <literal>IDs based Linking Strategy</literal>
-                      </binding>
-                    </result>
-                    <result>
-                      <binding name="property">
-                        <uri>http://schema.org/query</uri>
-                      </binding>
-                      <binding name="value">
-                        <literal>prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;&#x0A; prefix attx: &lt;http://data.hulib.helsinki.fi/attx/&gt;&#x0A; construct { ?r1 skos:exactMatch ?r2} where { ?r1 attx:id ?id .&#x0A;  ?r2 attx:id ?id .&#x0A;  filter(?r1 != ?r2)&#x0A;}</literal>
-                      </binding>
-                    </result>
-                    <result>
-                      <binding name="property">
-                        <uri>http://data.hulib.helsinki.fi/attx/onto#hasParameters</uri>
-                      </binding>
-                      <binding name="value">
-                        <literal>List of parameters</literal>
-                      </binding>
-                    </result>
-                    <result>
-                      <binding name="property">
-                        <uri>http://purl.org/dc/terms/description</uri>
-                      </binding>
-                      <binding name="value">
-                        <literal xml:lang="en">Linking Strategy based on IDs clustering and specifying required datasets.</literal>
-                      </binding>
-                    </result>
-                  </results>
-                </sparql>"""
+        with open('tests/resources/xml_strategy.xml') as datafile:
+            xml_result = datafile.read()
         store_url = "http://localhost:3030/ds/query"
         query = """PREFIX attxonto: <http://data.hulib.helsinki.fi/attx/onto#>
                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

@@ -28,16 +28,35 @@ class TestLink(appLinkTest):
         self.app
         pass
 
-    def test_getlinks_post_good(self):
+    def test_link_post_good(self):
         """Test good POST entities links message."""
         with open('tests/resources/links_request.json', 'r') as datafile:
+            test_data = datafile.read().replace('\n', '')
+        xml_result = """<?xml version="1.0"?>
+                        <sparql xmlns="http://www.w3.org/2005/sparql-results#">
+                          <head>
+                            <variable name="property"/>
+                            <variable name="value"/>
+                          </head>
+                          <results>
+                          </results>
+                        </sparql>"""
+        httpretty.register_uri(httpretty.GET, "http://localhost:3030/ds/query", body=xml_result, status=200)
+        hdrs = [('Accept', 'application/json'),
+                ('Content-Type', 'application/json'), ]
+        result = self.simulate_post('/%s/link' % (api_version), body=test_data, headers=hdrs)
+        assert(result.status == falcon.HTTP_202)
+
+    def test_link_generate_post_good(self):
+        """Test good POST entities links message with generation of ids."""
+        with open('tests/resources/link_request_generate.json', 'r') as datafile:
             test_data = datafile.read().replace('\n', '')
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
         result = self.simulate_post('/%s/link' % (api_version), body=test_data, headers=hdrs)
         assert(result.status == falcon.HTTP_202)
 
-    def test_getlinks_post_bad(self):
+    def test_link_post_bad(self):
         """Test empty POST links message."""
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
