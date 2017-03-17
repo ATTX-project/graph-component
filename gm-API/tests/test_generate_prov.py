@@ -35,7 +35,8 @@ class TestGenerateProv(appGenerateProvTest):
         generatedDataset = "{0}work4".format(ATTXURL)
         usedDatasetList = ["http://data.hulib.helsinki.fi/attx/work2", "http://data.hulib.helsinki.fi/attx/work1"]
         endpoint = {'host': "localhost", 'port': 3030, 'dataset': 'ds'}
-        result = update_linking_provenance(endpoint, "2016-11-17T13:02:10+02:00", "2016-11-17T13:40:47+02:00", generatedDataset, usedDatasetList)
+        strategy = 'http://data.hulib.helsinki.fi/attx/idstrategy1'
+        result = update_linking_provenance(endpoint, "2016-11-17T13:02:10+02:00", "2016-11-17T13:40:47+02:00", strategy, generatedDataset, usedDatasetList)
         assert(result == 200)
 
 

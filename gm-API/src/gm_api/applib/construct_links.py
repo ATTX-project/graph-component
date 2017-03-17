@@ -1,3 +1,4 @@
+import re
 import time
 import threading
 from datetime import datetime
@@ -49,9 +50,10 @@ class LinkingObject(object):
             thread_logger.info('Starting Daemon thread.')
             generatedDataset = perform_strategy(graphStore, strategy)
             cls.update_link_status(conn, result['id'], "Done")
-            endTime = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S%z')
             usedDatasetList = graphStore['graphs'] if 'graphs' in graphStore else [ATTXIDs]
-            update_linking_provenance(graphStore['endpoint'], startTime, endTime, generatedDataset, usedDatasetList)
+            strategyID = re.split(r'\/|\#', strategy['uri'])[-1]
+            endTime = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S%z')
+            update_linking_provenance(graphStore['endpoint'], startTime, endTime, strategyID, generatedDataset, usedDatasetList)
             thread_logger.info('Exiting Daemon thread!')
         except Exception as error:
             app_logger.error('Daemon Thread Failed! with error: {0}'.format(error))

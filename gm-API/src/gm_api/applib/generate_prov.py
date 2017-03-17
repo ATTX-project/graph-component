@@ -10,13 +10,13 @@ artifact = 'gm_API'  # Define the ETL agent
 agent = 'ETL'  # Define Agent type
 
 
-def update_linking_provenance(endpoint, startTime, endTime, generatedDataset, usedDatasetList=None):
+def update_linking_provenance(endpoint, startTime, endTime, strategy, generatedDataset, usedDatasetList=None):
     """Update provenance graph in the graph store."""
     graph = Graph()
     bind_prefix(graph)
     try:
-        workflow_provenance(graph)
-        activity_provenance(graph, startTime, endTime, generatedDataset, usedDatasetList)
+        workflow_provenance(graph, strategy)
+        activity_provenance(graph, startTime, endTime, strategy, generatedDataset, usedDatasetList)
         store_api = "http://{0}:{1}/{2}/data?graph={3}".format(endpoint['host'], endpoint['port'], endpoint['dataset'], ATTXProv)
         headers = {'Content-Type': 'text/turtle'}
         result = requests.post(store_api, data=graph.serialize(format='turtle'), headers=headers)
@@ -30,11 +30,11 @@ def update_linking_provenance(endpoint, startTime, endTime, generatedDataset, us
         )
 
 
-def activity_provenance(graph, startTime, endTime, generatedDataset, usedDatasetList=None):
+def activity_provenance(graph, startTime, endTime, strategy, generatedDataset, usedDatasetList=None):
     """Generate activity related provenance for link endpoint."""
     bnode = BNode()
     activity_id = str(random.randint(1e15, 1e16))
-    workflow_id = "_link"
+    workflow_id = "_link_{0}".format(strategy)
 
     graph.add((URIRef("{0}activity{1}".format(ATTXBase, activity_id)), RDF.type, PROV.Activity))
     graph.add((URIRef("{0}activity{1}".format(ATTXBase, activity_id)), RDF.type, ATTXOnto.WorkflowExecution))
@@ -71,28 +71,28 @@ def dataset_provenance(graph, dataset, activityID, datasetType):
     return graph
 
 
-def workflow_provenance(graph):
+def workflow_provenance(graph, strategy):
     """Generate workflow related provenance for link endpoint."""
-    workflow_id = "_link"
+    workflow_id = "_link_{0}".format(strategy)
     # There will be only one type of workflow and steps. Steps might differ in configuration.
     graph.add((URIRef("{0}workflow{1}".format(ATTXBase, workflow_id)), RDF.type, ATTXOnto.Workflow))
     graph.add((URIRef("{0}workflow{1}".format(ATTXBase, workflow_id)), DC.title, Literal("Linking Workflow")))
     graph.add((URIRef("{0}workflow{1}".format(ATTXBase, workflow_id)), DC.description, Literal("Workflow specific to the link GM API endpoint")))
     # Add predifined steps for the workflow
-    generate_step(graph, 1, "Retrieve parameters", "Retrieve paramters for the linking for the specified strategy.", workflow_id)
-    generate_step(graph, 2, "Construct linking graph", "Generate linking graph based on strategy parameters.", workflow_id)
-    generate_step(graph, 3, "Add to graph store", "Add generated linking graph to the graph store.", workflow_id)
-    graph.add((URIRef("{0}step{1}".format(ATTXBase, 1)), PWO.hasNextStep, URIRef("{0}step{1}".format(ATTXBase, 2))))
-    graph.add((URIRef("{0}step{1}".format(ATTXBase, 2)), PWO.hasNextStep, URIRef("{0}step{1}".format(ATTXBase, 3))))
+    generate_step(graph, 1, strategy, "Retrieve {0} parameters".format(strategy), "Retrieve paramters for the linking for the specified strategy.", workflow_id)
+    generate_step(graph, 2, strategy, "Construct linking graph for {0}".format(strategy), "Generate linking graph based on strategy parameters.", workflow_id)
+    generate_step(graph, 3, strategy, "Add to graph store", "Add generated linking graph by {0} to the graph store.".format(strategy), workflow_id)
+    graph.add((URIRef("{0}step{1}_{2}".format(ATTXBase, 1, strategy)), PWO.hasNextStep, URIRef("{0}step{1}_{2}".format(ATTXBase, 2, strategy))))
+    graph.add((URIRef("{0}step{1}_{2}".format(ATTXBase, 2, strategy)), PWO.hasNextStep, URIRef("{0}step{1}_{2}".format(ATTXBase, 3, strategy))))
 
     app_logger.info('Construct activity metadata for Workflow: workflow{0} + associated steps.' .format(workflow_id))
     return graph
 
 
-def generate_step(graph, stepID, title, description, workflow):
+def generate_step(graph, stepID, strategy, title, description, workflow):
     """Generate step details."""
-    graph.add((URIRef("{0}step{1}".format(ATTXBase, stepID)), RDF.type, ATTXOnto.Step))
-    graph.add((URIRef("{0}step{1}".format(ATTXBase, stepID)), DC.title, Literal(title)))
-    graph.add((URIRef("{0}step{1}".format(ATTXBase, stepID)), DC.description, Literal(description)))
-    graph.add((URIRef("{0}workflow{1}".format(ATTXBase, workflow)), PWO.hasStep, URIRef("{0}step{1}".format(ATTXBase, stepID))))
+    graph.add((URIRef("{0}step{1}_{2}".format(ATTXBase, stepID, strategy)), RDF.type, ATTXOnto.Step))
+    graph.add((URIRef("{0}step{1}_{2}".format(ATTXBase, stepID, strategy)), DC.title, Literal(title)))
+    graph.add((URIRef("{0}step{1}_{2}".format(ATTXBase, stepID, strategy)), DC.description, Literal(description)))
+    graph.add((URIRef("{0}workflow{1}".format(ATTXBase, workflow)), PWO.hasStep, URIRef("{0}step{1}_{2}".format(ATTXBase, stepID, strategy))))
     return graph
