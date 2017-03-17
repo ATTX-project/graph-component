@@ -1,5 +1,6 @@
 import json
 import falcon
+from urlparse import urlparse
 from gm_api.utils.validate import validate
 from gm_api.schemas import load_schema
 from gm_api.utils.logs import app_logger
@@ -55,7 +56,11 @@ class StrategyResource(object):
     @validate(load_schema('idtype'))
     def on_get(self, req, resp, strategyID):
         """Respond on GET request to index endpoint."""
-        graph_store = {'host': 'localhost', 'port': 3030, 'dataset': 'ds'}
+        if req.get_param('graphStore') is not None:
+            graph_host = urlparse(req.get_param('graphStore'))
+            graph_store = {'host': graph_host.hostname, 'port': graph_host.port, 'dataset': graph_host.path[1:]}
+        else:
+            graph_store = {'host': "localhost", 'port': 3030, 'dataset': "ds"}
         response = retrieve_strategy(graph_store, strategyID)
         if response is not None:
             resp.data = json.dumps(response, indent=1, sort_keys=True)
@@ -72,7 +77,11 @@ class RetrieveStrategies(object):
 
     def on_get(self, req, resp):
         """Respond on GET request to index endpoint."""
-        graph_store = {'host': 'localhost', 'port': 3030, 'dataset': 'ds'}
+        if req.get_param('graphStore') is not None:
+            graph_host = urlparse(req.get_param('graphStore'))
+            graph_store = {'host': graph_host.hostname, 'port': graph_host.port, 'dataset': graph_host.path[1:]}
+        else:
+            graph_store = {'host': "localhost", 'port': 3030, 'dataset': "ds"}
         response = retrieve_strategies(graph_store)
         if response is not None:
             resp.data = json.dumps(response, indent=1, sort_keys=True)
