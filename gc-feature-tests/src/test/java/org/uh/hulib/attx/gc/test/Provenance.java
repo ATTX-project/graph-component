@@ -1,4 +1,4 @@
-package org.uh.attx.gc.graphcomponent.test.stepdefinitions;
+package org.uh.hulib.attx.gc.test;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
-import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
+import org.uh.hulib.attx.gc.test.PlatformServices;
 
 /**
  * Created by stefanne on 2/13/17.

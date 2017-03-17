@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.gc.graphcomponent.integration.gc;
+package org.uh.hulib.attx.gc.test;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uh.attx.gc.graphcomponent.integration.PlatformServices;
+import org.uh.hulib.attx.gc.test.PlatformServices;
 
 import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;

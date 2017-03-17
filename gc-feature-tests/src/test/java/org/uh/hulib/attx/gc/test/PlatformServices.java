@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.gc.graphcomponent.integration;
+package org.uh.hulib.attx.gc.test;
 
 /**
  *
