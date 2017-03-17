@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.graphmanager.rdf2json.indexer;
+package org.uh.hulib.attx.gc.rdf2json.indexer;
 
 import com.github.jsonldjava.utils.JsonUtils;
 import java.io.IOException;
