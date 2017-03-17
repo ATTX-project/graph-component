@@ -1,15 +1,56 @@
 {
   "type": "object",
   "properties": {
-    "graph": {
-      "type": "string"
-    },
     "strategy": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    },
+    "graphStore": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer"
+            },
+            "dataset": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "port",
+            "dataset"
+          ]
+        },
+        "graphs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "endpoint"
+      ]
     }
   },
   "required": [
-    "graph",
-    "strategy"
+    "strategy",
+    "graphStore"
   ]
 }

@@ -157,7 +157,7 @@ setup(
     },
     include_package_data=True,
     name='ATTXgmAPI',
-    version='0.1',
+    # version='1.0.0',  # This is not read instead Gradle build version is used
     description='ATTX Graph Manager API',
     entry_points='''
         [console_scripts]

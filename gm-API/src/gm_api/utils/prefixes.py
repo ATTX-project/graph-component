@@ -2,12 +2,16 @@ from rdflib import Namespace
 from ConfigParser import SafeConfigParser
 
 PROV = Namespace('http://www.w3.org/ns/prov#')
-ATTXURL = 'http://data.hulib.helsinki.fi/attx/'
-ATTXBase = Namespace('http://data.hulib.helsinki.fi/attx/')
-ATTXIDs = Namespace('http://data.hulib.helsinki.fi/attx/ids')
-ATTXProv = Namespace('http://data.hulib.helsinki.fi/attx/prov')
-ATTXOnto = Namespace('http://data.hulib.helsinki.fi/attx/onto#')
 SD = Namespace('http://www.w3.org/ns/sparql-service-description#')
+CC = Namespace('https://creativecommons.org/ns#')
+PWO = Namespace('http://purl.org/spar/pwo/')
+
+ATTXURL = 'http://data.hulib.helsinki.fi/attx/'
+ATTXBase = Namespace(ATTXURL)
+ATTXIDs = Namespace("{0}ids".format(ATTXURL))
+ATTXProv = Namespace("{0}prov".format(ATTXURL))
+ATTXOnto = Namespace("{0}onto#".format(ATTXURL))
+ATTXStrategy = Namespace("{0}strategy".format(ATTXURL))
 
 
 def bind_prefix(graph):

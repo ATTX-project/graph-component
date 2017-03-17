@@ -13,7 +13,7 @@ class UpdateProv(object):
     @classmethod
     def do_update(cls, graph_store, wf_endpoint, modifiedSince, start):
         """Do the update of the provenance information in the Graph Store."""
-        conn = connect_DB()
+        conn = connect_DB('data.db')
         if start is True:
             started_id = cls.register_prov(conn, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")), "WIP")
             try:

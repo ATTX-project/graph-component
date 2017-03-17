@@ -15,8 +15,8 @@ class LODResource(object):
     """Create and Index Linked Data Resource."""
 
     @classmethod
-    def index_jsonld(cls, targetEndpoint, graphStore, indexing):
-        """Perform the indexing and index to Elasticsearch."""
+    def index_json(cls, targetEndpoint, graphStore, indexing):
+        """Perform the indexing and index to Elasticsearch 5."""
         # subjects = []
         # for subject in graph.subjects(RDF.type, None):
         #     print get_tree(graph, subject, None)
@@ -38,7 +38,9 @@ class LODResource(object):
         index = str(targetEndpoint['host'])
         indexing = indexing['filter']
         cmd = ['java', '-jar', java_file, '-b', '1', '-i', index, '-p', port, '-s', storeEndpoint, '-m', indexing, '-g', graphs]
+
         process = subprocess.Popen(cmd, stdout=PIPE, stderr=STDOUT)
+
         for line in iter(process.stdout.readline, ''):
             app_logger.info('[JAVA RUN log {0}]: {1}'.format(process.pid, line))
         process.terminate()
@@ -76,7 +78,7 @@ class LODResource(object):
             # graph.parse(data=data.serialize(), format='xml')
             return graph
         except Exception as error:
-            app_logger.error('Mapping Failed when processing the graph! with error: {0}'.format(error))
+            app_logger.error('Indexing failed when processing the graph! with error: {0}'.format(error))
             return error
 
     @staticmethod
@@ -94,5 +96,5 @@ class LODResource(object):
             app_logger.info('Serialized as JSON-LD compact with the frame: {0}'.format(filter_frame))
             return result
         except Exception as error:
-            app_logger.error('Mapping Failed when creating the JSON-LD!with error: {0}'.format(error))
+            app_logger.error('Indexing failed when creating the JSON-LD! with error: {0}'.format(error))
             return error

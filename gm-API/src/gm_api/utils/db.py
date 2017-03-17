@@ -12,11 +12,17 @@ def connect_DB(db_file=None):
     try:
         conn = sqlite3.connect(db_filename)
         app_logger.info('Connecting to database.')
-        create_table(conn, """create table if not exists indexes (status text, filter text)""")
+        tb_indexes_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='indexes'"
+        tb_prov_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='prov'"
+        tb_linking_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='linking'"
+        if not conn.execute(tb_indexes_exists).fetchone():
+            create_table(conn, """create table if not exists indexes (indexstatus text, filter text)""")
+        if not conn.execute(tb_linking_exists).fetchone():
+            create_table(conn, """create table if not exists linking (linkstatus text, strategy text)""")
         # create_table(conn, """create table if not exists graphstore (host text, port integer, dataset text)""")
         # create_table(conn, """create table if not exists esstore (host text, port integer, index text, resourcetype text)""")
-        create_table(conn, """create table if not exists prov (status text, start text)""")
-        app_logger.info('Creating tables in the database.')
+        if not conn.execute(tb_prov_exists).fetchone():
+            create_table(conn, """create table if not exists prov (status text, start text)""")
         return conn
     except Exception as error:
         app_logger.error('Connection Failed!\
@@ -35,6 +41,7 @@ def create_table(conn, create_table_sql):
     try:
         db_cursor = conn.cursor()
         db_cursor.execute(create_table_sql)
+        app_logger.info('Creating tables in the database if they do not exist.')
     except Exception as error:
         app_logger.error('Error {0}'.format(error))
         return error
