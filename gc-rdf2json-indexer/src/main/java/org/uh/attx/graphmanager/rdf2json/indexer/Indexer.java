@@ -227,9 +227,9 @@ public class Indexer {
             String type, String id) {
         
         if(this.bulkProcessor != null) {            
-            //this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
-            IndexResponse response = client.prepareIndex(index, type, id)
-                .setSource(x).execute().actionGet();
+            this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
+            //IndexResponse response = client.prepareIndex(index, type, id)
+            //    .setSource(x).execute().actionGet();
 
         }
         else {
