@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = "org.uh.attx.graphmanager.rdf2json.indexer.Indexer"
+mainClassName = "org.uh.hulib.attx.gc.rdf2json.indexer.Indexer"
 ext.version_nb = "1.0"
 
 if (!project.hasProperty("env")) {

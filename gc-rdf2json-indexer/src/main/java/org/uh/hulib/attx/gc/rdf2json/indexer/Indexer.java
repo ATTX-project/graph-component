@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uh.attx.graphmanager.rdf2json.indexer;
+package org.uh.hulib.attx.gc.rdf2json.indexer;
 
 import com.github.jsonldjava.utils.JsonUtils;
 import java.math.BigDecimal;
@@ -227,9 +227,9 @@ public class Indexer {
             String type, String id) {
         
         if(this.bulkProcessor != null) {            
-            //this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
-            IndexResponse response = client.prepareIndex(index, type, id)
-                .setSource(x).execute().actionGet();
+            this.bulkProcessor.add(new IndexRequest(index, type, id).source(x));
+            //IndexResponse response = client.prepareIndex(index, type, id)
+            //    .setSource(x).execute().actionGet();
 
         }
         else {
