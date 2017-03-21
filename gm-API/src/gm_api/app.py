@@ -1,6 +1,7 @@
 import falcon
 from gm_api.api.linking import LinkClass, LinkingResource, RetrieveStrategies, StrategyResource
 from gm_api.api.cluster import Cluster
+from gm_api.api.healthcheck import HealthCheck
 from gm_api.utils.logs import main_logger
 from gm_api.api.provenance import Provenance
 from gm_api.api.indexing import IndexClass, IndexingResource
@@ -21,6 +22,7 @@ def create():
     get_strategy = StrategyResource()
 
     gm_app = falcon.API()
+    gm_app.add_route('/health', HealthCheck())
     gm_app.add_route('/%s/index' % (api_version), do_index)
     gm_app.add_route('/%s/index/{indexID}' % (api_version), get_index)
     gm_app.add_route('/%s/cluster' % (api_version), do_cluster)
