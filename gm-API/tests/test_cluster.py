@@ -13,7 +13,7 @@ class appClusterTest(testing.TestCase):
 
     def setUp(self):
         """Setting the app up."""
-        self.conn = connect_DB()
+        self.conn = connect_DB('tests/resources/test.db')
         self.app = create()
 
     def tearDown(self):
