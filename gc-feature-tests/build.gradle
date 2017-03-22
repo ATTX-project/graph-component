@@ -29,9 +29,8 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-mariadb:feat-compact-modular'
         env = ['MYSQL_ROOT_PASSWORD=iamroot!']
-        portBindings = ['3306:3306']
+//        portBindings = ['3306:3306']
     }
-
     backend {
         forcePull = true
         forceRemoveImage = true
@@ -46,8 +45,15 @@ dcompose {
         image = 'tenforce/unified-views-frontend:latest'
         volumesFrom = [shared]
         exposedPorts = ['8080']
-        portBindings = ['8080:8080']
+//        portBindings = ['8080:8080']
         dependsOn = [backend, shared]
+    }
+
+    uvdpus {
+        forcePull = true
+        forceRemoveImage = true
+        image = 'tenforce/unified-views-add-dpus'
+        dependsOn = [mysql, frontend]
     }
 
     attxdpus {
@@ -62,7 +68,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-fuseki:latest"
         exposedPorts = ['3030']
-        portBindings = ['3030:3030']
+//        portBindings = ['3030:3030']
         env = ['ADMIN_PASSWORD=pw123']
     }
 
@@ -71,7 +77,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/essiren:latest"
         exposedPorts = ['9200', '9300']
-        portBindings = ['9200:9200', '9300:9300']
+//        portBindings = ['9200:9200', '9300:9300']
     }
 
     es5 {
@@ -79,7 +85,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-es5:latest"
         exposedPorts = ['9210', '9310']
-        portBindings = ['9210:9210', '9310:9310']
+//        portBindings = ['9210:9210', '9310:9310']
     }
 
     wfapi {
@@ -87,7 +93,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/wf-api:latest"
         exposedPorts = ['4301']
-        portBindings = ['4301:4301']
+//        portBindings = ['4301:4301']
         dependsOn = [mysql]
     }
 
@@ -96,7 +102,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/gm-api:latest"
         exposedPorts = ['4302']
-        portBindings = ['4302:4302']
+//        portBindings = ['4302:4302']
     }
 
     test {
@@ -108,6 +114,7 @@ dcompose {
         dependsOn = [frontend, backend, shared, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
+        attachStdout = true
     }
 }
 

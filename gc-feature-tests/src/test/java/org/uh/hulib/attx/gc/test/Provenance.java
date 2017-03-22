@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  * Created by stefanne on 2/13/17.
  */
 public class Provenance implements En {
-    private PlatformServices s = new PlatformServices(true);
+    private PlatformServices s = new PlatformServices(false);
     
     private int statusCode;
     private String status;
@@ -29,12 +29,12 @@ public class Provenance implements En {
                 GetRequest get = Unirest.get(s.getGmapi());
                 HttpResponse<JsonNode> response1 = get.asJson();
                 int result1 = response1.getStatus();
-                assertEquals(result1, 404);
+                assertEquals(404, result1);
 
                 get = Unirest.get(s.getFuseki() + "/ds/get");
                 HttpResponse<String> response3 = get.asString();
                 int result3 = response3.getStatus();
-                assertEquals(result3, 200);
+                assertEquals(200, result3);
 
             } catch (Exception ex) {
                 Logger.getLogger(Provenance.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class Provenance implements En {
 
         When("^I retrieve the provenance job status$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov")
+                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov?wfapi=" + s.getWfapi() + "/0.1&graphStore=" + s.getFuseki() + "/test" )
                         .header("content-type", "application/json")
                         .asJson();
                  statusCode = postResponse.getStatus();
@@ -56,20 +56,20 @@ public class Provenance implements En {
 
 
         Then("^I should see no provenance jobs have been found\\.$", () -> {
-            assertEquals(statusCode, 404);
+            assertEquals(404, statusCode);
         });
 
 
         When("^I start a provenance update$", () -> {
             try {
-                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov?start=true")
+                HttpResponse<JsonNode> postResponse = Unirest.post(s.getGmapi() + "/prov?start=true&?wfapi=" + s.getWfapi() + "/0.1&graphStore=" + s.getFuseki() + "/ds")
                         .header("content-type", "application/json")
                         .asJson();
                 JSONObject myObj = postResponse.getBody().getObject();
                 status = myObj.getString("status");
                 lastStart = myObj.getString("lastStart");
                 int result3 = postResponse.getStatus();
-                assertEquals(result3, 200);
+                assertEquals(200, result3);
             } catch (Exception ex) {
                 Logger.getLogger(Provenance.class.getName()).log(Level.SEVERE, null, ex);
                 TestCase.fail(ex.getMessage());

@@ -5,10 +5,10 @@
   },
   "graphStore": {
     "endpoint": {
-      "host":"localhost",
+      "host":"fuseki",
       "port":3030,
-      "dataset": "ds"
+      "dataset": "test"
     },
-    "graphs":["http://data.hulib.helsinki.fi/attx/work2", "http://data.hulib.helsinki.fi/attx/work1"]
+    "graphs":["http://test/index2"]
   }
 }
