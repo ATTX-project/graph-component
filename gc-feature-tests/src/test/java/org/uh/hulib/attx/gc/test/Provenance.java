@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
-import org.uh.hulib.attx.gc.test.PlatformServices;
 
 /**
  * Created by stefanne on 2/13/17.

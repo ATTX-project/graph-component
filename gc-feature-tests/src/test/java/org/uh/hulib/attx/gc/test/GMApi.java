@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uh.hulib.attx.gc.test.PlatformServices;
 
 import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
@@ -34,6 +33,7 @@ import static org.junit.Assert.*;
 /**
  * @author jkesanie
  */
+
 public class GMApi {
 
     private static PlatformServices s = new PlatformServices(false);

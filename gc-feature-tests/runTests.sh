@@ -1,16 +1,13 @@
 #!/bin/sh
 
-: ${SLEEP_LENGTH:=2}
-
-wait_for() {
-  echo Waiting for $1 to listen on $2... >> /tmp/log
-  while ! nc -z $1 $2; do echo sleeping >> /tmp/log ; sleep $SLEEP_LENGTH; done
-}
-
-wait_for "fuseki" "3030"
-wait_for "essiren" "9200"
-wait_for "essiren" "9300"
-wait_for "es5" "9210"
-wait_for "gmapi" "4302"
+dockerize -wait http://fuseki:3030 -timeout 60s
+# wait for healthcheck endpoint for gmapi and wfapi
+# dockerize -wait http://gmapi:4302/health -timeout 120s
+# dockerize -wait http://wfapi:4301/health -timeout 120s
+dockerize -wait http://essiren:9200 -timeout 60s
+dockerize -wait tcp://essiren:9300 -timeout 60s
+dockerize -wait http://es5:9210 -timeout 60s
+# wait for es5 9300 apparently not working
+# dockerize -wait tcp://es5:9310 -timeout 60s
 
 gradle -b build.gradle --offline test

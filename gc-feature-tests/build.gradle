@@ -1,8 +1,6 @@
 apply plugin: 'com.chrisgahlert.gradle-dcompose-plugin'
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.jena/apache-jena
-    // TO DO: move to JENA:3.2.0
     compile 'org.apache.jena:apache-jena:3.2.0'
     testCompile \
         'info.cukes:cucumber-java8:1.2.5',
@@ -11,7 +9,7 @@ dependencies {
         'org.skyscreamer:jsonassert:1.4.0',
         'net.javacrumbs.json-unit:json-unit:1.16.0',
         'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
-        'org.elasticsearch:elasticsearch:1.2.2',
+//        'org.elasticsearch:elasticsearch:1.2.2',
         'org.uh.hulib.attx.gc:gc-rdf2json-indexer:0.1'
 }
 
@@ -25,7 +23,7 @@ dcompose {
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/uv-attx-shared"
     }
-    
+
     mysql {
         forcePull = true
         forceRemoveImage = true
@@ -42,8 +40,6 @@ dcompose {
         dependsOn = [mysql, shared]
     }
 
-
-
     frontend {
         forcePull = true
         forceRemoveImage = true
@@ -52,14 +48,14 @@ dcompose {
         exposedPorts = ['8080']
         portBindings = ['8080:8080']
         dependsOn = [backend, shared]
-    }    
-    
-    uvdpus {
-        forcePull = true
+    }
+
+    attxdpus {
         forceRemoveImage = true
-        image = 'tenforce/unified-views-add-dpus'
-        dependsOn = [mysql, frontend]
-    }    
+		image = 'attx-dev:5000/uv-attx-dpus:latest'
+		links = [frontend.link(), mysql.link(), backend.link()]
+		dependsOn = [mysql, backend, frontend]
+	}
 
     fuseki {
         forcePull = true
@@ -85,7 +81,7 @@ dcompose {
         exposedPorts = ['9210', '9310']
         portBindings = ['9210:9210', '9310:9310']
     }
-    
+
     wfapi {
         forcePull = true
         forceRemoveImage = true
@@ -94,7 +90,6 @@ dcompose {
         portBindings = ['4301:4301']
         dependsOn = [mysql]
     }
-    
 
     gmapi {
         forcePull = true
@@ -110,7 +105,7 @@ dcompose {
         dockerFilename = 'Dockerfile'
         binds = ["/var/run/docker.sock:/run/docker.sock"]
         command = ['sh', '-c', '/tmp/runTests.sh']
-        dependsOn = [frontend, backend, shared, uvdpus, mysql, wfapi, gmapi, essiren, fuseki, es5]
+        dependsOn = [frontend, backend, shared, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
     }

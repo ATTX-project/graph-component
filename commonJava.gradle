@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
-String mavenGroupId = 'org.uh.hulib.attx.gc'
+String mavenGroupId = "${gmGroupID}"
 String mavenVersion = '1.0-SNAPSHOT'
 
 targetCompatibility = '1.8'
