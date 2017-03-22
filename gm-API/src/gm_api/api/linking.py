@@ -9,7 +9,7 @@ from gm_api.applib.retrieve_linkstrategy import retrieve_strategy, retrieve_stra
 
 
 class LinkClass(object):
-    """Create Mapping class."""
+    """Create Linking class."""
 
     @validate(load_schema('links'))
     def on_post(self, req, resp, parsed):

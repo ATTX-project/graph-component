@@ -94,7 +94,6 @@ class TestCluster(appClusterTest):
         hdrs = [('Accept', 'application/json'),
                 ('Content-Type', 'application/json'), ]
         result = self.simulate_post('/%s/cluster' % (api_version), body=test_data, headers=hdrs)
-        print result.json
         assert(result.json == doc)
 
 

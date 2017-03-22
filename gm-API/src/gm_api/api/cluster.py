@@ -7,7 +7,7 @@ from gm_api.applib.construct_cluster import ClusterID
 
 
 class Cluster(object):
-    """Create Mapping class."""
+    """Create Cluster of IDs class."""
 
     @validate(load_schema('cluster'))
     def on_post(self, req, resp, parsed):
