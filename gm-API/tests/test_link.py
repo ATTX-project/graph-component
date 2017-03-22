@@ -70,7 +70,7 @@ class TestLink(appLinkTest):
         cur2.execute("INSERT INTO linking VALUES (?, ?)", ("Done", 'smth'))
         self.conn.commit()
         created_id = cur2.lastrowid
-        doc = {u'id': created_id, u'status': u'Error'}
+        doc = {u'id': created_id, u'status': u'Done'}
         httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/link/%s" % (created_id), body=doc, status=200)
         result = self.simulate_get('/{0}/link/{1}'.format(api_version, created_id))
         assert(result.json == doc)

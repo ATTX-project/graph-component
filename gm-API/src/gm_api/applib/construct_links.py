@@ -15,7 +15,7 @@ class LinkingObject(object):
     @classmethod
     def create_links(cls, strategy, graphStore):
         """Create a linking job."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         status = "WIP"  # status for Work In Progress
         result = cls.register_link(conn, status, strategy)
         daemon_thread = threading.Thread(name='daemon', target=cls.daemon,
@@ -28,7 +28,7 @@ class LinkingObject(object):
     @classmethod
     def retrieve_linkID(cls, linkID):
         """Retrieve linking job with ID."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         result = cls.check_link_status(conn, linkID)
         app_logger.info('Retrieved linking job with the ID: {0}'.format(linkID))
         return result
@@ -36,7 +36,7 @@ class LinkingObject(object):
     @classmethod
     def delete_linkID(cls, linkID):
         """Delete linking job with ID."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         cls.delete_link(conn, linkID)
         app_logger.info('Delete linking job with the ID: {0}'.format(linkID))
         return
@@ -44,7 +44,7 @@ class LinkingObject(object):
     @classmethod
     def daemon(cls, result, strategy, graphStore):
         """Simple worker daemon."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         startTime = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S%z')
         try:
             thread_logger.info('Starting Daemon thread.')
