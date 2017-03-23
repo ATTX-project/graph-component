@@ -1,7 +1,6 @@
 FROM frekele/gradle:3.3-jdk8
 
 RUN apt-get update \
-    && apt-get install -y netcat \
     && apt-get install -y wget \
     && apt-get clean
 
