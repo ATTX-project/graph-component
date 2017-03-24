@@ -114,28 +114,28 @@ dcompose {
         dependsOn = [frontend, backend, shared, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
-        attachStdout = true
+//        attachStdout = true
     }
 }
 
-task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
-    service = dcompose.test
-    containerPath = '/tmp/build/reports'
-    destinationDir = file("build/from-container/")
-    cleanDestinationDir = false
-}
-
-startTestContainer.finalizedBy copyReportFiles
-
-shadowJar {
-    classifier = 'tests'
-    from sourceSets.test.output
-    configurations = [project.configurations.testRuntime]
-}
-
-// making sure the that fresh build of test classes is done before building the image
-buildTestImage.dependsOn shadowJar
-buildTestImage.dependsOn testClasses
+//task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
+//    service = dcompose.test
+//    containerPath = '/tmp/build/reports'
+//    destinationDir = file("build/from-container/")
+//    cleanDestinationDir = false
+//}
+//
+//startTestContainer.finalizedBy copyReportFiles
+//
+//shadowJar {
+//    classifier = 'tests'
+//    from sourceSets.test.output
+//    configurations = [project.configurations.testRuntime]
+//}
+//
+//// making sure the that fresh build of test classes is done before building the image
+//buildTestImage.dependsOn shadowJar
+//buildTestImage.dependsOn testClasses
 
 task integTest {
     dependsOn startTestContainer
@@ -143,7 +143,7 @@ task integTest {
 }
 
 task runTestsAgainstSomething(type: Test) {
-    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
+    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer, startTestContainer
 
     doFirst {
         systemProperty 'frontend.port', dcompose.frontend.findHostPort(8080)
