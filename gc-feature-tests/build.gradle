@@ -143,7 +143,7 @@ task integTest {
 }
 
 task runTestsAgainstSomething(type: Test) {
-    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startWfapiContainer, startUvdpusContainer, startGmapiContainer, startAttxdpusContainer, startEs5Container, startEssirenContainer, startFusekiContainer
+    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
 
     doFirst {
         systemProperty 'frontend.port', dcompose.frontend.findHostPort(8080)
