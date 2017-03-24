@@ -7,7 +7,7 @@ buildscript {
     }
 }
 
-apply plugin: 'com.linkedin.python-web-app'
+apply plugin: 'com.linkedin.python-cli'
 
 ext.version_nb = "1.0"
 
@@ -43,10 +43,11 @@ dependencies {
 }
 
 // Succesfully running the tests requires a logs folder existing.
-task creatLogsFolder {
-    description = "Create logs folder."
+task creatFolders {
+    description = "Create logs and data folders."
     doFirst {
         mkdir('logs')
+        mkdir('data')
     }
 }
 
@@ -61,8 +62,8 @@ task runTests(type:Exec) {
     commandLine './runTests.sh'
 }
 
-buildPex.dependsOn creatLogsFolder
-pytest.dependsOn creatLogsFolder
+buildPex.dependsOn creatFolders
+pytest.dependsOn creatFolders
 
 uploadArchives {
     repositories {

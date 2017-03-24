@@ -10,7 +10,7 @@ class IndexingObject(object):
     @classmethod
     def create_index(cls, targetEndpoint, indexing, graphStore, plugin):
         """Create a indexing job."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         status = "WIP"  # status for Work In Progress
         result = cls.register_index(conn, status, indexing)
         daemon_thread = threading.Thread(name='daemon', target=cls.daemon,
@@ -23,7 +23,7 @@ class IndexingObject(object):
     @classmethod
     def retrieve_indexID(cls, indexID):
         """Retrieve indexing job with ID."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         result = cls.check_index_status(conn, indexID)
         app_logger.info('Retrieve indexing job with the ID: {0}'.format(indexID))
         return result
@@ -31,7 +31,7 @@ class IndexingObject(object):
     @classmethod
     def delete_indexID(cls, indexID):
         """Delete indexing job with ID."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         cls.delete_index(conn, indexID)
         app_logger.info('Delete indexing job with the ID: {0}'.format(indexID))
         return
@@ -39,7 +39,7 @@ class IndexingObject(object):
     @classmethod
     def daemon(cls, result, targetEndpoint, indexing, graphStore, plugin):
         """Simple worker daemon for the indexing plugin."""
-        conn = connect_DB('data.db')
+        conn = connect_DB()
         try:
             thread_logger.info('Starting Daemon thread.')
             if plugin == 'python':
