@@ -190,10 +190,22 @@ public class GMApi {
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
             pollForIndexing(createdIDPython);
-            Thread.sleep(5000);
-            HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
-                    .asJson();
-            assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
+            Unirest.post(esEndpoint + "/current/_refresh");
+            // query
+            for(int i = 0; i < 10; i++) {
+
+                HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
+                        .asJson();
+
+                JSONObject obj = jsonResponse.getBody().getObject();
+                if(obj.has("hits")) {
+                    int total = obj.getJSONObject("hits").getInt("total");
+                    assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
+                    return;
+                }
+                Thread.sleep(1000);
+            }
+            fail("Could not query indexing results");
 
 
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
@@ -323,8 +335,7 @@ public class GMApi {
                     .asJson();            
                 
             assertEquals(200, postResponse2.getStatus());
-            
-            
+
             Thread.sleep(5000);
             
             // execute /prov

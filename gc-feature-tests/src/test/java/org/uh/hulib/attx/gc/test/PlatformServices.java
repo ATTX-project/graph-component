@@ -40,50 +40,56 @@ public class PlatformServices {
     }
 
     public String getESSiren() {
-        if (isLocalhost) {
-            return "http://localhost:" + ESSIREN_PORT;
-        } else {
-            return ESSIREN + ":" + ESSIREN_PORT;
-        }
+        return "http://" + System.getProperty("essiren.host") + ":" + Integer.parseInt(System.getProperty("essiren.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + ESSIREN_PORT;
+//        } else {
+//            return ESSIREN + ":" + ESSIREN_PORT;
+//        }
     }
 
     public String getES5() {
-        if (isLocalhost) {
-            return "http://localhost:" + ES5_PORT;
-        } else {
-            return ES5 + ":" + ES5_PORT;
-        }
+        return "http://" + System.getProperty("es5.host") + ":" + Integer.parseInt(System.getProperty("es5.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + ES5_PORT;
+//        } else {
+//            return ES5 + ":" + ES5_PORT;
+//        }
     }
 
     public String getFuseki() {
-        if (isLocalhost) {
-            return "http://localhost:" + FUSEKI_PORT;
-        } else {
-            return FUSEKI + ":" + FUSEKI_PORT;
-        }
+        return "http://" + System.getProperty("fuseki.host") + ":" + Integer.parseInt(System.getProperty("fuseki.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + FUSEKI_PORT;
+//        } else {
+//            return FUSEKI + ":" + FUSEKI_PORT;
+//        }
     }
 
     public String getUV() {
-        if (isLocalhost) {
-            return "http://localhost:" + UV_PORT;
-        } else {
-            return UV + ":" + UV_PORT;
-        }
+        return "http://" + System.getProperty("frontend.host") + ":" + Integer.parseInt(System.getProperty("frontend.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + UV_PORT;
+//        } else {
+//            return UV + ":" + UV_PORT;
+//        }
     }
 
     public String getGmapi() {
-        if (isLocalhost) {
-            return "http://localhost:" + GMAPI_PORT;
-        } else {
-            return GMAPI + ":" + GMAPI_PORT;
-        }
+        return "http://" + System.getProperty("gmapi.host") + ":" + Integer.parseInt(System.getProperty("gmapi.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + GMAPI_PORT;
+//        } else {
+//            return GMAPI + ":" + GMAPI_PORT;
+//        }
     }
 
     public String getWfapi() {
-        if (isLocalhost) {
-            return "http://localhost:" + WFAPI_PORT;
-        } else {
-            return WFAPI + ":" + WFAPI_PORT;
-        }
+        return "http://" + System.getProperty("wfapi.host") + ":" + Integer.parseInt(System.getProperty("wfapi.port"));
+//        if (isLocalhost) {
+//            return "http://localhost:" + WFAPI_PORT;
+//        } else {
+//            return WFAPI + ":" + WFAPI_PORT;
+//        }
     }
 }
