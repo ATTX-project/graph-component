@@ -13,6 +13,16 @@ dependencies {
         'org.uh.hulib.attx.gc:gc-rdf2json-indexer:0.1'
 }
 
+ext {
+    testImageWF = "latest"
+    testImageGM = "latest"
+    testImageFuseki = "latest"
+    testImageESSiren = "latest"
+    testImageES5 = "latest"
+    testImageUVShared = "latest"
+    testImageATTXDPUs = "latest"
+}
+
 dcompose {
     createComposeFile.useTags = true
     registry ("$registryURL") {
@@ -21,7 +31,7 @@ dcompose {
     shared {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/uv-attx-shared"
+        image = "${imageRepo}:${imageRepoPort}/uv-attx-shared:${testImageUVShared}"
     }
 
     mysql {
@@ -52,21 +62,21 @@ dcompose {
     uvdpus {
         forcePull = true
         forceRemoveImage = true
-        image = 'tenforce/unified-views-add-dpus'
+        image = 'tenforce/unified-views-add-dpus:latest'
         dependsOn = [mysql, frontend]
     }
 
     attxdpus {
         forceRemoveImage = true
-		image = 'attx-dev:5000/uv-attx-dpus:latest'
-		links = [frontend.link(), mysql.link(), backend.link()]
-		dependsOn = [mysql, backend, frontend]
-	}
+  		  image = "${imageRepo}:${imageRepoPort}/uv-attx-dpus:${testImageATTXDPUs}"
+  		  links = [frontend.link(), mysql.link(), backend.link()]
+  		  dependsOn = [mysql, backend, frontend]
+  	}
 
     fuseki {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/attx-fuseki:latest"
+        image = "${imageRepo}:${imageRepoPort}/attx-fuseki:${testImageFuseki}"
 //        exposedPorts = ['3030']
         portBindings = ['3030:3030']
 //        env = ['ADMIN_PASSWORD=pw123']
@@ -75,7 +85,7 @@ dcompose {
     essiren {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/essiren:latest"
+        image = "${imageRepo}:${imageRepoPort}/essiren:${testImageESSiren}"
 //        exposedPorts = ['9200', '9300']
         portBindings = ['9200:9200', '9300:9300']
     }
@@ -83,7 +93,7 @@ dcompose {
     es5 {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/attx-es5:latest"
+        image = "${imageRepo}:${imageRepoPort}/attx-es5:${testImageES5}"
 //        exposedPorts = ['9210', '9310']
         portBindings = ['9210:9210', '9310:9310']
     }
@@ -91,7 +101,7 @@ dcompose {
     wfapi {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/wf-api:latest"
+        image = "${imageRepo}:${imageRepoPort}/wf-api:${testImageWF}"
 //        exposedPorts = ['4301']
         portBindings = ['4301:4301']
         dependsOn = [mysql]
@@ -100,7 +110,7 @@ dcompose {
     gmapi {
         forcePull = true
         forceRemoveImage = true
-        image = "${imageRepo}:${imageRepoPort}/gm-api:latest"
+        image = "${imageRepo}:${imageRepoPort}/gm-api:${testImageGM}"
 //        exposedPorts = ['4302']
         portBindings = ['4302:4302']
     }
@@ -143,7 +153,7 @@ task integTest {
 }
 
 task runTestsAgainstSomething(type: Test) {
-    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer, startTestContainer
+    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
 
     doFirst {
         systemProperty 'frontend.port', dcompose.frontend.findHostPort(8080)

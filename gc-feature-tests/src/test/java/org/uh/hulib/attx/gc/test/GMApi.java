@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
 
 public class GMApi {
 
-    private static PlatformServices s = new PlatformServices(false);
+    private static PlatformServices s = new PlatformServices();
     private static final String VERSION = "/0.1";
     private static final long startDelay = 1000;
     private static final long pollingInterval = 5000;
@@ -46,19 +46,27 @@ public class GMApi {
     @BeforeClass
     public static void setUpFuseki() throws Exception {
         String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
-        HttpResponse<String> response = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
-                .header("Content-type", "text/turtle")
-                .body(payload)
-                .asString();
+        for(int i = 0; i < 10; i++) {
 
-        //assertEquals(201, response.getStatus());
+            HttpResponse<String> response = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
+                    .header("Content-type", "text/turtle")
+                    .body(payload)
+                    .asString();
+            assertThat(response.getStatus(), anyOf(is(201), is(200)));
+            Thread.sleep(1000);
+        }
+        fail("Could not connect to fuseki Graph Store");
 
-        HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index2")
-                .header("Content-type", "text/turtle")
-                .body(payload)
-                .asString();
 
-        //assertEquals(201, response2.getStatus());
+        for(int i = 0; i < 10; i++) {
+            HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index2")
+                    .header("Content-type", "text/turtle")
+                    .body(payload)
+                    .asString();
+            assertThat(response2.getStatus(), anyOf(is(201), is(200)));
+            Thread.sleep(1000);
+        }
+        fail("Could not connect to fuseki Graph Store");
     }
 
     @BeforeClass

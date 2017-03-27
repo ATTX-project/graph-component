@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  * Created by stefanne on 2/13/17.
  */
 public class Provenance implements En {
-    private PlatformServices s = new PlatformServices(false);
+    private PlatformServices s = new PlatformServices();
     
     private int statusCode;
     private String status;
