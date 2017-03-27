@@ -22,6 +22,7 @@ import java.net.URL;
 import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,67 +45,74 @@ public class GMApi {
 
 
     @BeforeClass
-    public static void setUpFuseki() throws Exception {
-        String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
-        for(int i = 0; i < 10; i++) {
-
+    public static void setUpFuseki() {
+        try {
+            String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
             HttpResponse<String> response = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
                     .header("Content-type", "text/turtle")
                     .body(payload)
                     .asString();
-            assertThat(response.getStatus(), anyOf(is(201), is(200)));
-            Thread.sleep(1000);
-        }
-        fail("Could not connect to fuseki Graph Store");
 
+            //assertEquals(201, response.getStatus());
 
-        for(int i = 0; i < 10; i++) {
             HttpResponse<String> response2 = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index2")
                     .header("Content-type", "text/turtle")
                     .body(payload)
                     .asString();
-            assertThat(response2.getStatus(), anyOf(is(201), is(200)));
-            Thread.sleep(1000);
+
+            //assertEquals(201, response2.getStatus());
+        } catch (Exception ex) {
+            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+            TestCase.fail(ex.getMessage());
         }
-        fail("Could not connect to fuseki Graph Store");
     }
 
     @BeforeClass
     public static void setUpElasticSearch() throws Exception {
+        try {
 //        EsSiren has a hard coded index named `current`
-        HttpResponse<JsonNode> response = Unirest.delete(s.getESSiren() + "/current")
-                .asJson();
+            HttpResponse<JsonNode> response = Unirest.delete(s.getESSiren() + "/current")
+                    .asJson();
 
 //        assertEquals(200, response.getStatus());
 
-        response = Unirest.delete(s.getES5() + "/default")
-                .asJson();
+            response = Unirest.delete(s.getES5() + "/default")
+                    .asJson();
 
 //        assertEquals(200, response.getStatus());
+        } catch (Exception ex) {
+            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+            TestCase.fail(ex.getMessage());
+        }
     }
 
     @AfterClass
-    public static void tearDown () throws Exception {
-        HttpResponse<String> deleteResponse1 = Unirest.post(s.getFuseki() + "/test/update")
-                .header("Content-Type", "application/sparql-update")
-                .body("drop graph <http://test/index>")
-                .asString();
+    public static void tearDown () {
+        try {
+            HttpResponse<String> deleteResponse1 = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://test/index>")
+                    .asString();
 
-        HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/test/update")
-                .header("Content-Type", "application/sparql-update")
-                .body("drop graph <http://test/index2>")
-                .asString();
+            HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://test/index2>")
+                    .asString();
 
-        HttpResponse<String> deleteResponse3 = Unirest.post(s.getFuseki() + "/test/update")
-                .header("Content-Type", "application/sparql-update")
-                .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
-                .asString();
+            HttpResponse<String> deleteResponse3 = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
+                    .asString();
 
-        HttpResponse<JsonNode> response = Unirest.delete(s.getES5() + "/default")
-                .asJson();
+            HttpResponse<JsonNode> response = Unirest.delete(s.getES5() + "/default")
+                    .asJson();
 
-        HttpResponse<JsonNode> response1 = Unirest.delete(s.getESSiren() + "/current")
-                .asJson();
+            HttpResponse<JsonNode> response1 = Unirest.delete(s.getESSiren() + "/current")
+                    .asJson();
+        } catch (Exception ex) {
+            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+            TestCase.fail(ex.getMessage());
+        }
     }
 
     @Test

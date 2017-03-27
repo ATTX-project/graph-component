@@ -20,10 +20,12 @@ public class PlatformServices {
     }
 
     public String getES5() {
+        System.out.println("http://" + System.getProperty("es5.host") + ":" + Integer.parseInt(System.getProperty("es5.port")));
         return "http://" + System.getProperty("es5.host") + ":" + Integer.parseInt(System.getProperty("es5.port"));
     }
 
     public String getFuseki() {
+        System.out.println("http://" + System.getProperty("fuseki.host") + ":" + Integer.parseInt(System.getProperty("fuseki.port")));
         return "http://" + System.getProperty("fuseki.host") + ":" + Integer.parseInt(System.getProperty("fuseki.port"));
     }
 
@@ -32,6 +34,7 @@ public class PlatformServices {
     }
 
     public String getGmapi() {
+        System.out.println("http://" + System.getProperty("gmapi.host") + ":" + Integer.parseInt(System.getProperty("gmapi.port")));
         return "http://" + System.getProperty("gmapi.host") + ":" + Integer.parseInt(System.getProperty("gmapi.port"));
     }
 
