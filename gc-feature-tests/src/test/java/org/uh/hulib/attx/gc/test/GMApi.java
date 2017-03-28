@@ -146,7 +146,7 @@ public class GMApi {
 
     }
 
-    private void pollForIndexing(int createdIDPython) throws Exception {
+    private void pollForIndexing(int createdID) throws Exception {
         Timer timer = new Timer();
         final CountDownLatch latch = new CountDownLatch(1);
         timer.schedule(new TimerTask() {
@@ -154,7 +154,7 @@ public class GMApi {
             public void run() {
                 HttpResponse<JsonNode> resp = null;
                 try {
-                    String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
+                    String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
                     GetRequest get = Unirest.get(URL);
                     HttpResponse<JsonNode> response1 = get.asJson();
                     JSONObject myObj = response1.getBody().getObject();
@@ -181,6 +181,16 @@ public class GMApi {
         latch.await();
     }
 
+    @Test
+    public void testJavaIndexing() {
+        doIndexing("/index_request_java.json", s.getESSiren(), "current");
+    }
+
+    @Test
+    public void testPythonIndexing() {
+        doIndexing("/index_request.json", s.getES5(), "default");
+    }
+
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
         try {
             // index
@@ -191,10 +201,11 @@ public class GMApi {
                     .body(indexPython)
                     .asJson();
             JSONObject myObj = postResponse.getBody().getObject();
-            int createdIDPython = myObj.getInt("id");
+            int createdID = myObj.getInt("id");
+            System.out.println(esEndpoint + ": "+ createdID);
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
-            pollForIndexing(createdIDPython);
+            pollForIndexing(createdID);
             // query
             for(int i = 0; i < 10; i++) {
                 Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
@@ -205,8 +216,8 @@ public class GMApi {
                 if(obj.has("hits")) {
                     int total = obj.getJSONObject("hits").getInt("total");
                     System.out.println(esEndpoint + ": "+ total);
-                    if (total == 5) {
-                        assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
+                    if (total > 0) {
+                        assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) > 0);
                     }
                     return;
                 }
@@ -215,7 +226,7 @@ public class GMApi {
             fail("Could not query indexing results");
 
 
-            String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdIDPython);
+            String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
             HttpRequestWithBody request = Unirest.delete(URL);
             HttpResponse<String> response = request.asString();
             int result1 = response.getStatus();
@@ -237,7 +248,6 @@ public class GMApi {
         try {
             // add data
             String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/testcase1.trig"), "UTF-8");
-            System.out.println(payload);
             HttpResponse<JsonNode> response = Unirest.post(s.getFuseki() + "/test/data")
                     .header("Content-type", "application/trig")
                     .body(payload)
@@ -254,7 +264,6 @@ public class GMApi {
                     .body(payload)
                     .asJson();
             JSONObject myObj = postResponse.getBody().getObject();
-            System.out.println(myObj.toString());
             
             int statusCode = postResponse.getStatus();
             String status = myObj.getString("status");
@@ -328,8 +337,7 @@ public class GMApi {
 
             assertEquals(200, postResponse.getStatus());
             JSONObject myObj = postResponse.getBody().getObject();    
-            
-            System.out.println(myObj);
+
             int pipelineID = myObj.getInt("id");
             // run pipeline
             String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions", pipelineID);
@@ -365,18 +373,18 @@ public class GMApi {
                     .header("Content-Type", "application/sparql-query")
                     .header("Accept", "application/sparql-results+json")
                     .body("ASK\n" +
-"FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-"{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
-"}")
+                    "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+                    "{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
+                    "}")
                     .asJson();
 
             HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
                     .header("Content-Type", "application/sparql-query")
                     .header("Accept", "application/sparql-results+json")
                     .body("ASK\n" +
-"FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-"{?s a <http://www.w3.org/ns/prov#Activity> \n" +
-"}")
+                    "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+                    "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
+                    "}")
                     .asJson();            
             
             assertTrue(queryResponse.getBody().getObject().getBoolean("boolean"));
@@ -389,16 +397,6 @@ public class GMApi {
             clearProvData();
         }
         
-    }
-
-    @Test
-    public void testPythonIndexing() {
-        doIndexing("/index_request.json", s.getES5(), "default");
-    }
-
-    @Test
-    public void testJavaIndexing() {
-        doIndexing("/index_request_java.json", s.getESSiren(), "current");
     }
     
    private void clearProvData() {
