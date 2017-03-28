@@ -28,11 +28,14 @@ dcompose {
     registry ("$registryURL") {
         // no user/pass
     }
+    networks {
+      testNetwork
+    }
     shared {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/uv-attx-shared:${testImageUVShared}"
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
     }
 
     mysql {
@@ -41,7 +44,8 @@ dcompose {
         image = 'tenforce/unified-views-mariadb:feat-compact-modular'
         env = ['MYSQL_ROOT_PASSWORD=iamroot!']
         portBindings = ['3306:3306']
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'mysql'
     }
     backend {
         forcePull = true
@@ -49,7 +53,7 @@ dcompose {
         image = 'tenforce/unified-views-backend:latest'
         volumesFrom =  [shared]
         dependsOn = [mysql, shared]
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
     }
 
     frontend {
@@ -57,10 +61,10 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-frontend:latest'
         volumesFrom = [shared]
-//        exposedPorts = ['8080']
         portBindings = ['8080:8080']
         dependsOn = [backend, shared]
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'frontend'
     }
 
     uvdpus {
@@ -68,7 +72,7 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-add-dpus:latest'
         dependsOn = [mysql, frontend]
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
     }
 
     attxdpus {
@@ -76,54 +80,53 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/uv-attx-dpus:${testImageATTXDPUs}"
         links = [frontend.link(), mysql.link(), backend.link()]
         dependsOn = [mysql, backend, frontend]
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
   	}
 
     fuseki {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-fuseki:${testImageFuseki}"
-//        exposedPorts = ['3030']
         portBindings = ['3030:3030']
-//        env = ['ADMIN_PASSWORD=pw123']
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'fuseki'
     }
 
     essiren {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/essiren:${testImageESSiren}"
-//        exposedPorts = ['9200', '9300']
         portBindings = ['9200:9200', '9300:9300']
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'essiren'
     }
 
     es5 {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-es5:${testImageES5}"
-//        exposedPorts = ['9210', '9310']
         portBindings = ['9210:9210', '9310:9310']
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = ['es5']
     }
 
     wfapi {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/wf-api:${testImageWF}"
-//        exposedPorts = ['4301']
         portBindings = ['4301:4301']
         dependsOn = [mysql]
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'wfapi'
     }
 
     gmapi {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/gm-api:${testImageGM}"
-//        exposedPorts = ['4302']
         portBindings = ['4302:4302']
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        networks = [testNetwork]
+        hostName = 'gmapi'
     }
 
     test {
@@ -135,35 +138,39 @@ dcompose {
         dependsOn = [frontend, backend, shared, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
-//        attachStdout = true
+        attachStdout = true
+        networks = [testNetwork]
     }
 }
 
-//task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
-//    service = dcompose.test
-//    containerPath = '/tmp/build/reports'
-//    destinationDir = file("build/from-container/")
-//    cleanDestinationDir = false
-//}
-//
-//startTestContainer.finalizedBy copyReportFiles
-//
-//shadowJar {
-//    classifier = 'tests'
-//    from sourceSets.test.output
-//    configurations = [project.configurations.testRuntime]
-//}
-//
-//// making sure the that fresh build of test classes is done before building the image
-//buildTestImage.dependsOn shadowJar
-//buildTestImage.dependsOn testClasses
-
-task integTest {
-    dependsOn startTestContainer
-    finalizedBy removeImages
+task copyReportFiles(type: DcomposeCopyFileFromContainerTask) {
+    service = dcompose.test
+    containerPath = '/tmp/build/reports/tests'
+    destinationDir = file("build/reports/")
+    cleanDestinationDir = false
 }
 
-task runTestsAgainstSomething(type: Test) {
+startTestContainer.finalizedBy copyReportFiles
+
+shadowJar {
+    classifier = 'tests'
+    from sourceSets.test.output
+    configurations = [project.configurations.testRuntime]
+}
+
+// making sure the that fresh build of test classes is done before building the image
+buildTestImage.dependsOn shadowJar
+buildTestImage.dependsOn testClasses
+
+task runContainerTests {
+    dependsOn startTestContainer
+    finalizedBy removeImages
+    doLast {
+        if(dcompose.test.exitCode != 0){ throw new GradleException("No good!") }
+    }
+}
+
+task runIntegTests (type: Test) {
     dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
 
     doFirst {
@@ -199,3 +206,4 @@ task runTestsAgainstSomething(type: Test) {
 
     finalizedBy removeImages
 }
+

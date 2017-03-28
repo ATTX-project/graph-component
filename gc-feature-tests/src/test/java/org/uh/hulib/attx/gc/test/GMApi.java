@@ -320,7 +320,7 @@ public class GMApi {
             "    \"debugging\": false,\n" +
             "     \"userExternalId\": \"admin\"\n" +
             "}";    
-    @Test
+//    @Test
     public void testProvEndpoint() {
         try {
             // setup data
