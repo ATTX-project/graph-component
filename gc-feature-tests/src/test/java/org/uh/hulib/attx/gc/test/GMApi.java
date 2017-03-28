@@ -187,7 +187,7 @@ public class GMApi {
         doIndexing("/index_request.json", s.getES5(), "default");
     }
 
-    @Test
+//    @Test
     public void testJavaIndexing() {
         doIndexing("/index_request_java.json", s.getESSiren(), "current");
     }
