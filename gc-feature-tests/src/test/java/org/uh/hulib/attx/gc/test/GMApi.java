@@ -181,16 +181,6 @@ public class GMApi {
         latch.await();
     }
 
-    @Test
-    public void testPythonIndexing() {
-        doIndexing("/index_request.json", s.getES5(), "default");
-    }
-
-    @Test
-    public void testJavaIndexing() {
-        doIndexing("/index_request_java.json", s.getESSiren(), "current");
-    }
-
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
         try {
             // index
@@ -214,6 +204,7 @@ public class GMApi {
                 JSONObject obj = jsonResponse.getBody().getObject();
                 if(obj.has("hits")) {
                     int total = obj.getJSONObject("hits").getInt("total");
+                    System.out.println(esEndpoint + ": "+ total);
                     if (total == 5) {
                         assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) == 5);
                     }
@@ -312,21 +303,20 @@ public class GMApi {
             ex.printStackTrace();
         }
     }    
-    
-    
+
     private final String API_USERNAME = "master";
     private final String API_PASSWORD = "commander";  
     private final String ACTIVITY = "{\n" +
             "    \"debugging\": false,\n" +
             "     \"userExternalId\": \"admin\"\n" +
             "}";    
-//    @Test
+    @Test
     public void testProvEndpoint() {
         try {
             // setup data
             
             // add pipeline
-            URL resource = GMApi.class.getResource("/testPipeline1.zip");
+            URL resource = GMApi.class.getResource("/testPipeline.zip");
             
             HttpResponse<JsonNode> postResponse = Unirest.post(s.getUV() + "/master/api/1/pipelines/import")
                     .header("accept", "application/json")                        
@@ -399,6 +389,16 @@ public class GMApi {
             clearProvData();
         }
         
+    }
+
+    @Test
+    public void testPythonIndexing() {
+        doIndexing("/index_request.json", s.getES5(), "default");
+    }
+
+    @Test
+    public void testJavaIndexing() {
+        doIndexing("/index_request_java.json", s.getESSiren(), "current");
     }
     
    private void clearProvData() {
