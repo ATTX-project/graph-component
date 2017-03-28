@@ -21,6 +21,7 @@ ext {
     testImageES5 = "latest"
     testImageUVShared = "latest"
     testImageATTXDPUs = "latest"
+    testSet = "localhost"
 }
 
 dcompose {
@@ -29,13 +30,13 @@ dcompose {
         // no user/pass
     }
     networks {
-      testNetwork
+      gcTestNetwork
     }
     shared {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/uv-attx-shared:${testImageUVShared}"
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
     }
 
     mysql {
@@ -43,9 +44,11 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-mariadb:feat-compact-modular'
         env = ['MYSQL_ROOT_PASSWORD=iamroot!']
-        portBindings = ['3306:3306']
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'mysql'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['3306:3306']
+        }
     }
     backend {
         forcePull = true
@@ -53,7 +56,7 @@ dcompose {
         image = 'tenforce/unified-views-backend:latest'
         volumesFrom =  [shared]
         dependsOn = [mysql, shared]
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
     }
 
     frontend {
@@ -61,10 +64,13 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-frontend:latest'
         volumesFrom = [shared]
-        portBindings = ['8080:8080']
+
         dependsOn = [backend, shared]
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'frontend'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['8080:8080']
+        }
     }
 
     uvdpus {
@@ -72,7 +78,7 @@ dcompose {
         forceRemoveImage = true
         image = 'tenforce/unified-views-add-dpus:latest'
         dependsOn = [mysql, frontend]
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
     }
 
     attxdpus {
@@ -80,53 +86,63 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/uv-attx-dpus:${testImageATTXDPUs}"
         links = [frontend.link(), mysql.link(), backend.link()]
         dependsOn = [mysql, backend, frontend]
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
   	}
 
     fuseki {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-fuseki:${testImageFuseki}"
-        portBindings = ['3030:3030']
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'fuseki'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['3030:3030']
+        }
     }
 
     essiren {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/essiren:${testImageESSiren}"
-        portBindings = ['9200:9200', '9300:9300']
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'essiren'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['9200:9200', '9300:9300']
+        }
     }
 
     es5 {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/attx-es5:${testImageES5}"
-        portBindings = ['9210:9210', '9310:9310']
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = ['es5']
+        if ("${testSet}" == "localhost") {
+            portBindings = ['9210:9210', '9310:9310']
+        }
     }
 
     wfapi {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/wf-api:${testImageWF}"
-        portBindings = ['4301:4301']
         dependsOn = [mysql]
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'wfapi'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['4301:4301']
+        }
     }
 
     gmapi {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/gm-api:${testImageGM}"
-        portBindings = ['4302:4302']
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
         hostName = 'gmapi'
+        if ("${testSet}" == "localhost") {
+            portBindings = ['4302:4302']
+        }
     }
 
     test {
@@ -139,7 +155,7 @@ dcompose {
         waitForCommand = true
         forceRemoveImage = true
         attachStdout = true
-        networks = [testNetwork]
+        networks = [gcTestNetwork]
     }
 }
 
@@ -163,6 +179,7 @@ buildTestImage.dependsOn shadowJar
 buildTestImage.dependsOn testClasses
 
 task runContainerTests {
+    ext.testSet = "container"
     dependsOn startTestContainer
     finalizedBy removeImages
     doLast {
@@ -171,6 +188,7 @@ task runContainerTests {
 }
 
 task runIntegTests (type: Test) {
+    ext.testSet = "localhost"
     dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
 
     doFirst {
@@ -206,4 +224,3 @@ task runIntegTests (type: Test) {
 
     finalizedBy removeImages
 }
-
