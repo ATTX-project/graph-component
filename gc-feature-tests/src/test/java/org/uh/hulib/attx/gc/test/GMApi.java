@@ -42,10 +42,8 @@ public class GMApi {
     private static final long pollingInterval = 5000;
 
 
-
     @BeforeClass
-    public static void setUpFuseki() {
-        try {
+    public static void setUpFuseki() throws Exception {
             String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
             HttpResponse<String> response = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
                     .header("Content-type", "text/turtle")
@@ -60,10 +58,12 @@ public class GMApi {
                     .asString();
 
             //assertEquals(201, response2.getStatus());
-        } catch (Exception ex) {
-            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
-            TestCase.fail(ex.getMessage());
-        }
+    }
+
+    @BeforeClass
+    public static void setupUV() throws Exception {
+
+
     }
 
     @BeforeClass
@@ -315,26 +315,28 @@ public class GMApi {
     }    
 
     private final String API_USERNAME = "master";
-    private final String API_PASSWORD = "commander";  
+    private final String API_PASSWORD = "commander";
     private final String ACTIVITY = "{\n" +
             "    \"debugging\": false,\n" +
             "     \"userExternalId\": \"admin\"\n" +
-            "}";    
+            "}";
     @Test
     public void testProvEndpoint() {
         try {
             // setup data
-            
+
             // add pipeline
             URL resource = GMApi.class.getResource("/testPipeline.zip");
-            
+
             HttpResponse<JsonNode> postResponse = Unirest.post(s.getUV() + "/master/api/1/pipelines/import")
-                    .header("accept", "application/json")                        
+                    .header("accept", "application/json")
                     .basicAuth(API_USERNAME, API_PASSWORD)
                     .field("importUserData", false)
                     .field("importSchedule", false)
-                    .field("file", new File(resource.toURI()))                        
-                    .asJson();            
+                    .field("file", new File(resource.toURI()))
+                    .asJson();
+
+            Thread.sleep(7000);
 
             assertEquals(200, postResponse.getStatus());
             JSONObject myObj = postResponse.getBody().getObject();
@@ -349,8 +351,8 @@ public class GMApi {
                     .header("Content-Type", "application/json")
                     .basicAuth(API_USERNAME, API_PASSWORD)
                     .body(ACTIVITY)
-                    .asJson();            
-                
+                    .asJson();
+
             assertEquals(200, postResponse2.getStatus());
 
             Thread.sleep(5000);
@@ -381,6 +383,10 @@ public class GMApi {
                     "}")
                     .asJson();
 
+            boolean workflowsExist = queryResponse.getBody().getObject().getBoolean("boolean");
+
+            Thread.sleep(2000);
+
             HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
                     .header("Content-Type", "application/sparql-query")
                     .header("Accept", "application/sparql-results+json")
@@ -389,10 +395,13 @@ public class GMApi {
                     "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
                     "}")
                     .asJson();
-            System.out.println(queryResponse.getBody().getObject().getBoolean("boolean"));
-            System.out.println(queryResponse2.getBody().getObject().getBoolean("boolean"));
-            assertTrue(queryResponse.getBody().getObject().getBoolean("boolean"));
-            assertTrue(queryResponse2.getBody().getObject().getBoolean("boolean"));
+
+            boolean activitiesExist = queryResponse2.getBody().getObject().getBoolean("boolean");
+
+            Thread.sleep(2000);
+
+            assertTrue(workflowsExist);
+            assertTrue(activitiesExist);
             
         } catch (Exception ex) {
             Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
