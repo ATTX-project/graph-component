@@ -226,9 +226,8 @@ public class GMApi {
             assertEquals(202, result3);
             pollForIndexing(createdID);
 
-            await().atMost(10, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
-
-
+            await().atMost(20, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
+            
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
             HttpRequestWithBody request = Unirest.delete(URL);
             HttpResponse<String> response = request.asString();
