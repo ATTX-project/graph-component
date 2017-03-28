@@ -11,7 +11,9 @@ import com.mashape.unirest.http.Unirest;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,8 +28,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
 /**
@@ -70,13 +74,11 @@ public class GMApi {
     public static void setUpElasticSearch() throws Exception {
         try {
 //        EsSiren has a hard coded index named `current`
-            HttpResponse<JsonNode> response = Unirest.delete(s.getESSiren() + "/current")
-                    .asJson();
+            HttpResponse<JsonNode> response = Unirest.delete(s.getESSiren() + "/current").asJson();
 
 //        assertEquals(200, response.getStatus());
 
-            response = Unirest.delete(s.getES5() + "/default")
-                    .asJson();
+            response = Unirest.delete(s.getES5() + "/default").asJson();
 
 //        assertEquals(200, response.getStatus());
         } catch (Exception ex) {
@@ -119,14 +121,12 @@ public class GMApi {
 
         try {
             // index
-            HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/index")
-                    .asJson();
+            HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/index").asJson();
 
             assertTrue(response.getStatus() >= 200);
 
             // prov
-            response = Unirest.get(s.getGmapi() + VERSION + "/prov")
-                    .asJson();
+            response = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
 
             assertTrue(response.getStatus() >= 200);
 
@@ -191,6 +191,26 @@ public class GMApi {
         doIndexing("/index_request.json", s.getES5(), "default");
     }
 
+
+    private Callable<Integer> waitForESResults(String esEndpoint, String esIndex) {
+        return new Callable<Integer>() {
+            public Integer call() throws Exception {
+                int total = 0;
+                Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
+                HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
+                        .asJson();
+
+                JSONObject obj = jsonResponse.getBody().getObject();
+                if(obj.has("hits")) {
+                   total = obj.getJSONObject("hits").getInt("total");
+                }
+                System.out.println(esEndpoint + ": " + total);
+                return total;
+            }
+
+        };
+    }
+
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
         try {
             // index
@@ -202,29 +222,11 @@ public class GMApi {
                     .asJson();
             JSONObject myObj = postResponse.getBody().getObject();
             int createdID = myObj.getInt("id");
-            System.out.println(esEndpoint + ": "+ createdID);
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
             pollForIndexing(createdID);
-            // query
 
-            Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
-            Thread.sleep(5000);
-
-            for(int i = 0; i < 10; i++) {
-                HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
-                        .asJson();
-
-                JSONObject obj = jsonResponse.getBody().getObject();
-                if(obj.has("hits")) {
-                    int total = obj.getJSONObject("hits").getInt("total");
-                    System.out.println(esEndpoint + ": "+ total);
-                    assertTrue(total > 0);
-                    return;
-                }
-                Thread.sleep(1000);
-            }
-            fail("Could not query indexing results");
+            await().atMost(10, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
 
 
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
@@ -336,12 +338,12 @@ public class GMApi {
                     .field("file", new File(resource.toURI()))
                     .asJson();
 
-            Thread.sleep(7000);
-
-            assertEquals(200, postResponse.getStatus());
             JSONObject myObj = postResponse.getBody().getObject();
 
-            System.out.println(postResponse);
+            await().atMost(10, TimeUnit.SECONDS).until(() -> {
+                System.out.println(postResponse.getStatus());
+                assertEquals(200, postResponse.getStatus());
+            });
 
             int pipelineID = myObj.getInt("id");
             // run pipeline
@@ -354,11 +356,9 @@ public class GMApi {
                     .asJson();
 
             assertEquals(200, postResponse2.getStatus());
-
-            Thread.sleep(5000);
             
             // execute /prov
-            HttpResponse<JsonNode> getResponse3 = Unirest.get(s.getGmapi() +  VERSION + "/prov?start=true&wfapi=" + s.getWfapi() + "/0.1&graphStore=" + s.getFuseki() + "/test")
+            HttpResponse<JsonNode> getResponse3 = Unirest.get(s.getGmapi() +  VERSION + "/prov?start=true&wfapi=" + s.getWfapi() + VERSION + "&graphStore=" + s.getFuseki() + "/test")
                     .header("content-type", "application/json")
                     .asJson();
             JSONObject myObj3 = getResponse3.getBody().getObject();
@@ -369,39 +369,46 @@ public class GMApi {
             int result3 = getResponse3.getStatus();
             assertEquals(200, result3);
             assertEquals("Done", status);
-            
-            Thread.sleep(5000);
-            
-            
-            // query results 
+
+//            // query results
+//            HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
+//                    .header("Content-Type", "application/sparql-query")
+//                    .header("Accept", "application/sparql-results+json")
+//                    .body("ASK\n" +
+//                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+//                            "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
+//                            "}")
+//                    .asJson();
+//
+//
+//            await().atMost(10, TimeUnit.SECONDS).until(() -> {
+//                try {
+//                    System.out.println(queryResponse2.getBody().getObject().getBoolean("boolean"));
+//                    assertTrue(queryResponse2.getBody().getObject().getBoolean("boolean"));
+//                } catch (Exception ex) {
+//                    Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+//                    TestCase.fail(ex.getMessage());
+//                }
+//            });
+
             HttpResponse<JsonNode> queryResponse = Unirest.post(s.getFuseki() + "/test/query")
                     .header("Content-Type", "application/sparql-query")
                     .header("Accept", "application/sparql-results+json")
                     .body("ASK\n" +
-                    "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-                    "{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
-                    "}")
+                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+                            "{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
+                            "}")
                     .asJson();
 
-            boolean workflowsExist = queryResponse.getBody().getObject().getBoolean("boolean");
-
-            Thread.sleep(2000);
-
-            HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
-                    .header("Content-Type", "application/sparql-query")
-                    .header("Accept", "application/sparql-results+json")
-                    .body("ASK\n" +
-                    "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-                    "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
-                    "}")
-                    .asJson();
-
-            boolean activitiesExist = queryResponse2.getBody().getObject().getBoolean("boolean");
-
-            Thread.sleep(2000);
-
-            assertTrue(workflowsExist);
-            assertTrue(activitiesExist);
+            await().atMost(10, TimeUnit.SECONDS).until(() -> {
+                try {
+                    System.out.println(queryResponse.getBody().getObject().getBoolean("boolean"));
+                    assertTrue(queryResponse.getBody().getObject().getBoolean("boolean"));
+                } catch (Exception ex) {
+                    Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+                    TestCase.fail(ex.getMessage());
+                }
+            });
             
         } catch (Exception ex) {
             Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
@@ -419,7 +426,6 @@ public class GMApi {
                     .header("Content-Type", "application/sparql-update")
                     .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
                     .asString();
-            System.out.println("Delete prov :" + deleteResponse1.getStatusText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
