@@ -13,15 +13,22 @@ dependencies {
         'org.uh.hulib.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT'
 }
 
+if (!project.hasProperty("testEnv") || project.testEnv == "dev") {
+    ext.testSet = "localhost"
+} else if (project.testEnv == "CI"){
+    ext.testSet = "container"
+} else {
+    throw new GradleException("Build project environment option not recognised.")
+}
+
 ext {
-    testImageWF = "latest"
-    testImageGM = "latest"
-    testImageFuseki = "latest"
-    testImageESSiren = "latest"
-    testImageES5 = "latest"
+    testImageWF = "supd"
+    testImageGM = "supd"
+    testImageFuseki = "supd"
+    testImageESSiren = "supd"
+    testImageES5 = "supd"
     testImageUVShared = "latest"
     testImageATTXDPUs = "latest"
-    testSet = "localhost"
 }
 
 dcompose {
@@ -46,7 +53,7 @@ dcompose {
         env = ['MYSQL_ROOT_PASSWORD=iamroot!']
         networks = [gcTestNetwork]
         hostName = 'mysql'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['3306:3306']
         }
     }
@@ -68,7 +75,8 @@ dcompose {
         dependsOn = [backend, shared]
         networks = [gcTestNetwork]
         hostName = 'frontend'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
+            exposedPorts = ['8080']
             portBindings = ['8080:8080']
         }
     }
@@ -95,7 +103,7 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/attx-fuseki:${testImageFuseki}"
         networks = [gcTestNetwork]
         hostName = 'fuseki'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['3030:3030']
         }
     }
@@ -106,7 +114,7 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/essiren:${testImageESSiren}"
         networks = [gcTestNetwork]
         hostName = 'essiren'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['9200:9200', '9300:9300']
         }
     }
@@ -117,7 +125,7 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/attx-es5:${testImageES5}"
         networks = [gcTestNetwork]
         hostName = ['es5']
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['9210:9210', '9310:9310']
         }
     }
@@ -129,7 +137,7 @@ dcompose {
         dependsOn = [mysql]
         networks = [gcTestNetwork]
         hostName = 'wfapi'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['4301:4301']
         }
     }
@@ -140,7 +148,7 @@ dcompose {
         image = "${imageRepo}:${imageRepoPort}/gm-api:${testImageGM}"
         networks = [gcTestNetwork]
         hostName = 'gmapi'
-        if ("${testSet}" == "localhost") {
+        if (testSet == "localhost") {
             portBindings = ['4302:4302']
         }
     }
@@ -179,7 +187,7 @@ buildTestImage.dependsOn shadowJar
 buildTestImage.dependsOn testClasses
 
 task runContainerTests {
-    ext.testSet = "container"
+    testSet = "container"
     dependsOn startTestContainer
     finalizedBy removeImages
     doLast {
@@ -187,8 +195,8 @@ task runContainerTests {
     }
 }
 
-task runIntegTests (type: Test) {
-    ext.testSet = "localhost"
+task runIntegTests(type: Test) {
+    testSet = "localhost"
     dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startUvdpusContainer,  startAttxdpusContainer, startEs5Container, startEssirenContainer
 
     doFirst {
@@ -221,6 +229,5 @@ task runIntegTests (type: Test) {
         systemProperties.remove 'es5.port'
         systemProperties.remove 'es5.host'
     }
-
     finalizedBy removeImages
 }

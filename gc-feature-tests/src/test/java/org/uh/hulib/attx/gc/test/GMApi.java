@@ -187,7 +187,7 @@ public class GMApi {
         doIndexing("/index_request.json", s.getES5(), "default");
     }
 
-//    @Test
+    @Test
     public void testJavaIndexing() {
         doIndexing("/index_request_java.json", s.getESSiren(), "current");
     }
@@ -206,10 +206,9 @@ public class GMApi {
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
             pollForIndexing(createdIDPython);
-            Unirest.post(esEndpoint + "/current/_refresh");
             // query
             for(int i = 0; i < 10; i++) {
-
+                Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
                 HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
                         .asJson();
 
