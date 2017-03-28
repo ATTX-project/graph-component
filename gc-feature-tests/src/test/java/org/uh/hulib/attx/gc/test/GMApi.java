@@ -207,8 +207,11 @@ public class GMApi {
             assertEquals(202, result3);
             pollForIndexing(createdID);
             // query
+
+            Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
+            Thread.sleep(5000);
+
             for(int i = 0; i < 10; i++) {
-                Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
                 HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
                         .asJson();
 
@@ -216,9 +219,7 @@ public class GMApi {
                 if(obj.has("hits")) {
                     int total = obj.getJSONObject("hits").getInt("total");
                     System.out.println(esEndpoint + ": "+ total);
-                    if (total > 0) {
-                        assertTrue((jsonResponse.getBody().getObject().getJSONObject("hits").getInt("total")) > 0);
-                    }
+                    assertTrue(total > 0);
                     return;
                 }
                 Thread.sleep(1000);
@@ -302,7 +303,7 @@ public class GMApi {
                     .header("Content-Type", "application/sparql-update")
                     .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
                     .asString();
-            System.out.println("Delete prov :" + deleteResponse1.getStatusText());
+
             // drop ids graph
             HttpResponse<String> deleteResponse2 = Unirest.post(s.getFuseki() + "/test/update")
                     .header("Content-Type", "application/sparql-update")
@@ -336,7 +337,9 @@ public class GMApi {
                     .asJson();            
 
             assertEquals(200, postResponse.getStatus());
-            JSONObject myObj = postResponse.getBody().getObject();    
+            JSONObject myObj = postResponse.getBody().getObject();
+
+            System.out.println(postResponse);
 
             int pipelineID = myObj.getInt("id");
             // run pipeline
@@ -385,8 +388,9 @@ public class GMApi {
                     "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
                     "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
                     "}")
-                    .asJson();            
-            
+                    .asJson();
+            System.out.println(queryResponse.getBody().getObject().getBoolean("boolean"));
+            System.out.println(queryResponse2.getBody().getObject().getBoolean("boolean"));
             assertTrue(queryResponse.getBody().getObject().getBoolean("boolean"));
             assertTrue(queryResponse2.getBody().getObject().getBoolean("boolean"));
             
