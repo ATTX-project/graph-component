@@ -111,7 +111,7 @@ public class GMApi {
 
         try {
             // health check
-            HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/health").asJson();
+            HttpResponse<JsonNode> response = Unirest.get(s.getGmapi() + "/health").asJson();
 
             assertEquals(200, response.getStatus());
 
@@ -291,8 +291,31 @@ public class GMApi {
                         .header("Content-Type", "application/json")
                         .basicAuth(API_USERNAME, API_PASSWORD)
                         .asJson();
-                assertEquals(200, schedulePipelineResponse.getStatus());
-                JSONObject execs = schedulePipelineResponse.getBody().getObject();
+//                assertEquals(200, schedulePipelineResponse.getStatus());
+                if (schedulePipelineResponse.getStatus() == 200) {
+                    JSONObject execs = schedulePipelineResponse.getBody().getObject();
+                    String status = execs.getString("status");
+                    System.out.println(status);
+                    return status;
+                } else {
+                    return "Not yet";
+                }
+            }
+        };
+    }
+
+    private Callable<String> pollForWorkflowStart(Integer pipelineID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions", pipelineID);
+                HttpResponse<JsonNode> workflowStart = Unirest.post(URL)
+                        .header("accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .basicAuth(API_USERNAME, API_PASSWORD)
+                        .body(ACTIVITY)
+                        .asJson();
+                assertEquals(200, workflowStart.getStatus());
+                JSONObject execs = workflowStart.getBody().getObject();
                 String status = execs.getString("status");
                 System.out.println(status);
                 return status;
@@ -324,15 +347,8 @@ public class GMApi {
             });
 
             int pipelineID = myObj.getInt("id");
-            // run pipeline
-            String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions", pipelineID);
-            HttpResponse<JsonNode> postResponse2 = Unirest.post(URL)
-                    .header("accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .basicAuth(API_USERNAME, API_PASSWORD)
-                    .body(ACTIVITY)
-                    .asJson();
 
+            await().atMost(20, TimeUnit.SECONDS).until(pollForWorkflowStart(pipelineID), equalTo("QUEUED"));
             await().atMost(20, TimeUnit.SECONDS).until(pollForWorkflowExecution(pipelineID), equalTo("FINISHED_SUCCESS"));
             
             // execute /prov
@@ -396,7 +412,7 @@ public class GMApi {
         }
         
     }
-    
+
    private void clearProvData() {
         try {
             // drop prov graph
