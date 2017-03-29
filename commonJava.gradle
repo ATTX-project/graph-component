@@ -14,7 +14,7 @@ sourceCompatibility = '1.8'
 repositories {
     // mavenCentral()
     maven { url "https://plugins.gradle.org/m2/"}
-    maven { url "$snapshotRepoURL"}
+    maven { url "$artifactRepoURL"}
 }
 
 dependencies {

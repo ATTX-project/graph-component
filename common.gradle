@@ -17,11 +17,6 @@ if (!project.hasProperty("artifactRepoURL")) {
     ext.artifactRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-releases"
 }
 
-// TO DO remove as we are not using snaphshots repository anymore
-if (!project.hasProperty("snapshotRepoURL")) {
-    ext.snapshotRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-snapshots"
-}
-
 if (!project.hasProperty("pypiURL")) {
     ext.pypiURL = "http://${imageRepo}:${pypiRepoPort}/"
 }
