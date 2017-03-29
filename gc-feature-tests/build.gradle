@@ -29,7 +29,7 @@ ext {
     testImageESSiren = "supd"
     testImageES5 = "supd"
     testImageUVShared = "latest"
-    testImageATTXDPUs = "latest"
+    testImageATTXDPUs = "supd"
 }
 
 dcompose {
@@ -77,7 +77,6 @@ dcompose {
         networks = [gcTestNetwork]
         hostName = 'frontend'
         if (testSet == "localhost") {
-            exposedPorts = ['8080']
             portBindings = ['8080:8080']
         }
     }

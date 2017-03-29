@@ -9,10 +9,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,8 +26,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.awaitility.Awaitility.await;
-import static org.hamcrest.core.AnyOf.anyOf;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
@@ -42,9 +37,10 @@ public class GMApi {
 
     private static PlatformServices s = new PlatformServices();
     private static final String VERSION = "/0.1";
-    private static final long startDelay = 1000;
-    private static final long pollingInterval = 5000;
 
+    private final String API_USERNAME = "master";
+    private final String API_PASSWORD = "commander";
+    private final String ACTIVITY = "{ \"debugging\" : \"false\", \"userExternalId\" : \"admin\" }";
 
     @BeforeClass
     public static void setUpFuseki() throws Exception {
@@ -62,12 +58,6 @@ public class GMApi {
                     .asString();
 
             //assertEquals(201, response2.getStatus());
-    }
-
-    @BeforeClass
-    public static void setupUV() throws Exception {
-
-
     }
 
     @BeforeClass
@@ -121,9 +111,9 @@ public class GMApi {
 
         try {
             // index
-            HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/index").asJson();
+            HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/health").asJson();
 
-            assertTrue(response.getStatus() >= 200);
+            assert(200, response.getStatus());
 
             // prov
             response = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
@@ -146,41 +136,6 @@ public class GMApi {
 
     }
 
-    private void pollForIndexing(int createdID) throws Exception {
-        Timer timer = new Timer();
-        final CountDownLatch latch = new CountDownLatch(1);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                HttpResponse<JsonNode> resp = null;
-                try {
-                    String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
-                    GetRequest get = Unirest.get(URL);
-                    HttpResponse<JsonNode> response1 = get.asJson();
-                    JSONObject myObj = response1.getBody().getObject();
-                    String status = myObj.getString("status");
-                    int result1 = response1.getStatus();
-                    if (status.equalsIgnoreCase("Done")){
-                        latch.countDown();
-                        cancel();
-                    } else if (status.equalsIgnoreCase("Error")) {
-                        latch.countDown();
-                        cancel();
-                        fail("Polling returned Error status.");
-                    }
-                    assertThat(status, anyOf(is("WIP"), is("Done")));
-                    assertEquals(200, result1);
-
-                } catch (Exception ex) {
-                    latch.countDown();
-                    cancel();
-                    fail(ex.getMessage());
-                }
-            }
-        }, startDelay, pollingInterval);
-        latch.await();
-    }
-
     @Test
     public void testJavaIndexing() {
         doIndexing("/index_request_java.json", s.getESSiren(), "current");
@@ -191,6 +146,19 @@ public class GMApi {
         doIndexing("/index_request.json", s.getES5(), "default");
     }
 
+    private Callable<String> pollForIndexStatus(Integer createdID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
+                GetRequest get = Unirest.get(URL);
+                HttpResponse<JsonNode> response1 = get.asJson();
+                JSONObject myObj = response1.getBody().getObject();
+                String status = myObj.getString("status");
+                System.out.println(status);
+                return status;
+            }
+        };
+    }
 
     private Callable<Integer> waitForESResults(String esEndpoint, String esIndex) {
         return new Callable<Integer>() {
@@ -207,7 +175,6 @@ public class GMApi {
                 System.out.println(esEndpoint + ": " + total);
                 return total;
             }
-
         };
     }
 
@@ -224,10 +191,10 @@ public class GMApi {
             int createdID = myObj.getInt("id");
             int result3 = postResponse.getStatus();
             assertEquals(202, result3);
-            pollForIndexing(createdID);
 
+            await().atMost(20, TimeUnit.SECONDS).until(pollForIndexStatus(createdID), equalTo("Done"));
             await().atMost(20, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
-            
+
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
             HttpRequestWithBody request = Unirest.delete(URL);
             HttpResponse<String> response = request.asString();
@@ -313,14 +280,26 @@ public class GMApi {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }    
+    }
 
-    private final String API_USERNAME = "master";
-    private final String API_PASSWORD = "commander";
-    private final String ACTIVITY = "{\n" +
-            "    \"debugging\": false,\n" +
-            "     \"userExternalId\": \"admin\"\n" +
-            "}";
+    private Callable<String> pollForWorkflowExecution(Integer pipelineID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions/last", pipelineID.intValue());
+                HttpResponse<JsonNode> schedulePipelineResponse = Unirest.get(URL)
+                        .header("accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .basicAuth(API_USERNAME, API_PASSWORD)
+                        .asJson();
+                assertEquals(200, schedulePipelineResponse.getStatus());
+                JSONObject execs = schedulePipelineResponse.getBody().getObject();
+                String status = execs.getString("status");
+                System.out.println(status);
+                return status;
+            }
+        };
+    }
+
     @Test
     public void testProvEndpoint() {
         try {
@@ -354,7 +333,7 @@ public class GMApi {
                     .body(ACTIVITY)
                     .asJson();
 
-            assertEquals(200, postResponse2.getStatus());
+            await().atMost(20, TimeUnit.SECONDS).until(pollForWorkflowExecution(pipelineID), equalTo("FINISHED_SUCCESS"));
             
             // execute /prov
             HttpResponse<JsonNode> getResponse3 = Unirest.get(s.getGmapi() +  VERSION + "/prov?start=true&wfapi=" + s.getWfapi() + VERSION + "&graphStore=" + s.getFuseki() + "/test")
@@ -369,26 +348,26 @@ public class GMApi {
             assertEquals(200, result3);
             assertEquals("Done", status);
 
-//            // query results
-//            HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
-//                    .header("Content-Type", "application/sparql-query")
-//                    .header("Accept", "application/sparql-results+json")
-//                    .body("ASK\n" +
-//                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-//                            "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
-//                            "}")
-//                    .asJson();
-//
-//
-//            await().atMost(10, TimeUnit.SECONDS).until(() -> {
-//                try {
-//                    System.out.println(queryResponse2.getBody().getObject().getBoolean("boolean"));
-//                    assertTrue(queryResponse2.getBody().getObject().getBoolean("boolean"));
-//                } catch (Exception ex) {
-//                    Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
-//                    TestCase.fail(ex.getMessage());
-//                }
-//            });
+            // query results
+            HttpResponse<JsonNode> queryResponse2 = Unirest.post(s.getFuseki() + "/test/query")
+                    .header("Content-Type", "application/sparql-query")
+                    .header("Accept", "application/sparql-results+json")
+                    .body("ASK\n" +
+                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+                            "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
+                            "}")
+                    .asJson();
+
+
+            await().atMost(10, TimeUnit.SECONDS).until(() -> {
+                try {
+                    System.out.println(queryResponse2.getBody().getObject().getBoolean("boolean"));
+                    assertTrue(queryResponse2.getBody().getObject().getBoolean("boolean"));
+                } catch (Exception ex) {
+                    Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+                    TestCase.fail(ex.getMessage());
+                }
+            });
 
             HttpResponse<JsonNode> queryResponse = Unirest.post(s.getFuseki() + "/test/query")
                     .header("Content-Type", "application/sparql-query")
