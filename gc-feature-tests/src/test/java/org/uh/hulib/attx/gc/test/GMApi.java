@@ -185,7 +185,7 @@ public class GMApi {
             assertEquals(202, postIndex.getStatus());
 
             await().atMost(20, TimeUnit.SECONDS).until(pollForIndexStatus(createdID), equalTo("Done"));
-            await().atMost(20, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
+            await().atMost(45, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
 
             String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
             HttpRequestWithBody deleteIndex = Unirest.delete(URL);
