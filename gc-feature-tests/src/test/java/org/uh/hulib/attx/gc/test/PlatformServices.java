@@ -11,10 +11,6 @@ package org.uh.hulib.attx.gc.test;
  */
 public class PlatformServices {
 
-
-    public PlatformServices() {
-    }
-
     public String getESSiren() {
         return "http://" + System.getProperty("essiren.host") + ":" + Integer.parseInt(System.getProperty("essiren.port"));
     }
