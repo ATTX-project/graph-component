@@ -148,7 +148,7 @@ dcompose {
         ignoreExitCode = true
         baseDir = file('.')
         dockerFilename = 'Dockerfile'
-        if (testSet == "CI") {
+        if (testSet == "container") {
             binds = ["/var/run/docker.sock:/run/docker.sock"]
         }
         command = ['sh', '-c', '/tmp/runTests.sh']
