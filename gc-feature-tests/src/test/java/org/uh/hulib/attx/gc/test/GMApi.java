@@ -110,10 +110,10 @@ public class GMApi {
     public void testGMEndpointsAvailable() {
 
         try {
-            // index
+            // health check
             HttpResponse<JsonNode> response = Unirest.post(s.getGmapi() + VERSION + "/health").asJson();
 
-            assert(200, response.getStatus());
+            assertEquals(200, response.getStatus());
 
             // prov
             response = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
