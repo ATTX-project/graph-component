@@ -148,7 +148,9 @@ dcompose {
         ignoreExitCode = true
         baseDir = file('.')
         dockerFilename = 'Dockerfile'
-        binds = ["/var/run/docker.sock:/run/docker.sock"]
+        if (testSet == "CI") {
+            binds = ["/var/run/docker.sock:/run/docker.sock"]
+        }
         command = ['sh', '-c', '/tmp/runTests.sh']
         dependsOn = [frontend, backend, shared, attxdpus, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
