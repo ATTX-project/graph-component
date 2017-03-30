@@ -101,26 +101,30 @@ public class GMApi {
     }
 
     @Test
-    public void testGMEndpointsAvailable() {
+    public void testEndpointsHealthAvailable() {
 
         try {
             // health check
-            HttpResponse<JsonNode> response = Unirest.get(s.getGmapi() + "/health").asJson();
+            HttpResponse<JsonNode> gmHealth = Unirest.get(s.getGmapi() + "/health").asJson();
 
-            assertEquals(200, response.getStatus());
+            assertEquals(200, gmHealth.getStatus());
+
+            HttpResponse<JsonNode> wfHealth = Unirest.get(s.getWfapi() + "/health").asJson();
+
+            assertEquals(200, wfHealth.getStatus());
 
             // prov
-            response = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
+            HttpResponse<JsonNode> provHealth = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
 
-            assertTrue(response.getStatus() >= 200);
+            assertTrue(provHealth.getStatus() >= 200);
 
             // cluster
             String clusterPayload = "{ \"graphStore\": { \"host\": \"fuseki\", \"port\": 3030, \"dataset\": \"test\" }}";
-            response = Unirest.post(s.getGmapi() + VERSION + "/cluster")
+            HttpResponse<JsonNode> clusterHealth = Unirest.post(s.getGmapi() + VERSION + "/cluster")
                     .body(clusterPayload)
                     .asJson();
 
-            assertTrue(response.getStatus() >= 200);
+            assertTrue(clusterHealth.getStatus() >= 200);
 
         } catch (Exception ex) {
             Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
@@ -338,7 +342,12 @@ public class GMApi {
             await().atMost(20, TimeUnit.SECONDS).until(pollForWorkflowExecution(pipelineID), equalTo("FINISHED_SUCCESS"));
             
             // execute /prov
-            HttpResponse<JsonNode> wfProv = Unirest.get(s.getGmapi() +  VERSION + "/prov?start=true&wfapi=" + s.getWfapi() + VERSION + "&graphStore=" + s.getFuseki() + "/test")
+
+//           TO DO We preset the url as it will always be like this inside the container network.
+//           When the everything is finished this should be a fixture or part of the plugin/service discovery
+            String provRequest = String.format(s.getGmapi() + VERSION + "/prov?start=true&wfapi=http://wfapi:4301" + VERSION + "&graphStore=http://fuseki:3030/test");
+
+            HttpResponse<JsonNode> wfProv = Unirest.get(provRequest)
                     .header("content-type", "application/json")
                     .asJson();
             JSONObject provObj = wfProv.getBody().getObject();
