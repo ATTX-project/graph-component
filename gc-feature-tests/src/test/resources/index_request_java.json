@@ -11,7 +11,7 @@
       "endpoint": {
           "host": "fuseki",
           "port": 3030,
-          "dataset": "ds"
+          "dataset": "test"
       },
       "graphs": ["http://test/index2"]
   }

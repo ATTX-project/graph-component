@@ -1,7 +1,7 @@
 {
   "graphStore": {
-      "host": "localhost",
+      "host": "fuseki",
       "port": 3030,
-      "dataset": "ds"
+      "dataset": "test"
   }
 }
