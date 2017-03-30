@@ -1,4 +1,7 @@
 apply plugin: 'com.chrisgahlert.gradle-dcompose-plugin'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.container.DockerWaitContainer
 
 dependencies {
     compile 'org.apache.jena:apache-jena:3.2.0'
@@ -152,6 +155,7 @@ dcompose {
         if (testSet == "container") {
             binds = ["/var/run/docker.sock:/run/docker.sock"]
         }
+        dependsOn = [gmapi] // This dependency is not really needed however it reminds the scope of the tests.
         command = ['sh', '-c', '/tmp/runTests.sh']
         waitForCommand = true
         forceRemoveImage = true
@@ -179,16 +183,22 @@ shadowJar {
 buildTestImage.dependsOn shadowJar
 buildTestImage.dependsOn testClasses
 
-task runContainerTests {
+task checkBuildResult(type: DockerWaitContainer) {
     dependsOn startGmapiContainer
-    doFirst {
-        while(dcompose.attxdpus.exitCode != 0) {
-            sleep(10*1000)
+    targetContainerId {dcompose.attxdpus.containerId}
+    doLast{
+        if(getExitCode() != 0) {
+            println "ATTX DPU Container failed with exit code \${getExitCode()}"
+        } else {
+            println "Everything is peachy."
         }
     }
-    doLast {
-        startTestContainer
-    }
+}
+
+startTestContainer.dependsOn checkBuildResult
+
+task runContainerTests {
+    dependsOn startTestContainer
     finalizedBy removeImages
     doLast {
         if(dcompose.test.exitCode != 0){ throw new GradleException("Tests within the container Failed!") }
@@ -198,7 +208,7 @@ task runContainerTests {
 // TO DO: find a fix so we can run the test locally preferably while waiting for other stuff to be there. MYSQL is the one that we need to wait for.
 
 //task runIntegTests(type: Test) {
-//    dependsOn startSharedContainer, startMysqlContainer, startBackendContainer, startFrontendContainer, startFusekiContainer, startWfapiContainer, startGmapiContainer, startAttxdpusContainer, startEs5Container, startEssirenContainer
+//    dependsOn checkBuildResult
 //
 //    doFirst {
 //        systemProperty 'frontend.port', dcompose.frontend.findHostPort(8080)

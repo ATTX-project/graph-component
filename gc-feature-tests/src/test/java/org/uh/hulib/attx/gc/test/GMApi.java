@@ -44,7 +44,6 @@ public class GMApi {
 
     @BeforeClass
     public static void setUpFuseki() throws Exception {
-//            TestCase.fail("testing");
             String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
             HttpResponse<String> fusekiSimpleGraph = Unirest.post(s.getFuseki() + "/test/data?graph=http://test/index")
                     .header("Content-type", "text/turtle")
