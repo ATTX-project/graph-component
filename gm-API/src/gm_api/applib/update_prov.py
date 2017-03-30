@@ -40,7 +40,7 @@ class UpdateProv(object):
                     cls.update_prov_status(conn, started_id, "Done")
                     app_logger.info('Updating Workflow information in the Graph Store')
                 else:
-                    cls.clean_store(graph_store, ATTXProv)
+                    # cls.clean_store(graph_store, ATTXProv)
                     cls.update_store(graph_store, activity, ATTXProv)
                     cls.update_store(graph_store, workflow, ATTXProv)
                     cls.update_prov_status(conn, started_id, "Done")
