@@ -25,13 +25,13 @@ if (!project.hasProperty("testEnv") || project.testEnv == "dev") {
 }
 
 ext {
-    testImageWF = "supd"
-    testImageGM = "supd"
-    testImageFuseki = "supd"
-    testImageESSiren = "supd"
-    testImageES5 = "supd"
+    testImageWF = "latest"
+    testImageGM = "latest"
+    testImageFuseki = "latest"
+    testImageESSiren = "latest"
+    testImageES5 = "latest"
     testImageUVShared = "latest"
-    testImageATTXDPUs = "supd"
+    testImageATTXDPUs = "latest"
 }
 
 dcompose {
