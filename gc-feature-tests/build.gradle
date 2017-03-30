@@ -137,6 +137,7 @@ dcompose {
         forcePull = true
         forceRemoveImage = true
         image = "${imageRepo}:${imageRepoPort}/gm-api:${testImageGM}"
+        dependsOn = [frontend, backend, shared, attxdpus, mysql, wfapi, essiren, fuseki, es5]
         networks = [gcTestNetwork]
         hostName = 'gmapi'
         if (testSet == "localhost") {
@@ -152,7 +153,6 @@ dcompose {
             binds = ["/var/run/docker.sock:/run/docker.sock"]
         }
         command = ['sh', '-c', '/tmp/runTests.sh']
-        dependsOn = [frontend, backend, shared, attxdpus, mysql, wfapi, gmapi, essiren, fuseki, es5]
         waitForCommand = true
         forceRemoveImage = true
         attachStdout = true
@@ -180,7 +180,15 @@ buildTestImage.dependsOn shadowJar
 buildTestImage.dependsOn testClasses
 
 task runContainerTests {
-    dependsOn startTestContainer
+    dependsOn startGmapiContainer
+    doFirst {
+        while(dcompose.attxdpus.exitCode != 0) {
+            sleep(10*1000)
+        }
+    }
+    doLast {
+        startTestContainer
+    }
     finalizedBy removeImages
     doLast {
         if(dcompose.test.exitCode != 0){ throw new GradleException("Tests within the container Failed!") }
