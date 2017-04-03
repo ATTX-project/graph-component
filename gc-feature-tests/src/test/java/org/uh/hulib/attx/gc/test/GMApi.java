@@ -42,6 +42,143 @@ public class GMApi {
     private final String API_PASSWORD = "commander";
     private final String ACTIVITY = "{ \"debugging\" : \"false\", \"userExternalId\" : \"admin\" }";
 
+    private void clearClusterIdsData() {
+        try {
+            HttpResponse<String> deleteGraph = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://test/1>")
+                    .asString();
+            // drop prov graph
+            HttpResponse<String> deleteGraphProv = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
+                    .asString();
+
+            // drop ids graph
+            HttpResponse<String> deleteGraphIDs = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://data.hulib.helsinki.fi/attx/ids>")
+                    .asString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private Callable<String> pollForWorkflowStart(Integer pipelineID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions", pipelineID);
+                HttpResponse<JsonNode> workflowStart = Unirest.post(URL)
+                        .header("accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .basicAuth(API_USERNAME, API_PASSWORD)
+                        .body(ACTIVITY)
+                        .asJson();
+                assertEquals(200, workflowStart.getStatus());
+                JSONObject execution = workflowStart.getBody().getObject();
+                String status = execution.getString("status");
+                System.out.println(status);
+                return status;
+            }
+        };
+    }
+
+    private Callable<String> pollForWorkflowExecution(Integer pipelineID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions/last", pipelineID.intValue());
+                HttpResponse<JsonNode> schedulePipelineResponse = Unirest.get(URL)
+                        .header("accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .basicAuth(API_USERNAME, API_PASSWORD)
+                        .asJson();
+                if (schedulePipelineResponse.getStatus() == 200) {
+                    JSONObject execution = schedulePipelineResponse.getBody().getObject();
+                    String status = execution.getString("status");
+                    System.out.println(status);
+                    return status;
+                } else {
+                    return "Not yet";
+                }
+            }
+        };
+    }
+
+    private Callable<Integer> waitForESResults(String esEndpoint, String esIndex) {
+        return new Callable<Integer>() {
+            public Integer call() throws Exception {
+                int totalHits = 0;
+                Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
+                HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
+                        .asJson();
+
+                JSONObject esObj = jsonResponse.getBody().getObject();
+                if(esObj.has("hits")) {
+                    totalHits = esObj.getJSONObject("hits").getInt("total");
+                }
+                System.out.println(esEndpoint + ": " + totalHits);
+                return totalHits;
+            }
+        };
+    }
+
+    private Callable<String> pollForIndexStatus(Integer createdID) {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
+                GetRequest get = Unirest.get(URL);
+                HttpResponse<JsonNode> response1 = get.asJson();
+                JSONObject myObj = response1.getBody().getObject();
+                String status = myObj.getString("status");
+                System.out.println(status);
+                return status;
+            }
+        };
+    }
+
+    public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
+        try {
+            // index
+            String indexPython = IOUtils.toString(GMApi.class.getResourceAsStream(requestFixture), "UTF-8");
+
+            HttpResponse<JsonNode> postIndex = Unirest.post(s.getGmapi() + VERSION + "/index")
+                    .header("content-type", "application/json")
+                    .body(indexPython)
+                    .asJson();
+            JSONObject indexObj = postIndex.getBody().getObject();
+            int createdID = indexObj.getInt("id");
+            assertEquals(202, postIndex.getStatus());
+
+            await().atMost(20, TimeUnit.SECONDS).until(pollForIndexStatus(createdID), equalTo("Done"));
+            await().atMost(45, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
+
+            String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
+            HttpRequestWithBody deleteIndex = Unirest.delete(URL);
+            HttpResponse<String> deleteIndexResponse = deleteIndex.asString();
+            assertEquals(200, deleteIndexResponse.getStatus());
+
+            GetRequest requestDeleteID = Unirest.get(URL);
+            HttpResponse<String> deletedIDResponse = requestDeleteID.asString();
+            assertEquals(410, deletedIDResponse.getStatus());
+
+        } catch (Exception ex) {
+            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+            TestCase.fail(ex.getMessage());
+        }
+    }
+
+    private void clearProvData() {
+        try {
+            // drop prov graph
+            HttpResponse<String> deleteGraphProv = Unirest.post(s.getFuseki() + "/test/update")
+                    .header("Content-Type", "application/sparql-update")
+                    .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
+                    .asString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @BeforeClass
     public static void setUpFuseki() throws Exception {
             String payload = IOUtils.toString(GMApi.class.getResourceAsStream("/data/infras.ttl"), "UTF-8");
@@ -106,16 +243,13 @@ public class GMApi {
         try {
             // health check
             HttpResponse<JsonNode> gmHealth = Unirest.get(s.getGmapi() + "/health").asJson();
-
             assertEquals(200, gmHealth.getStatus());
 
             HttpResponse<JsonNode> wfHealth = Unirest.get(s.getWfapi() + "/health").asJson();
-
             assertEquals(200, wfHealth.getStatus());
 
             // prov
             HttpResponse<JsonNode> provHealth = Unirest.get(s.getGmapi() + VERSION + "/prov").asJson();
-
             assertTrue(provHealth.getStatus() >= 200);
 
             // cluster
@@ -123,7 +257,6 @@ public class GMApi {
             HttpResponse<JsonNode> clusterHealth = Unirest.post(s.getGmapi() + VERSION + "/cluster")
                     .body(clusterPayload)
                     .asJson();
-
             assertTrue(clusterHealth.getStatus() >= 200);
 
         } catch (Exception ex) {
@@ -141,69 +274,6 @@ public class GMApi {
     @Test
     public void testPythonIndexing() {
         doIndexing("/index_request.json", s.getES5(), "default");
-    }
-
-    private Callable<String> pollForIndexStatus(Integer createdID) {
-        return new Callable<String>() {
-            public String call() throws Exception {
-                String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
-                GetRequest get = Unirest.get(URL);
-                HttpResponse<JsonNode> response1 = get.asJson();
-                JSONObject myObj = response1.getBody().getObject();
-                String status = myObj.getString("status");
-                System.out.println(status);
-                return status;
-            }
-        };
-    }
-
-    private Callable<Integer> waitForESResults(String esEndpoint, String esIndex) {
-        return new Callable<Integer>() {
-            public Integer call() throws Exception {
-                int totalHits = 0;
-                Unirest.post(esEndpoint + "/"+ esIndex +"/_refresh");
-                HttpResponse<com.mashape.unirest.http.JsonNode> jsonResponse = Unirest.get(esEndpoint + "/"+ esIndex +"/_search?q=Finnish")
-                        .asJson();
-
-                JSONObject esObj = jsonResponse.getBody().getObject();
-                if(esObj.has("hits")) {
-                    totalHits = esObj.getJSONObject("hits").getInt("total");
-                }
-                System.out.println(esEndpoint + ": " + totalHits);
-                return totalHits;
-            }
-        };
-    }
-
-    public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
-        try {
-            // index
-            String indexPython = IOUtils.toString(GMApi.class.getResourceAsStream(requestFixture), "UTF-8");
-
-            HttpResponse<JsonNode> postIndex = Unirest.post(s.getGmapi() + VERSION + "/index")
-                    .header("content-type", "application/json")
-                    .body(indexPython)
-                    .asJson();
-            JSONObject indexObj = postIndex.getBody().getObject();
-            int createdID = indexObj.getInt("id");
-            assertEquals(202, postIndex.getStatus());
-
-            await().atMost(20, TimeUnit.SECONDS).until(pollForIndexStatus(createdID), equalTo("Done"));
-            await().atMost(45, TimeUnit.SECONDS).until(waitForESResults(esEndpoint, esIndex), equalTo(5));
-
-            String URL = String.format(s.getGmapi() + VERSION + "/index/%s", createdID);
-            HttpRequestWithBody deleteIndex = Unirest.delete(URL);
-            HttpResponse<String> deleteIndexResponse = deleteIndex.asString();
-            assertEquals(200, deleteIndexResponse.getStatus());
-
-            GetRequest requestDeleteID = Unirest.get(URL);
-            HttpResponse<String> deletedIDResponse = requestDeleteID.asString();
-            assertEquals(410, deletedIDResponse.getStatus());
-
-        } catch (Exception ex) {
-            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
-            TestCase.fail(ex.getMessage());
-        }
     }
     
     @Test
@@ -252,68 +322,6 @@ public class GMApi {
         }
         
     }
-    
-    private void clearClusterIdsData() {
-        try {
-            HttpResponse<String> deleteGraph = Unirest.post(s.getFuseki() + "/test/update")
-                    .header("Content-Type", "application/sparql-update")
-                    .body("drop graph <http://test/1>")
-                    .asString();
-            // drop prov graph
-            HttpResponse<String> deleteGraphProv = Unirest.post(s.getFuseki() + "/test/update")
-                    .header("Content-Type", "application/sparql-update")
-                    .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
-                    .asString();
-
-            // drop ids graph
-            HttpResponse<String> deleteGraphIDs = Unirest.post(s.getFuseki() + "/test/update")
-                    .header("Content-Type", "application/sparql-update")
-                    .body("drop graph <http://data.hulib.helsinki.fi/attx/ids>")
-                    .asString();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private Callable<String> pollForWorkflowExecution(Integer pipelineID) {
-        return new Callable<String>() {
-            public String call() throws Exception {
-                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions/last", pipelineID.intValue());
-                HttpResponse<JsonNode> schedulePipelineResponse = Unirest.get(URL)
-                        .header("accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .basicAuth(API_USERNAME, API_PASSWORD)
-                        .asJson();
-                if (schedulePipelineResponse.getStatus() == 200) {
-                    JSONObject execution = schedulePipelineResponse.getBody().getObject();
-                    String status = execution.getString("status");
-                    System.out.println(status);
-                    return status;
-                } else {
-                    return "Not yet";
-                }
-            }
-        };
-    }
-
-    private Callable<String> pollForWorkflowStart(Integer pipelineID) {
-        return new Callable<String>() {
-            public String call() throws Exception {
-                String URL = String.format(s.getUV() + "/master/api/1/pipelines/%s/executions", pipelineID);
-                HttpResponse<JsonNode> workflowStart = Unirest.post(URL)
-                        .header("accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .basicAuth(API_USERNAME, API_PASSWORD)
-                        .body(ACTIVITY)
-                        .asJson();
-                assertEquals(200, workflowStart.getStatus());
-                JSONObject execution = workflowStart.getBody().getObject();
-                String status = execution.getString("status");
-                System.out.println(status);
-                return status;
-            }
-        };
-    }
 
     @Test
     public void testProvEndpoint() {
@@ -330,11 +338,7 @@ public class GMApi {
                     .asJson();
 
             JSONObject myObj = postResponse.getBody().getObject();
-
-            await().atMost(10, TimeUnit.SECONDS).until(() -> {
-                System.out.println(postResponse.getStatus());
-                assertEquals(200, postResponse.getStatus());
-            });
+            assertEquals(200, postResponse.getStatus());
 
             int pipelineID = myObj.getInt("id");
 
@@ -403,17 +407,5 @@ public class GMApi {
         }
         
     }
-
-   private void clearProvData() {
-        try {
-            // drop prov graph
-            HttpResponse<String> deleteGraphProv = Unirest.post(s.getFuseki() + "/test/update")
-                    .header("Content-Type", "application/sparql-update")
-                    .body("drop graph <http://data.hulib.helsinki.fi/attx/prov>")
-                    .asString();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }     
     
 }
