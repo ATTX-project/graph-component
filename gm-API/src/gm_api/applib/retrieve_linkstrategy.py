@@ -2,23 +2,24 @@ import re
 import falcon
 from gm_api.utils.logs import app_logger
 from rdflib import ConjunctiveGraph, RDF
+from rdflib.namespace import DCTERMS
 from gm_api.utils.prefixes import ATTXOnto, ATTXStrategy, ATTXBase
 
 
 def retrieve_strategies(endpoint):
     """Retrieve list of strategies from the Graph Store."""
     datasets = []
+    graph = ConjunctiveGraph(store="SPARQLStore")
     try:
         # TO DO: Does rdflib have an easier way for distinct ?
-        query = """SELECT DISTINCT ?subject
-                   WHERE { GRAPH <%s> {
-                   ?subject a attxonto:LinkStrategy.
-                   }}""" % (ATTXStrategy)
-        graph = ConjunctiveGraph(store="SPARQLStore")
+        query = """SELECT DISTINCT ?strategy ?title
+                 WHERE { GRAPH <%s> {
+                 ?strategy a attxonto:LinkStrategy; dcterms:title ?title.
+                 }}""" % (ATTXStrategy)
 
         graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
-        for row in graph.query(query, initNs={"attxonto": ATTXOnto}):
-            datasets.append({"uri": row[0].toPython()})
+        for row in graph.query(query, initNs={"attxonto": ATTXOnto, "dcterms": DCTERMS}):
+            datasets.append({"uri": row[0].toPython(), "title": row[1].toPython()})
         if len(datasets) > 0:
             app_logger.info('Retrieve list of strategies with their URIs. Number of strategies: {0}.'.format(len(datasets)))
             return datasets
@@ -39,6 +40,7 @@ def retrieve_strategies(endpoint):
 def retrieve_strategy(endpoint, strategyID):
     """Retrieve a specific strategy from the Graph Store and associated parameters."""
     parameters = {}
+    graph = ConjunctiveGraph(store="SPARQLStore")
     try:
         # TO DO: Does rdflib have an easier way for distinct ?
         query = """SELECT ?property ?value
@@ -46,7 +48,6 @@ def retrieve_strategy(endpoint, strategyID):
                    <%s%s> ?property ?value .
                    filter ( ?property not in ( rdf:type ) )
                    }}""" % (ATTXStrategy, ATTXBase, strategyID)
-        graph = ConjunctiveGraph(store="SPARQLStore")
 
         graph.open("http://{0}:{1}/{2}/query".format(endpoint['host'], endpoint['port'], endpoint['dataset']))
         for row in graph.query(query, initNs={"attxonto": ATTXOnto, "rdf": RDF}):
