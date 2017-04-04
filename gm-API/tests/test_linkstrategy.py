@@ -62,7 +62,8 @@ class TestLinkStrategy(appLinkStrategyTest):
         xml_result = """<?xml version="1.0"?>
         <sparql xmlns="http://www.w3.org/2005/sparql-results#">
           <head>
-            <variable name="subject"/>
+            <variable name="strategy"/>
+            <variable name="title"/>
           </head>
           <results>
           </results>
@@ -85,17 +86,24 @@ class TestLinkStrategy(appLinkStrategyTest):
         xml_result = """<?xml version="1.0"?>
             <sparql xmlns="http://www.w3.org/2005/sparql-results#">
               <head>
-                <variable name="subject"/>
+                <variable name="strategy"/>
+                <variable name="title"/>
               </head>
               <results>
                 <result>
-                  <binding name="subject">
+                  <binding name="strategy">
                     <uri>http://data.hulib.helsinki.fi/attx/idstrategy1</uri>
+                  </binding>
+                  <binding name="title">
+                    <literal>IDs based Linking Strategy</literal>
                   </binding>
                 </result>
                 <result>
-                  <binding name="subject">
+                  <binding name="strategy">
                     <uri>http://data.hulib.helsinki.fi/attx/idstrategy2</uri>
+                  </binding>
+                  <binding name="title">
+                    <literal>IDs v2 based Linking Strategy</literal>
                   </binding>
                 </result>
               </results>
@@ -108,7 +116,8 @@ class TestLinkStrategy(appLinkStrategyTest):
                     }}""" % (ATTXStrategy)
         httpretty.register_uri(httpretty.GET, "{0}?query={1}&output=xml&results=xml&format=xml".format(store_url, query), xml_result, status=200)
         httpretty.register_uri(httpretty.POST, "http://localhost:3030/ds/data?graph=%s" % (ATTXStrategy), status=200)
-        doc = """[{"uri": "http://data.hulib.helsinki.fi/attx/idstrategy1"}, {"uri": "http://data.hulib.helsinki.fi/attx/idstrategy2"}]"""
+        doc = """[{"uri": "http://data.hulib.helsinki.fi/attx/idstrategy1", "title": "IDs based Linking Strategy"},
+        {"uri": "http://data.hulib.helsinki.fi/attx/idstrategy2", "title": "IDs v2 based Linking Strategy"}]"""
         httpretty.register_uri(httpretty.GET, "http://localhost:4302/0.1/linkstrategy", body=doc, status=200)
         result = self.simulate_get('/{0}/linkstrategy'.format(api_version))
         assert(result.status == falcon.HTTP_200)
