@@ -41,7 +41,7 @@ public class GMApi {
 
     
     private void clearClusterIdsData() {
-        TestUtils.dropGraph("http://test/1", "ds");
+        TestUtils.dropGraph("http://test/1", "test");
         TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "test");
         TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/ids", "test");
     }
