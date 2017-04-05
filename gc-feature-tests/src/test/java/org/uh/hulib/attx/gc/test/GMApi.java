@@ -42,8 +42,8 @@ public class GMApi {
     
     private void clearClusterIdsData() {
         TestUtils.dropGraph("http://test/1", "ds");
-        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "ds");
-        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/ids", "ds");
+        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "test");
+        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/ids", "test");
     }
 
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
@@ -113,9 +113,9 @@ public class GMApi {
     @AfterClass
     public static void tearDown () {
         try {
-            TestUtils.dropGraph("http://test/index", "ds");
-            TestUtils.dropGraph("http://test/index2", "ds");
-            TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "ds");
+            TestUtils.dropGraph("http://test/index", "test");
+            TestUtils.dropGraph("http://test/index2", "test");
+            TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "test");
             
             HttpResponse<JsonNode> removeES5Index = Unirest.delete(TestUtils.getES5() + "/default")
                     .asJson();
