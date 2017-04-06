@@ -9,14 +9,12 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
-import java.io.File;
 import java.net.URL;
 import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
@@ -25,13 +23,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.uh.hulib.attx.dev.TestUtils;
+
 import static org.awaitility.Awaitility.await;
 import org.awaitility.core.ConditionTimeoutException;
-import org.hamcrest.Matchers;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
-import org.uh.hulib.attx.dev.TestUtils;
+
 
 /**
  * @author jkesanie
@@ -41,9 +40,9 @@ public class GMApi {
 
     
     private void clearClusterIdsData() {
-        TestUtils.dropGraph("http://test/1", "test");
-        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "test");
-        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/ids", "test");
+        TestUtils.dropGraph("http://test/1");
+        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov");
+        TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/ids");
     }
 
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
@@ -113,9 +112,9 @@ public class GMApi {
     @AfterClass
     public static void tearDown () {
         try {
-            TestUtils.dropGraph("http://test/index", "test");
-            TestUtils.dropGraph("http://test/index2", "test");
-            TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov", "test");
+            TestUtils.dropGraph("http://test/index");
+            TestUtils.dropGraph("http://test/index2");
+            TestUtils.dropGraph("http://data.hulib.helsinki.fi/attx/prov");
             
             HttpResponse<JsonNode> removeES5Index = Unirest.delete(TestUtils.getES5() + "/default")
                     .asJson();
@@ -178,7 +177,7 @@ public class GMApi {
             assertEquals(200, graphData.getStatus());
 
             // do clustering
-            payload = "{ \"graphStore\": { \"host\": \"fuseki\", \"port\": 3030, \"dataset\": \"ds\" }}";
+            payload = "{ \"graphStore\": { \"host\": \"fuseki\", \"port\": 3030, \"dataset\": \"test\" }}";
             HttpResponse<JsonNode> postCluster = Unirest.post(TestUtils.getGmapi() + TestUtils.VERSION + "/cluster")
                     .header("content-type", "application/json")
                     .body(payload)
@@ -193,7 +192,7 @@ public class GMApi {
             
             // query results
             String queryString = "SELECT (count(?o) as ?count) FROM <http://data.hulib.helsinki.fi/attx/ids> {?s <http://data.hulib.helsinki.fi/attx/id> ?o}";            
-            HttpResponse<JsonNode> queryResponse = TestUtils.graphQueryResult("test", queryString);            
+            HttpResponse<JsonNode> queryResponse = TestUtils.graphQueryResult(queryString);
             assertEquals(200, queryResponse.getStatus());
             assertEquals(3, TestUtils.getQueryResultField(queryResponse, "count").getInt("value"));
             
@@ -244,7 +243,7 @@ public class GMApi {
             Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
             TestCase.fail(ex.getMessage());
         } finally {
-            TestUtils.clearProvData("ds");
+            TestUtils.clearProvData();
         }
         
     }
