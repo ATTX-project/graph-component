@@ -13,7 +13,8 @@ dependencies {
         'net.javacrumbs.json-unit:json-unit:1.16.0',
         'net.javacrumbs.json-unit:json-unit-fluent:1.16.0',
         'org.uh.hulib.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT',
-        'org.awaitility:awaitility-groovy:2.0.0'
+        'org.awaitility:awaitility-groovy:2.0.0',
+        'org.uh.hulib.attx.dev:dev-test-helper:1.4'
 }
 
 if (!project.hasProperty("testEnv") || project.testEnv == "dev") {
