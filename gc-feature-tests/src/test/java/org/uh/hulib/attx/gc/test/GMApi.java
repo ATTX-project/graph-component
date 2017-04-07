@@ -47,7 +47,6 @@ public class GMApi {
 
     public void doIndexing(String requestFixture, String esEndpoint, String esIndex) {
         try {
-            fail("testing jenkins");
             // index
             String indexPython = IOUtils.toString(GMApi.class.getResourceAsStream(requestFixture), "UTF-8");
 
