@@ -17,7 +17,7 @@ Graph Component is designed to:
 ## Repository Structure
 
 The repository consists of:
-* RDF2JSON Elasticsearch indexer
+* RDF2JSON Elasticsearch indexer - used by the GM-API
 * ATTX Ontology - along with example data
 * Graph Manager API
 * Graph Component - Integration Tests
