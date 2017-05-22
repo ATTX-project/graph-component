@@ -1,0 +1,40 @@
+apply plugin: 'application'
+
+mainClassName = "org.uh.hulib.attx.gc.rdf2json.indexer.Indexer"
+ext.version_nb = "1.0"
+
+if (!project.hasProperty("env")) {
+    ext.artifactVersion = "${version_nb}-SNAPSHOT"
+} else if (project.env == "release"){
+    ext.artifactVersion = "${version_nb}"
+}
+
+dependencies {
+      // https://mvnrepository.com/artifact/org.apache.jena/apache-jena
+      // TO DO: move to JENA:3.2.0
+      compile 'org.apache.jena:apache-jena:3.2.0'
+      compile 'org.elasticsearch:elasticsearch:1.2.2'
+      compile 'commons-cli:commons-cli:1.3.1'
+      compile 'com.mashape.unirest:unirest-java:1.4.6'
+
+      // Use JUnit test framework
+      testCompile \
+            'org.skyscreamer:jsonassert:1.4.0'
+            'com.mashape.unirest:unirest-java:1.4.'
+}
+
+uploadShadow {
+      repositories {
+          mavenDeployer {
+              repository(url: "${artifactRepoURL}") {
+                    authentication(userName: "${artifactRepoUser}", password: "${artifactRepoPassword}")
+              }
+              pom.project {
+                  version = "${artifactVersion}"
+                  groupId = "${gmGroupID}"
+                  artifactId = 'gc-rdf2json-indexer-all'
+                  description "RDF2JSON indexer."
+              }
+          }
+      }
+}

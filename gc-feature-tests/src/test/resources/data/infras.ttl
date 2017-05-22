@@ -1,0 +1,175 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix j.1:   <http://data.hulib.helsinki.fi/attx/types/> .
+@prefix j.0:   <http://purl.org/dc/terms/> .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072523>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072523> ;
+        j.0:title       "National Virus Vector Laboratory" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072514>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072514> ;
+        j.0:title       "Biobanking and biomolecular resources research infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072522>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072522> ;
+        j.0:title       "" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607255>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607255> ;
+        j.0:title       "Finnish Microdata Access Services" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072517>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072517> ;
+        j.0:title       "European distributed infrastructure for life-science information" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607253>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607253> ;
+        j.0:title       "National Electronic Library" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072532>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072532> ;
+        j.0:title       "Partnership for Advanced Computing in Europe" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072526>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072526> ;
+        j.0:title       "X-ray free-electron laser (XFEL) Biological Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607259>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607259> ;
+        j.0:title       "Finnish national initiative of the European Plate Observing System" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607251>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607251> ;
+        j.0:title       "European Social Survey" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072529>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072529> ;
+        j.0:title       "Euclid cosmology mission" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072513>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072513> ;
+        j.0:title       "Open Geospatial Information Infrastructure for Research" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607256>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607256> ;
+        j.0:title       "Finnish Social Science Data Archive and Consortium of European Social Science Data Archives" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072527>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072527> ;
+        j.0:title       "Bioeconomy Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072518>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072518> ;
+        j.0:title       "European Research Infrastructure for Biomedical Imaging (Euro-BioImaging)" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072510>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072510> ;
+        j.0:title       "Finnish Marine Research Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072515>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072515> ;
+        j.0:title       "Biocenter Finland" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607252>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607252> ;
+        j.0:title       "Common Language Resource and Technology Infrastructure" ;
+        <http://www.w3.org/2004/02/skos/core#exactMatch>
+                <http://data.hulib.helsinki.fi/tuhat/id/2fb64bc9-4b9f-4945-8e38-86f2dad19010> .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072512>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072512> ;
+        j.0:title       "Integrated atmoshperic and earth system science research infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607257>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607257> ;
+        j.0:title       "National information infrastructure by Open Science and Research Initiative and National Digital Library" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072533>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072533> ;
+        j.0:title       "Finnish Grid and Cloud Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072528>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072528> ;
+        j.0:title       "Cherenkov Telescope Array" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072525>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072525> ;
+        j.0:title       "Otaniemi Research Infrastructure for Micro and Nanotechnologies" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072520>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072520> ;
+        j.0:title       "INFRAFRONTIER Research Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072524>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072524> ;
+        j.0:title       "MAX IV Laboratory" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072530>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072530> ;
+        j.0:title       "Accelerator laboratory of the university of Jyv��skyl��" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607258>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607258> ;
+        j.0:title       "" .
+
+<http://data.hulib.helsinki.fi/tuhat/id/2fb64bc9-4b9f-4945-8e38-86f2dad19010>
+        <http://www.w3.org/2004/02/skos/core#exactMatch>
+                <http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607252> .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072519>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072519> ;
+        j.0:title       "European Infrastructure of Open Screening Platforms for Chemical Biology" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072511>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072511> ;
+        j.0:title       "Integrated Carbon Observation System" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072521>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072521> ;
+        j.0:title       "Integrated Structural Biology Research Infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-201607254>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-201607254> ;
+        j.0:title       "National Digital Library public interface" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072531>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072531> ;
+        j.0:title       "CSC - IT Center for Science -national research infrastructure" .
+
+<http://data.hulib.helsinki.fi/attx/3/work/infra/urn%3Anbn%3Afi%3Aresearch-infras-2016072516>
+        a               j.1:Infrastructure ;
+        j.0:identifier  <urn:nbn:fi:research-infras-2016072516> ;
+        j.0:title       "European infrastructure for translational medicine" .
+

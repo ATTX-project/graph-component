@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "plugin": {
+      "type": "string"
+    },
+    "targetEndpoint": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host",
+        "port"
+      ]
+    },
+    "indexing": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "string"
+        },
+        "resourceType": {
+          "type": "string"
+        },
+        "indexingID": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "filter"
+      ]
+    },
+    "graphStore": {
+     "type": "object",
+     "properties": {
+       "endpoint": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer"
+            },
+            "dataset": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "host",
+            "port",
+            "dataset"
+          ]
+        },
+       "graphs": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "minItems": 1,
+         "uniqueItems": true
+       }
+     },
+     "required": [
+       "endpoint",
+       "graphs"
+     ]
+   }
+  },
+  "required": [
+    "plugin",
+    "targetEndpoint",
+    "indexing",
+    "graphStore"
+  ]
+}

@@ -1,0 +1,20 @@
+<http://data.hulib.helsinki.fi/attx/prov> {
+    <http://data.hulib.helsinki.fi/attx/prov/1>
+        <http://www.w3.org/ns/prov#used> <http://test/1> .
+      
+    <http://test/1>
+        a <http://data.hulib.helsinki.fi/attx/onto#Dataset> .
+        
+}
+<http://test/1> {
+    <http://data.hulib.helsinki.fi/attx/work/test/infra/1>
+      a <http://data.hulib.helsinki.fi/attx/types/Infrastructure> ;
+      <http://purl.org/dc/terms/title> "Test 1" ;
+      <http://purl.org/dc/terms/identifier> <uri:1> .
+
+    <http://data.hulib.helsinki.fi/attx/work/test/infra/uuid1>
+      a <http://data.hulib.helsinki.fi/attx/types/Infrastructure> ;
+      <http://purl.org/dc/terms/identifier> "uuid1" ;
+      <http://purl.org/dc/terms/identifier> <uri:1> ;
+      <http://purl.org/dc/terms/title> "Test 3" .
+}  

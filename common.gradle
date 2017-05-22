@@ -1,0 +1,30 @@
+apply plugin: 'base'
+
+ext {
+    imageRepo = "attx-dev"
+    imageRepoPort = "5000"
+    artifactRepoPort = "8081"
+    jenkinsPort = "49001"
+    pypiRepoPort = "5039"
+    gmGroupID = "org.uh.hulib.attx.gc"
+}
+
+if (!project.hasProperty("registryURL")) {
+    ext.registryURL = "http://${imageRepo}:${imageRepoPort}"
+}
+
+if (!project.hasProperty("artifactRepoURL")) {
+    ext.artifactRepoURL = "http://${imageRepo}:${artifactRepoPort}/repository/attx-releases"
+}
+
+if (!project.hasProperty("pypiURL")) {
+    ext.pypiURL = "http://${imageRepo}:${pypiRepoPort}/"
+}
+
+if (!project.hasProperty("artifactRepoUser")) {
+    ext.artifactRepoUser = ""
+}
+
+if (!project.hasProperty("artifactRepoPassword")) {
+    ext.artifactRepoPassword = ""
+}
