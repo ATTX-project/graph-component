@@ -5,6 +5,7 @@ The ATTX Graph component associated to this project has the main goal of aggrega
 The Graph Component consists of following parts:
 - Graph Manager API
 - Graph Store
+- Ontology/Data model
 
 Graph Component is designed to:
 * retrieve information from the Workflow API in order to update the **Provenance and Workflow Data** graphs;
