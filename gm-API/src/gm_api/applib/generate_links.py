@@ -7,7 +7,7 @@ from SPARQLWrapper import SPARQLWrapper
 from gm_api.utils.logs import app_logger
 from gm_api.applib.construct_cluster import strategy_cluster
 from gm_api.applib.retrieve_linkstrategy import retrieve_strategy
-from gm_api.utils.prefixes import bind_prefix, ATTXURL, ATTXIDs
+from gm_api.utils.prefixes import bind_prefix, ATTXURL
 
 
 def perform_strategy(graphStore, strategy):
