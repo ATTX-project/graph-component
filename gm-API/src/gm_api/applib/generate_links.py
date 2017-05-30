@@ -40,7 +40,7 @@ def sparql_strategy(graphStore, query):
             store_api = "http://{0}:{1}/{2}/query".format(store['host'], store['port'], store['dataset'])
             sparql = SPARQLWrapper(store_api)
             # add a default graph, though that can also be in the query string
-            sparql.addDefaultGraph(ATTXIDs)
+            #sparql.addDefaultGraph(ATTXIDs)
             sparql.setQuery(query)
             # for named_graph in graphStore['graphs']:
             #     graph.parse('{0}{1}'.format(store_api, named_graph))
