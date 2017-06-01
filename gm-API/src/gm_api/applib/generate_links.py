@@ -30,7 +30,7 @@ def sparql_strategy(graphStore, query):
     graph = ConjunctiveGraph()
     bind_prefix(graph)
     try:
-        if 'graphs' in graphStore:
+        if graphStore['graphs']:
             local_cluster = strategy_cluster(graphStore['graphs'], graphStore['endpoint'])
             result = local_cluster.query(query)
             for s, p, o in result:
