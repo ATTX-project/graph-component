@@ -27,7 +27,7 @@ python {
 
 dependencies {
     python 'pypi:jsonschema:2.5.1'
-    python 'pypi:elasticsearch:5.1.0'
+    python 'pypi:elasticsearch:5.4.0'
     python 'pypi:falcon:1.1.0'
     python 'pypi:SPARQLWrapper:1.8.0'
     python 'pypi:rdflib:4.2.2'
