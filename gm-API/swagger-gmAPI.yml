@@ -175,7 +175,7 @@ paths:
         type: "integer"
       - name: "graphID"
         in: "path"
-        description: "Fetch link with a specific ID."
+        description: "Fetch graph with a specific ID."
         required: true
         type: "integer"
         format: "int64"
@@ -249,12 +249,12 @@ definitions:
         properties: {}
   ProvStatus:
     required:
-    - "lastStart"
+    - "id"
     - "status"
     properties:
-      lastStart:
-        type: "string"
-        format: "date-time"
+      id:
+        type: "integer"
+        format: "int64"
       status:
         type: "string"
   Query:
