@@ -6,7 +6,7 @@ info:
   title: "ATTX GM API"
   contact:
     name: "ATTX project"
-    url: "https://attx-project.github.io/"
+    url: "https://www.helsinki.fi/en/projects/attx-2016"
   license:
     name: "MIT"
 basePath: "/"
