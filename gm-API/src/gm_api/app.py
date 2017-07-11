@@ -9,7 +9,7 @@ from gm_api.api.indexing import IndexClass, IndexingResource
 api_version = "0.1"  # TO DO: Figure out a better way to do versioning
 
 
-def create():
+def init_api():
     """Create the API endpoint."""
     do_index = IndexClass()
     do_cluster = Cluster()
@@ -36,4 +36,4 @@ def create():
 
 
 if __name__ == '__main__':
-    create()
+    init_api()

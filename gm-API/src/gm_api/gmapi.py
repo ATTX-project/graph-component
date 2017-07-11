@@ -1,7 +1,7 @@
 import click
 import multiprocessing
 import gunicorn.app.base
-from gm_api.app import create
+from gm_api.app import init_api
 from gunicorn.six import iteritems
 
 
@@ -18,7 +18,7 @@ def cli(host, port, log, workers):
         'daemon': 'True',
         'errorlog': log
     }
-    GMApplication(create(), options).run()
+    GMApplication(init_api(), options).run()
 
 
 class GMApplication(gunicorn.app.base.BaseApplication):
