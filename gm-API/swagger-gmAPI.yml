@@ -137,16 +137,14 @@ paths:
         200:
           description: "Successful response."
           schema:
-            type: "array"
-            items:
-              type: "string"
+            type: "object"
         410:
           description: "No Graphs available."
   /{apiversion}/graph/statistics:
     get:
       tags:
       - "GMgraph"
-      description: "Get status of the linking job."
+      description: "Get statistics related to the Dataset."
       produces:
       - "application/json"
       parameters:
@@ -161,11 +159,11 @@ paths:
             type: "object"
         410:
           description: "Statistics Unavailable."
-  /{apiversion}/graph/{graphID}:
+  /{apiversion}/graph:
     get:
       tags:
       - "GMgraph"
-      description: "Get status of the linking job."
+      description: "Get a named graph triples."
       produces:
       - "application/json"
       parameters:
@@ -173,11 +171,11 @@ paths:
         in: path
         required: true
         type: "integer"
-      - name: "graphID"
-        in: "path"
-        description: "Fetch graph with a specific ID."
+      - name: "uri"
+        in: "query"
+        description: "The named graph ID; must be a URI."
         required: true
-        type: "integer"
+        type: "string"
         format: "int64"
       responses:
         200:
@@ -191,11 +189,11 @@ paths:
       - "GMgraph"
       description: "Delete graph with a certain ID."
       parameters:
-      - name: "graphID"
-        in: "path"
-        description: "Fetch graph with a specific ID."
+      - name: "uri"
+        in: "query"
+        description: "The named graph ID; must be a URI."
         required: true
-        type: "integer"
+        type: "string"
         format: "int64"
       responses:
         200:
@@ -206,7 +204,6 @@ definitions:
     - required:
       - "indexing"
       - "plugin"
-      - "graphStore"
       - "targetEndpoint"
       properties:
         plugin:
@@ -219,10 +216,6 @@ definitions:
         indexing:
           type: "object"
           properties: {}
-        graphStore:
-          type: "object"
-          items:
-            type: "string"
     - {}
   IndexResult:
     required:
@@ -259,12 +252,10 @@ definitions:
         type: "string"
   Query:
     required:
-    - "graphStore"
+    - "namedGraph"
     - "query"
     properties:
-      graphStore:
-        type: "object"
-        properties: {}
+      namedGraph:
+        type: "string"
       query:
-        type: "object"
-        properties: {}
+        type: "string"
