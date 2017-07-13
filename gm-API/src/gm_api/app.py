@@ -5,33 +5,32 @@ from gm_api.api.healthcheck import HealthCheck
 from gm_api.utils.logs import main_logger
 from gm_api.api.provenance import Provenance
 from gm_api.api.indexing import IndexClass, IndexingResource
+from gm_api.api.graph_endpoint import GraphStatistics, GraphList, GraphResource, GraphSPARQL, GraphUpdate
 
 api_version = "0.1"  # TO DO: Figure out a better way to do versioning
 
 
 def init_api():
     """Create the API endpoint."""
-    do_index = IndexClass()
-    do_cluster = Cluster()
-    do_link = LinkClass()
-    get_prov = Provenance()
-
-    get_index = IndexingResource()
-    get_link = LinkingResource()
-    get_strategies = RetrieveStrategies()
-    get_strategy = StrategyResource()
-
     gm_app = falcon.API()
+
     gm_app.add_route('/health', HealthCheck())
-    gm_app.add_route('/%s/index' % (api_version), do_index)
-    gm_app.add_route('/%s/index/{indexID}' % (api_version), get_index)
-    gm_app.add_route('/%s/cluster' % (api_version), do_cluster)
-    gm_app.add_route('/%s/link' % (api_version), do_link)
-    gm_app.add_route('/%s/link/{linkID}' % (api_version), get_link)
-    gm_app.add_route('/%s/linkstrategy' % (api_version), get_strategies)
-    gm_app.add_route('/%s/linkstrategy/{strategyID}' % (api_version), get_strategy)
-    gm_app.add_route('/%s/prov' % (api_version), get_prov)
-    main_logger.info('App is running.')
+    gm_app.add_route('/%s/index' % (api_version), IndexClass())
+    gm_app.add_route('/%s/index/{indexID}' % (api_version), IndexingResource())
+    gm_app.add_route('/%s/cluster' % (api_version), Cluster())
+    gm_app.add_route('/%s/link' % (api_version), LinkClass())
+    gm_app.add_route('/%s/link/{linkID}' % (api_version), LinkingResource())
+    gm_app.add_route('/%s/linkstrategy' % (api_version), RetrieveStrategies())
+    gm_app.add_route('/%s/linkstrategy/{strategyID}' % (api_version), StrategyResource())
+    gm_app.add_route('/%s/prov' % (api_version), Provenance())
+
+    gm_app.add_route('/%s/graph/query' % (api_version), GraphSPARQL())
+    gm_app.add_route('/%s/graph/update' % (api_version), GraphUpdate())
+    gm_app.add_route('/%s/graph/list' % (api_version), GraphList())
+    gm_app.add_route('/%s/graph/statistics' % (api_version), GraphStatistics())
+    gm_app.add_route('/%s/graph' % (api_version), GraphResource())
+
+    main_logger.info('GM API is running.')
     return gm_app
 
 
