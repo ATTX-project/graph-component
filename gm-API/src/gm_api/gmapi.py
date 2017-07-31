@@ -1,12 +1,12 @@
 import click
 import multiprocessing
 import gunicorn.app.base
-from gm_api.app import create
+from gm_api.app import init_api
 from gunicorn.six import iteritems
 
 
 @click.command()
-@click.option('--host', default='127.0.0.1', help='host wfAPI host.')
+@click.option('--host', default='127.0.0.1', help='gmAPI host.')
 @click.option('--port', default=4302, help='gmAPI server port.')
 @click.option('--workers', default=2, help='gmAPI server workers.')
 @click.option('--log', default='logs/server.log', help='log file for app.')
@@ -18,11 +18,11 @@ def cli(host, port, log, workers):
         'daemon': 'True',
         'errorlog': log
     }
-    GMApplication(create(), options).run()
+    GMApplication(init_api(), options).run()
 
 
 class GMApplication(gunicorn.app.base.BaseApplication):
-    """Create Standalone Application WF-API."""
+    """Create Standalone Application GM-API."""
 
     def __init__(self, app, options=None):
         """The init."""

@@ -3,7 +3,7 @@ import falcon
 import unittest
 import httpretty
 from falcon import testing
-from gm_api.app import create
+from gm_api.app import init_api
 from gm_api.app import api_version
 from gm_api.utils.db import connect_DB
 from gm_api.utils.prefixes import ATTXStrategy, ATTXBase
@@ -15,7 +15,7 @@ class appLinkStrategyTest(testing.TestCase):
     def setUp(self):
         """Setting the app up."""
         self.conn = connect_DB()
-        self.app = create()
+        self.app = init_api()
 
     def tearDown(self):
         """Tearing down the app up."""

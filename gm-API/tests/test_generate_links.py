@@ -4,7 +4,7 @@ import unittest
 import httpretty
 from falcon import testing
 from rdflib import Graph
-from gm_api.app import create
+from gm_api.app import init_api
 from gm_api.applib.generate_links import perform_strategy, output_generated_graph, sparql_strategy
 from gm_api.utils.db import connect_DB
 from gm_api.utils.prefixes import ATTXStrategy, ATTXBase, ATTXIDs
@@ -16,7 +16,7 @@ class appGenerateLinkTest(testing.TestCase):
     def setUp(self):
         """Setting the app up."""
         self.conn = connect_DB()
-        self.app = create()
+        self.app = init_api()
 
     def tearDown(self):
         """Tearing down the app up."""

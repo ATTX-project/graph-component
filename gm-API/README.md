@@ -39,7 +39,7 @@ Install [gradle](https://gradle.org/install). The tasks available are listed bel
 
 * do clean build: `gradle clean build`
 * see tasks: `gradle tasks --all` and depenencies `gradle depenencies`
-* see test coverage `gradle wf-API:pytest coverage` it will generate a html report in `build/coverage/htmlcov`
+* see test coverage `gradle gm-API:pytest coverage` it will generate a html report in `build/coverage/htmlcov`
 
 ### Run without Gradle
 

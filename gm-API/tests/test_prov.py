@@ -3,7 +3,7 @@ import unittest
 import httpretty
 from falcon import testing
 from datetime import datetime
-from gm_api.app import create
+from gm_api.app import init_api
 from gm_api.app import api_version
 from gm_api.utils.db import connect_DB
 from gm_api.utils.prefixes import ATTXProv
@@ -15,7 +15,7 @@ class appProvTest(testing.TestCase):
     def setUp(self):
         """Setting the app up."""
         self.conn = connect_DB()
-        self.app = create()
+        self.app = init_api()
 
     def tearDown(self):
         """Tearing down the app up."""

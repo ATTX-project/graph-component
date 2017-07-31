@@ -1,6 +1,6 @@
 import click
 import unittest
-from gm_api.app import create
+from gm_api.app import init_api
 from click.testing import CliRunner
 from gm_api.gmapi import GMApplication, number_of_workers
 
@@ -20,7 +20,7 @@ class TestAPIStart(unittest.TestCase):
             'daemon': 'True',
             'errorlog': self.log
         }
-        self.app = GMApplication(create(), options)
+        self.app = GMApplication(init_api(), options)
         # propagate the exceptions to the test client
         self.app.testing = True
 
