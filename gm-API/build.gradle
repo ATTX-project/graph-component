@@ -21,12 +21,12 @@ if (!project.hasProperty("env")) {
 
 python {
     testDir = file('tests')
+    forceVersion('pypi', 'pytz', '2016.4')
 }
 // define an explicit installation sequence for the dependencies.
 // project.tasks.findByName('installPythonRequirements').sorted = false
 
 dependencies {
-    python 'pypi:pytz:2017.2'
     python 'pypi:pbr:1.8.0'
     python 'pypi:jsonschema:2.6.0'
     python 'pypi:elasticsearch:5.4.0'
