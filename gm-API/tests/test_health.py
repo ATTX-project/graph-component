@@ -2,7 +2,7 @@ import falcon
 import unittest
 import httpretty
 from falcon import testing
-from gm_api.app import create
+from gm_api.app import init_api
 
 
 class appHealthTest(testing.TestCase):
@@ -10,7 +10,7 @@ class appHealthTest(testing.TestCase):
 
     def setUp(self):
         """Setting the app up."""
-        self.app = create()
+        self.app = init_api()
 
     def tearDown(self):
         """Tearing down the app up."""
