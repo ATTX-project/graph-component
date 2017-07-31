@@ -26,6 +26,7 @@ python {
 // project.tasks.findByName('installPythonRequirements').sorted = false
 
 dependencies {
+    python 'pypi:pytz:2017.2'
     python 'pypi:pbr:1.8.0'
     python 'pypi:jsonschema:2.6.0'
     python 'pypi:elasticsearch:5.4.0'
@@ -39,7 +40,6 @@ dependencies {
     python 'pypi:PyLD:0.7.2'
     python 'pypi:python-mimeparse:1.6.0'
     python 'pypi:click:6.7'
-    python 'pypi:pytz:2017.2'
     test 'pypi:mock:2.0.0'
     test 'pypi:httpretty:0.8.14'
 }
