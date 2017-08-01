@@ -206,46 +206,46 @@ public class GMApi {
         
     }
 
-    @Test
-    public void testProvEndpoint() {
-        try {
-            // add pipeline
-            URL resource = GMApi.class.getResource("/testPipeline.zip");
-            
-            int pipelineID = TestUtils.importPipeline(resource);
-
-            await().atMost(20, TimeUnit.SECONDS).until(TestUtils.pollForWorkflowStart(pipelineID), equalTo(200));
-            await().atMost(20, TimeUnit.SECONDS).until(TestUtils.pollForWorkflowExecution(pipelineID), equalTo("FINISHED_SUCCESS"));
-            
-            // execute /prov
-
-//           TO DO We preset the url as it will always be like this inside the container network.
-//           When the everything is finished this should be a fixture or part of the plugin/service discovery
-            TestUtils.updateProv();
-
-            // query results
-            String activityQuery = "ASK\n" +
-                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-                            "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
-                            "}";
-            TestUtils.askGraphStoreIfTrue(activityQuery);
-
-
-            String workflowQuery = "ASK\n" +
-                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
-                            "{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
-                            "}";
-            TestUtils.askGraphStoreIfTrue(workflowQuery);
-            
-        } catch (ConditionTimeoutException cex) {
-                fail("Timeout exceeded." + cex.getMessage());
-        } catch (Exception ex) {
-            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
-            TestCase.fail(ex.getMessage());
-        } finally {
-            TestUtils.clearProvData();
-        }
-        
-    }
+//    @Test
+//    public void testProvEndpoint() {
+//        try {
+//            // add pipeline
+//            URL resource = GMApi.class.getResource("/testPipeline.zip");
+//
+//            int pipelineID = TestUtils.importPipeline(resource);
+//
+//            await().atMost(20, TimeUnit.SECONDS).until(TestUtils.pollForWorkflowStart(pipelineID), equalTo(200));
+//            await().atMost(20, TimeUnit.SECONDS).until(TestUtils.pollForWorkflowExecution(pipelineID), equalTo("FINISHED_SUCCESS"));
+//
+//            // execute /prov
+//
+////           TO DO We preset the url as it will always be like this inside the container network.
+////           When the everything is finished this should be a fixture or part of the plugin/service discovery
+//            TestUtils.updateProv();
+//
+//            // query results
+//            String activityQuery = "ASK\n" +
+//                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+//                            "{?s a <http://www.w3.org/ns/prov#Activity> \n" +
+//                            "}";
+//            TestUtils.askGraphStoreIfTrue(activityQuery);
+//
+//
+//            String workflowQuery = "ASK\n" +
+//                            "FROM <http://data.hulib.helsinki.fi/attx/prov> \n" +
+//                            "{?s a <http://data.hulib.helsinki.fi/attx/onto#Workflow> \n" +
+//                            "}";
+//            TestUtils.askGraphStoreIfTrue(workflowQuery);
+//
+//        } catch (ConditionTimeoutException cex) {
+//                fail("Timeout exceeded." + cex.getMessage());
+//        } catch (Exception ex) {
+//            Logger.getLogger(GMApi.class.getName()).log(Level.SEVERE, null, ex);
+//            TestCase.fail(ex.getMessage());
+//        } finally {
+//            TestUtils.clearProvData();
+//        }
+//
+//    }
     
 }

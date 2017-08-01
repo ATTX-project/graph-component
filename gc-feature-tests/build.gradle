@@ -1,7 +1,14 @@
+apply plugin: 'java'
 apply plugin: 'com.chrisgahlert.gradle-dcompose-plugin'
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
 import com.bmuschko.gradle.docker.tasks.container.DockerWaitContainer
+
+repositories {
+    mavenCentral()
+    maven { url "${artifactRepoURL}/repository/attx-releases"}
+}
 
 dependencies {
     compile 'org.apache.jena:apache-jena:3.2.0'
@@ -15,6 +22,25 @@ dependencies {
         'org.uh.hulib.attx.gc:gc-rdf2json-indexer:1.0-SNAPSHOT',
         'org.awaitility:awaitility-groovy:2.0.0',
         'org.uh.hulib.attx.dev:dev-test-helper:1.4'
+}
+
+ext.attxTestHelperPlugin = '1.4'
+ext.gcIndexer = '1.0-SNAPSHOT'
+
+ext.src = [
+    "${artifactRepoURL}/restServices/archivaServices/searchService/artifact?g=org.uh.hulib.attx.dev&a=dev-test-helper&v=${attxTestHelperPlugin}&p=jar":"dev-test-helper-${attxTestHelperPlugin}.jar",
+    "${artifactRepoURL}/restServices/archivaServices/searchService/artifact?g=org.uh.hulib.attx.gc&a=gc-rdf2json-indexer&v=${gcIndexer}&p=jar":"gc-rdf2json-indexer-${gcIndexer}.jar"
+]
+
+import de.undercouch.gradle.tasks.download.Download
+task downloadTestFiles
+
+for (s in src) {
+    task "downloadTestFiles_${s.key.hashCode()}"(type: Download) {
+        src s.key
+        dest new File("$projectDir", s.value)
+    }
+    downloadTestFiles.dependsOn("downloadTestFiles_${s.key.hashCode()}")
 }
 
 if (!project.hasProperty("testEnv") || project.testEnv == "dev") {
@@ -152,6 +178,8 @@ dcompose {
         ignoreExitCode = true
         baseDir = file('.')
         dockerFilename = 'Dockerfile'
+        buildArgs = ['attxTestHelperPlugin': "$attxTestHelperPlugin", 'gcIndexer': "$gcIndexer"]
+        env = ["REPO=$artifactRepoURL"]
         if (testSet == "container") {
             binds = ["/var/run/docker.sock:/run/docker.sock"]
         }
@@ -180,6 +208,7 @@ shadowJar {
 }
 
 // making sure the that fresh build of test classes is done before building the image
+buildTestImage.dependsOn downloadTestFiles
 buildTestImage.dependsOn shadowJar
 buildTestImage.dependsOn testClasses
 
