@@ -1,0 +1,6 @@
+[submodule "graphmanager-service"]
+	path = graphmanager-service
+	url = https://github.com/ATTX-project/graphmanager-service
+[submodule "attx-onto"]
+	path = attx-onto
+	url = https://github.com/ATTX-project/attx-onto
