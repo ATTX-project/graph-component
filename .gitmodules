@@ -4,3 +4,9 @@
 [submodule "attx-onto"]
 	path = attx-onto
 	url = https://github.com/ATTX-project/attx-onto
+[submodule "provenance-service"]
+	path = provenance-service
+	url = git@github.com:ATTX-project/provenance-service.git
+[submodule "rml-service"]
+	path = rml-service
+	url = git@github.com:ATTX-project/rml-service.git
